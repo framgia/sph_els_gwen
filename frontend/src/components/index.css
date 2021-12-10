@@ -1,0 +1,58 @@
+/*********** FOR LOGIN ************/
+.card {
+    @apply p-0 flex
+    /* md:h-3/5 sm:h-full xs:h-full */
+    xl:w-6/12 lg:w-9/12 md:w-10/12 xs:w-full
+    md:flex-row xs:flex-col
+}
+
+.logo-name-group {
+    @apply bg-primary flex items-center justify-center 
+    lg:p-10 md:p-10
+    xs:p-4
+    md:w-6/12 
+    md:flex-col sm:flex-row
+}
+
+.logo {
+    @apply md:mb-4 xl:w-36 lg:w-32 md:w-24 sm:w-20 xs:w-16 
+    md:border-0 xs:border-black xs:border-r-2 
+    md:pr-0 xs:pr-7
+}
+
+.project-name-group { 
+    @apply items-center 
+    md:border-0
+    md:ml-0
+    xs:ml-6 
+}
+
+.project-name { 
+    @apply font-normal mt-7 tracking-widest justify-center
+    xl:text-7xl lg:text-6xl md:text-5xl sm:text-4xl xs:text-3xl 
+    md:mb-0
+    xs:mt-0
+}
+
+.project-sub-heading {
+    @apply font-light tracking-widest
+    md:text-2xl 
+    md:block xs:hidden
+}
+
+
+/*********** FOR LOGIN FORM ************/
+.form-group {
+    @apply flex flex-col mx-auto
+    md:justify-evenly
+    md:w-6/12 xs:w-full xs:h-full
+    xl:p-14 lg:p-10 md:p-8 sm:p-8 xs:p-8
+}
+
+.form-title {
+    @apply font-bold self-center
+    lg:text-4xl
+    sm:text-3xl xs:text-xl
+    md:my-0
+    /* sm:my-8 xs:my-6  */
+}
