@@ -33,7 +33,7 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed']
+            'password' => ['required']
         ]);
 
         $user = User::where('email', $data['email'])->first();
@@ -54,9 +54,9 @@ class AuthController extends Controller
     }
 
 
-    public function logout(User $user)
+    public function logout()
     {
-        $user->tokens()->delete();
+        auth()->user()->tokens()->delete();
         return response()->json([
             'data' => [
                 'message' => 'Logged out successfully.'
