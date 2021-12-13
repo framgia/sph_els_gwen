@@ -46,8 +46,7 @@ class Handler extends ExceptionHandler
                 if ($e instanceof AuthenticationException) {
                     return response()->json([
                         'error' => [
-                            'message' => 'Unauthenticated. Please login.',
-                            'status' => 405
+                            'message' => 'Unauthenticated. Please login.'
                         ]
                     ], 401);
                 }
@@ -61,8 +60,7 @@ class Handler extends ExceptionHandler
                 if ($e instanceof MethodNotAllowedHttpException) {
                     return response()->json([
                         'error' => [
-                            'message' => 'Not Allowed',
-                            'status' => 405
+                            'message' => 'Not Allowed'
                         ]
                     ], 405);
                 }
@@ -71,13 +69,11 @@ class Handler extends ExceptionHandler
                     $this->convertValidationExceptionToResponse($e, $request);
                 }
 
-
                 //generic error message
                 else {
                     return response()->json([
                         'error' => [
-                            'message' => 'Something went wrong. Try again later.',
-                            'status' => 500
+                            'message' => 'Something went wrong. Try again later.'
                         ]
                     ], 500);
                 }
@@ -90,11 +86,9 @@ class Handler extends ExceptionHandler
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
         $errors = $e->validator->errors();
-        //TO FIX
         return response()->json([
             'error' => [
                 'message' => $errors,
-                'status' => 422
             ]
         ], 422);
     }
