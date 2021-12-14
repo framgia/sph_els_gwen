@@ -42,7 +42,14 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (Exception $e, $request) {
-            if ($request->wantsJson()) {                
+            if ($request->wantsJson()) {           
+                 if($e instanceof NotFoundHttpException) {
+                    // echo(get_class($e));
+                    return response()->json([
+                        'error' => 'Resource not found'
+                    ], 404);
+                }
+
                 if ($e instanceof AuthenticationException) {
                     return response()->json([
                         'error' => [
@@ -77,6 +84,7 @@ class Handler extends ExceptionHandler
                         ]
                     ], 500);
                 }
+                // return parent::render($request, $e);
                 
             } //end of if($request->wantsJson())
         }); //end of renderable

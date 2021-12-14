@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,5 +39,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
         'users', 
     UserController::class
     )->only(['index', 'show']);
+
+    Route::resource('categories', CategoryController::class)->except('create', 'edit');
 });
 
