@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Category\CategoryController;
-use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Lesson\LessonController;
+use App\Http\Controllers\Category\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,5 +42,9 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     )->only(['index', 'show']);
 
     Route::resource('categories', CategoryController::class)->except('create', 'edit');
+    Route::resource(
+        'lessons', 
+    LessonController::class
+    )->only(['index', 'show']);
 });
 
