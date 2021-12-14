@@ -38,7 +38,7 @@ class CategoryController extends Controller
 
         $data = $request->validate([
             'name' => ['required', Rule::unique('categories', 'name')],
-            'description' => ['sometimes', 'nullable']
+            'description' => ['nullable', 'sometimes']
         ]);
 
         $newCategory = Category::create([
@@ -82,7 +82,7 @@ class CategoryController extends Controller
                 'required', 
                 Rule::unique('categories', 'name')->ignore($category->id)
             ],
-            'description' => ['sometimes', 'nullable']
+            'description' => ['nullable', 'sometimes']
         ]);
 
         $category->fill($request->only([
@@ -108,7 +108,7 @@ class CategoryController extends Controller
         if (!Gate::allows('can_modify', auth()->user())) {
             throw new AuthorizationException('Unauthorized', 403);
         }
-        
+
         $category->delete();
         return response()->json([
             'data' => $category
