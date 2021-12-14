@@ -22,7 +22,7 @@ const FormGroup = (props:FormGroupProps) => {
     >
       <h1 className='form-title'>{props.title}</h1>
       <div className='w-full'>{props.children}</div>
-      <Button text={props.buttonText} className='md:w-56 xs:w-48' />
+      <Button text={props.buttonText} className='md:w-56 xs:w-48 mt-8' />
       {/* <div className='flex flex-col items-center md:mt-0 xs:mt-10'></div> */}
     </form>
   );

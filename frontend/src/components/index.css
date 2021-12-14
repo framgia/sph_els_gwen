@@ -43,9 +43,10 @@
 
 /*********** FOR LOGIN FORM ************/
 .form-group {
-    @apply flex flex-col mx-auto
+    @apply flex flex-col items-center
     md:justify-evenly
-    md:w-6/12 xs:w-full xs:h-full
+    /* md:w-6/12  */
+    xs:w-full xs:h-full
     xl:p-14 lg:p-10 md:p-8 sm:p-8 xs:p-8
 }
 
@@ -55,4 +56,10 @@
     sm:text-3xl xs:text-xl
     md:my-0
     /* sm:my-8 xs:my-6  */
+}
+
+.button {
+    @apply bg-primary w-56  rounded-full
+      py-2 px-4
+      hover:bg-secondary hover:text-white 
 }

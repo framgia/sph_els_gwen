@@ -69,7 +69,7 @@ class Handler extends ExceptionHandler
                     $this->convertValidationExceptionToResponse($e, $request);
                 }
 
-                //generic error message
+                // generic error message
                 else {
                     return response()->json([
                         'error' => [

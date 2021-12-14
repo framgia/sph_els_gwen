@@ -2,18 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import { applyMiddleware, createStore } from 'redux';
-import {reducers} from './reducers';
+import { CookiesProvider } from 'react-cookie';
 
-const store = createStore(reducers, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <CookiesProvider>
       <App />
-    </Provider>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -2,8 +2,8 @@ import React from 'react';
 
 interface CardProps {
     rounded?:boolean
-    className:string,
-    children?:JSX.Element[]
+    className?:string,
+    children?:JSX.Element[] | JSX.Element
 }
 
 
@@ -14,8 +14,7 @@ const Card = (props:CardProps) => {
           shadow-lg bg-white border
           border-lightgray
           ${props.rounded ? 'rounded-2xl' : ''}
-          ${props.className}
-          ${props.className.includes('p-') ?? ''}`}
+          ${props.className}`}
     >
       {props.children}
     </div>
