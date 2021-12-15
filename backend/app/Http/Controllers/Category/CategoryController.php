@@ -19,9 +19,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return response()->json([
-            'data' => $categories
-        ], 200);
+        return $this->returnAll($categories);
     }
     /**
      * Store a newly created resource in storage.
@@ -31,10 +29,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // echo(auth()->user());
-        if (!Gate::allows('can_modify', auth()->user())) {
-            throw new AuthorizationException('Unauthorized', 403);        
-        }
+        $this->checkIfAdmin();
 
         $data = $request->validate([
             'name' => ['required', Rule::unique('categories', 'name')],
@@ -46,9 +41,7 @@ class CategoryController extends Controller
             'description' => $data['description'],
         ]);
 
-        return response()->json([
-            'data' => $newCategory,
-        ], 201);
+        return $this->returnOne($newCategory, 201);
     }
 
     /**
@@ -59,9 +52,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return response()->json([
-            'data' => $category
-        ], 200);
+        return $this->returnOne($category);
     }
 
     /**
@@ -73,10 +64,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        if (!Gate::allows('can_modify', auth()->user())) {
-            throw new AuthorizationException('Unauthorized', 403);
-        }
-
+        $this->checkIfAdmin();
         $request->validate([
             'name' => [
                 'required', 
@@ -90,11 +78,8 @@ class CategoryController extends Controller
             'description'
         ]));
 
-        $category->save();
-
-        return response()->json([
-            'data' => $category
-        ], 200);
+        $category->save();        
+        return $this->returnOne($category);
     }
 
     /**
@@ -105,13 +90,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if (!Gate::allows('can_modify', auth()->user())) {
-            throw new AuthorizationException('Unauthorized', 403);
-        }
+        $this->checkIfAdmin();
 
         $category->delete();
-        return response()->json([
-            'data' => $category
-        ], 200);
+        return $this->returnOne($category);
     }
 }
