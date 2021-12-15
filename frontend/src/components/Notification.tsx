@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+
 import { Link } from 'react-router-dom';
-import { Button, Card, Container } from '.';
 import Check from '../icons/Check';
 import Error from '../icons/Error';
 import { useNavigate } from 'react-router-dom';
 
 interface ModalProps {
   isSuccess: boolean;
-  title: string;
+  title?: string;
   children?: any;
 }
 
@@ -19,12 +18,12 @@ export default function Notification(props: ModalProps) {
       {props.isSuccess ? <Check /> : <Error />}
       <h1 className='text-4xl'>{props.title}</h1>
       {props.isSuccess ? (
-        <Link to='/login' className='button'>
+        <Link to='/login' className='button text-center'>
           Proceed to login
         </Link>
       ) : (
         <button
-          className='button'
+          className='button text-center'
           onClick={() => {
             navigate(0);
           }}

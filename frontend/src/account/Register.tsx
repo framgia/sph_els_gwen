@@ -1,152 +1,189 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  FormGroup,
-  FormInput,
-  Card,
   Container,
-  Notification,
+  Card,
+  Button,
   ProjectLogoGroup,
+  FormInput,
+  Notification,
 } from '../components';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import axios from 'axios';
 
 import { useCookies } from 'react-cookie';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Response } from './Login';
+
+type Inputs = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+};
 
 export default function Register() {
+  const [isInvalid, setIsInvalid] = useState(false);
   const [cookies, setCookie] = useCookies();
-  const navigate = useNavigate();
-  const [newUser, setNewUser] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+  const [formState, setFormState] = useState({
+    isSuccess: false,
+    isSubmitted: false,
   });
-  const [errorMsg, setErrorMsg] = useState({
-    email: '',
-    password: '',
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setErrorMsg({ email: '', password: '' });
-    setNewUser({
-      ...newUser,
-      [event.target.name]: event.target.value,
-    });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const password = watch('password', '');
+  const navigate = useNavigate();
+
+  const loginValidation = {
+    name: {
+      required: {
+        value: true,
+        message: 'Name is required.',
+      },
+    },
+    email: {
+      required: {
+        value: true,
+        message: 'Email is required.',
+      },
+      onChange: () => setIsInvalid(false),
+    },
+    password: {
+      required: {
+        value: true,
+        message: 'Password is required.',
+      },
+      minLength: {
+        value: 8,
+        message: 'Passwords must be at least 8 characters',
+      },
+    },
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const isValid = newUser.password.length >= 8;
-    const isMatch = newUser.password === newUser.password_confirmation;
-    if (!isMatch) {
-      setErrorMsg({ ...errorMsg, password: 'Passwords do not match.' });
-    } else if (!isValid) {
-      setErrorMsg({
-        ...errorMsg,
-        password: 'Password must be at least 8 characters.',
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    axios
+      .post('http://127.0.0.1:8000/api/users/register', data, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then((response: Response) => {
+        if (response.status === 201) {
+          setFormState({
+            isSubmitted: true,
+            isSuccess: true,
+          });
+        }
+      })
+      .catch((error) => {      
+        if (error.response?.status === 422) {
+          setIsInvalid(true);
+          setFormState({
+            isSubmitted: false,
+            isSuccess: false,
+          });
+        } else {
+          setFormState({
+            isSubmitted: true,
+            isSuccess: false,
+          });
+        }
       });
-    } else {
-      //register
-      axios
-        .post('http://127.0.0.1:8000/api/users/register', newUser, {
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then((response) => {
-          if (response.status === 201) {
-            setIsSuccess(true);
-
-            setIsSubmitted(true);
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 422) {
-            setErrorMsg({
-              ...errorMsg,
-              email: 'Email has already been taken.',
-            });
-          } else {
-            setIsSuccess(false);
-            setIsSubmitted(true);
-          }
-        });
-    }
   };
 
   useEffect(() => {
     if (cookies.token && cookies.user) {
       navigate('/');
     }
-  }, [cookies]);
+  }, [cookies, navigate]);
 
   return (
-    <Container>
-      {isSubmitted ? (
-        <Notification
-          isSuccess={isSuccess}
-          title={
-            isSuccess
-              ? 'Account created successfully'
-              : 'An error has occurred. Please try again later.'
-          }
-        />
-      ) : (
-        <Card className='card md:h-4/5 sm:h-full'>
-          <ProjectLogoGroup />
-          <div className='md:w-6/12 xs:w-full flex flex-col '>
-            <FormGroup
-              title='Register'
-              buttonText='Create an account'
-              formMethod='POST'
-              onSubmit={handleSubmit}
-            >
-              <FormInput
-                type='name'
-                label='name'
-                placeholder='John Doe'
-                value={newUser.name}
-                onChange={handleChange}
-              />
-              <FormInput
-                type='email'
-                label='email'
-                placeholder='your_email@email.com'
-                value={newUser.email}
-                onChange={handleChange}
-                errorMsg={errorMsg.email}
-              />
-              <FormInput
-                type='password'
-                label='password'
-                value={newUser.password}
-                placeholder='&bull;&bull;&bull;&bull;&bull;'
-                onChange={handleChange}
-                errorMsg={errorMsg.password}
-              />
-              <FormInput
-                type='password'
-                label='password confirmation'
-                value={newUser.password_confirmation}
-                placeholder='&bull;&bull;&bull;&bull;&bull;'
-                onChange={handleChange}
-                errorMsg={
-                  errorMsg.password.includes('8') ? '' : errorMsg.password
-                }
-              />
-            </FormGroup>
-            <div className='mb-10 flex flex-col items-center justify-center'>
-              <h3>Already have an account?</h3>
-              <Link
-                to='/login'
-                className='underline text-purple-500 hover:bg-primary hover:text-black px-2'
-              >
-                Click here to sign in
-              </Link>
-            </div>
-          </div>
-        </Card>
+    <>
+      {formState.isSubmitted && (
+        <Container>
+          <Notification
+            isSuccess={formState.isSuccess}
+            title={
+              formState.isSuccess
+                ? 'Your account has been successfully created'
+                : 'An error has occurred. Please try again later.'
+            }
+          />
+        </Container>
       )}
-    </Container>
+      {!formState.isSubmitted && (
+        <Container>
+          <Card className='card md:h-4/5 sm:h-full'>
+            <ProjectLogoGroup />
+            <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
+              <h1 className='form-title'>Register</h1>
+              <div className='w-full flex flex-col mb-4 justify-evenly flex-grow'>
+                <FormInput
+                  label='Name'
+                  type='text'
+                  register={{
+                    ...register('name', loginValidation.name),
+                  }}
+                  errors={errors.name}
+                  required
+                  placeholder='John Doe'
+                />
+                <div>
+                  <FormInput
+                    label='Email'
+                    type='email'
+                    register={{ ...register('email', loginValidation.email) }}
+                    errors={errors.email}
+                    required
+                    placeholder='your_email@email.com'
+                  />
+                  {isInvalid && (
+                    <span className='text-red-500 -mt-2 text-sm text-center'>
+                      Email has already been taken.
+                    </span>
+                  )}
+                </div>
+                <FormInput
+                  label='Password'
+                  type='password'
+                  register={{
+                    ...register('password', loginValidation.password),
+                  }}
+                  errors={errors.password}
+                  required
+                  placeholder='&bull;&bull;&bull;&bull;&bull;'
+                />
+                <FormInput
+                  label='Password Confirmation'
+                  type='password'
+                  register={{
+                    ...register('password_confirmation', {
+                      validate: (value) =>
+                        value === password || 'Passwords do not match',
+                    }),
+                  }}
+                  errors={errors.password_confirmation}
+                  required
+                  placeholder='&bull;&bull;&bull;&bull;&bull;'
+                />
+              </div>
+              <Button text='Create an account' className='md:w-56 xs:w-48' />
+              <div className='flex flex-col items-center justify-center mt-4'>
+                <h3>Already have an account?</h3>
+                <Link
+                  to='/login'
+                  className='underline text-purple-700 hover:bg-primary hover:text-black px-1 mt-1'
+                >
+                  Click here to sign in
+                </Link>
+              </div>
+            </form>
+          </Card>
+        </Container>
+      )}
+    </>
   );
 }

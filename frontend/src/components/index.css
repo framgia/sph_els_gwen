@@ -45,7 +45,7 @@
 .form-group {
     @apply flex flex-col items-center
     md:justify-evenly
-    /* md:w-6/12  */
+    md:w-6/12 
     xs:w-full xs:h-full
     xl:p-14 lg:p-10 md:p-8 sm:p-8 xs:p-8
 }
@@ -58,8 +58,22 @@
     /* sm:my-8 xs:my-6  */
 }
 
+.form-input {
+    @apply mt-2 appearance-none block w-full 
+    text-gray-700 border border-black rounded-lg 
+    leading-tight focus:outline-none focus:bg-white py-2 px-4
+}
+
+.input-label {
+    @apply text-gray-700 md:text-lg xs:text-sm
+}
+
 .button {
     @apply bg-primary w-56  rounded-full
       py-2 px-4
       hover:bg-secondary hover:text-white 
+}
+
+.error {
+    @apply text-sm text-red-500
 }
