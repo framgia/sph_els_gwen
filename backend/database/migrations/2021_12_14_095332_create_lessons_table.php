@@ -18,7 +18,8 @@ class CreateLessonsTable extends Migration
             $table->string('word');
             $table->foreignId('category_id')
                 ->references('id')
-                ->on('categories');
+                ->on('categories')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
