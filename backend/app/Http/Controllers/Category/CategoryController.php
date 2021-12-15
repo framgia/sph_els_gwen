@@ -32,7 +32,6 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // echo(auth()->user());
         if (!Gate::allows('can_modify', auth()->user())) {
             throw new AuthorizationException('Unauthorized', 403);        
         }

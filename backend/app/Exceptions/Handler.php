@@ -45,7 +45,6 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Exception $e, $request) {
             if ($request->wantsJson()) {           
                  if($e instanceof NotFoundHttpException) {
-                    // echo(get_class($e));
                     return response()->json([
                         'error' => 'Resource not found'
                     ], 404);
@@ -84,7 +83,7 @@ class Handler extends ExceptionHandler
                 }
 
                  if(config('app.debug')) {
-                    // return parent::render($request, $e);
+                    return parent::render($request, $e);
                  }
 
                 //generic error message
