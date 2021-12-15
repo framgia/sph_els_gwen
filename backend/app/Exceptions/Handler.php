@@ -82,11 +82,11 @@ class Handler extends ExceptionHandler
                     $this->convertValidationExceptionToResponse($e, $request);
                 }
 
-                 if(config('app.debug')) {
+                if(config('app.debug')) {
                     return parent::render($request, $e);
                  }
 
-                //generic error message
+                // generic error message
                 else {
                     return response()->json([
                         'error' => [

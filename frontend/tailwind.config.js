@@ -15,7 +15,13 @@ module.exports = {
     fontFamily: {
       main: ['Readex Pro', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#C6B1F7',
+        secondary: '#581C87',
+        lightgray: '#c0c6d1',
+      },
+    },
   },
   variants: {
     extend: {},
