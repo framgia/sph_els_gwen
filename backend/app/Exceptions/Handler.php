@@ -7,6 +7,7 @@ use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -70,11 +71,21 @@ class Handler extends ExceptionHandler
                             'message' => 'Not Allowed'
                         ]
                     ], 405);
+                }                
+                
+                if($e instanceof HttpException) {
+                    return response()->json([
+                        'error' => $e->getMessage()
+                    ], $e->getStatusCode());
                 }
 
                 if($e instanceof ValidationException) {
                     $this->convertValidationExceptionToResponse($e, $request);
                 }
+
+                 if(config('app.debug')) {
+                    // return parent::render($request, $e);
+                 }
 
                 //generic error message
                 else {
@@ -84,7 +95,7 @@ class Handler extends ExceptionHandler
                         ]
                     ], 500);
                 }
-                // return parent::render($request, $e);
+             
                 
             } //end of if($request->wantsJson())
         }); //end of renderable
