@@ -7,6 +7,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Lesson\LessonController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Category\CategoryLessonController;
+use App\Http\Controllers\Choice\ChoiceController;
+use App\Http\Controllers\Lesson\LessonChoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +43,11 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
 
     //--------------------LESSONS----------------------//
     Route::get('lessons/{lesson}',[LessonController::class, 'show']);
+    Route::resource('lessons.choices', LessonChoiceController::class)
+        ->except(['create', 'edit', 'show']);
 
-
+    //--------------------CHOICES----------------------//
+    Route::get('choices/{choice}',[ChoiceController::class, 'show']);
+    
 });
 
