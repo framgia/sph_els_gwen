@@ -14,6 +14,6 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Category::factory(40)->create();
+        Category::factory(15)->create();
     }
 }
