@@ -18,7 +18,7 @@ export default function Notification(props: ModalProps) {
       {props.isSuccess ? <Check /> : <Error />}
       <h1 className='text-4xl'>{props.title}</h1>
       {props.isSuccess ? (
-        <Link to='/login' className='button text-center'>
+        <Link to='/login' className='button bg-primary text-center'>
           Proceed to login
         </Link>
       ) : (
