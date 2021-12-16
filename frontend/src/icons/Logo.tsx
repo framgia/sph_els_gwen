@@ -1,5 +1,5 @@
 
-const Logo = (props: { className?:string } ) => {
+const Logo = (props: { className?:string, color?:string } ) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -32,7 +32,7 @@ const Logo = (props: { className?:string } ) => {
                              c-68.113,1.989-126.548,17.732-181,48.871V294.146c53.867-34.299,110.516-50.906,181-52.928v32.368    
                              c-17.459,6.192-30,22.865-30,42.42v30c0,19.555,12.541,36.228,30,42.42V421.222z M481.999,346.006c0,8.271-6.729,15-15,15    
                              s-15-6.729-15-15v-30c0-8.271,6.729-15,15-15s15,6.729,15,15V346.006z'
-              fill='#000000'
+              fill={props.color ?? '#000000'}
               width='20'
               data-original='#d9d9d9'
               className=''

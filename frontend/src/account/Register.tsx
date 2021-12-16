@@ -13,6 +13,8 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { Response } from './Login';
+import { API_URL } from '../App';
+import Loader from '../icons/Loader';
 
 type Inputs = {
   name: string;
@@ -27,6 +29,7 @@ export default function Register() {
   const [formState, setFormState] = useState({
     isSuccess: false,
     isSubmitted: false,
+    isLoading: false
   });
 
   const {
@@ -66,43 +69,53 @@ export default function Register() {
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setFormState({...formState, isLoading:true});
     axios
-      .post('http://127.0.0.1:8000/api/users/register', data, {
-        headers: { 'Content-Type': 'application/json' },
+      .post(`${API_URL}/users/register`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers':
+            'Origin, X-Requested-With, Content-Type, Accept',
+        },
       })
       .then((response: Response) => {
         if (response.status === 201) {
           setFormState({
             isSubmitted: true,
             isSuccess: true,
+            isLoading:false
           });
         }
       })
-      .catch((error) => {      
+      .catch((error) => {
         if (error.response?.status === 422) {
           setIsInvalid(true);
           setFormState({
             isSubmitted: false,
             isSuccess: false,
+            isLoading: false,
           });
         } else {
           setFormState({
             isSubmitted: true,
             isSuccess: false,
+            isLoading: false,
           });
         }
       });
   };
 
   useEffect(() => {
-    if (cookies.token && cookies.user) {
-      navigate('/');
+    if (cookies.user) {
+      cookies.admin_token ? navigate('/admin/dashboard') : navigate('/');
     }
   }, [cookies, navigate]);
 
   return (
     <>
-      {formState.isSubmitted && (
+      {formState.isLoading && <Loader/>}
+      {!formState.isLoading && formState.isSubmitted && (
         <Container>
           <Notification
             isSuccess={formState.isSuccess}
@@ -114,13 +127,13 @@ export default function Register() {
           />
         </Container>
       )}
-      {!formState.isSubmitted && (
+      {!formState.isLoading && !formState.isSubmitted && (
         <Container>
-          <Card className='card md:h-4/5 sm:h-full'>
-            <ProjectLogoGroup />
+          <Card className='card md:h-4/5 xs:h-full'>
+            <ProjectLogoGroup dark={true} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
               <h1 className='form-title'>Register</h1>
-              <div className='w-full flex flex-col mb-4 justify-evenly flex-grow'>
+              <div className='w-full flex flex-col mb-4 justify-evenly'>
                 <FormInput
                   label='Name'
                   type='text'
@@ -170,7 +183,11 @@ export default function Register() {
                   placeholder='&bull;&bull;&bull;&bull;&bull;'
                 />
               </div>
-              <Button text='Create an account' className='md:w-56 xs:w-48' />
+              <Button
+                text='Create an account'
+                className='md:w-56 xs:w-48 md:mt-5 xs:mt-10'
+                dark={true}
+              />
               <div className='flex flex-col items-center justify-center mt-4'>
                 <h3>Already have an account?</h3>
                 <Link

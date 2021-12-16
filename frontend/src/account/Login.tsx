@@ -5,7 +5,7 @@ import {
   Button,
   ProjectLogoGroup,
   FormInput,
-  Notification
+  Notification,
 } from '../components';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import Loader from '../icons/Loader';
+import { API_URL } from '../App';
 
 type Inputs = {
   email: string;
@@ -21,16 +22,18 @@ type Inputs = {
 
 export interface Response {
   status: number;
-  data: {
-    id: number;
-    name: string;
-    email: string;
-    user_image?: string;
+  data?: {
+    data: {
+      id: number;
+      name: string;
+      email: string;
+      user_image?: string;
+    };
+    token?: string;
   };
-  token?: string;
 }
 
-export default function Login() {
+export default function Login(props: { isAdmin: boolean }) {
   const [isInvalid, setIsInvalid] = useState(false);
   const [cookies, setCookie] = useCookies();
   const [isError, setIsError] = useState(false);
@@ -63,15 +66,17 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     axios
-      .post('http://127.0.0.1:8000/api/users/login', data, {
+      .post(`${API_URL}/users/login`, data, {
         headers: { 'Content-Type': 'application/json' },
       })
       .then((response: Response) => {
         if (response.status === 200) {
           setIsLoading(true);
-          setCookie('user', response.data);
-          setCookie('token', response.token);
-          navigate('/');
+          setCookie('user', response.data?.data, { path: '/' });
+          const is_admin = response.data?.data.name === 'Admin';
+          const tokenName = is_admin ? 'admin_token' : 'token';
+          setCookie(tokenName, response.data?.token, { path: '/' });
+          is_admin ? navigate('/admin/dashboard') : navigate('/');
         }
       })
       .catch((error) => {
@@ -84,8 +89,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (cookies.token && cookies.user) {
-      navigate('/');
+    if (cookies.user) {
+      cookies.admin_token ? navigate('/admin/dashboard') : navigate('/');
     }
   }, [cookies, navigate]);
 
@@ -102,11 +107,13 @@ export default function Login() {
       {!isError && isLoading && <Loader />}
       {!isError && !isLoading && (
         <Container>
-          <Card className='card md:h-3/5 sm:h-full'>
-            <ProjectLogoGroup />
+          <Card className='card xs:h-full md:h-3/5'>
+            <ProjectLogoGroup dark={props.isAdmin ? false : true} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
-              <h1 className='form-title'>Login</h1>
-              <div className='w-full flex flex-col justify-evenly flex-grow'>
+              <h1 className='form-title'>
+                {props.isAdmin ? 'Admin Login' : 'Login'}
+              </h1>
+              <div className='w-full flex flex-col justify-evenly'>
                 <FormInput
                   label='Email'
                   type='email'
@@ -125,22 +132,29 @@ export default function Login() {
                   required
                   placeholder='&bull;&bull;&bull;&bull;&bull;'
                 />
+
                 {isInvalid && (
                   <span className='text-red-500 text-md text-center'>
                     Your username or password is incorrect.
                   </span>
                 )}
               </div>
-              <Button text='Login' className='md:w-56 xs:w-48' />
-              <div className='flex flex-col items-center justify-center mt-4'>
-                <h3>Don't have an account yet?</h3>
-                <Link
-                  to='/register'
-                  className='underline text-purple-700 hover:bg-primary hover:text-black px-1 mt-1'
-                >
-                  Register here
-                </Link>
-              </div>
+              <Button
+                text='Login'
+                className='md:w-56 xs:w-48 md:mt-5 xs:mt-10'
+                dark={!props.isAdmin}
+              />
+              {!props.isAdmin && (
+                <div className='flex flex-col items-center justify-center mt-4'>
+                  <h3>Don't have an account yet?</h3>
+                  <Link
+                    to='/register'
+                    className='underline text-purple-700 hover:bg-primary hover:text-black px-1 mt-1'
+                  >
+                    Register here
+                  </Link>
+                </div>
+              )}
             </form>
           </Card>
         </Container>

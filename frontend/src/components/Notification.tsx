@@ -23,7 +23,7 @@ export default function Notification(props: ModalProps) {
         </Link>
       ) : (
         <button
-          className='button text-center'
+          className='button bg-primary text-center'
           onClick={() => {
             navigate(0);
           }}
