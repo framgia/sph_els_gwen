@@ -1,18 +1,23 @@
-import Logo from '../icons/Logo';
-
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import Logo from '@icons/Logo';
 
-const Nav = (props: {className?:string}) => {
+const Nav = (props: { className?: string }) => {
   const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
+
   const handleLogout = () => {
-    removeCookie('user');
-    cookies.admin_token ? removeCookie('admin_token') : removeCookie('token');
+    removeCookie('user', { path: '/' });
+    cookies.admin_token
+      ? removeCookie('admin_token', { path: '/' })
+      : removeCookie('token', { path: '/' });
+    navigate('/');
   };
 
   return (
-    <nav className={`flex items-center justify-between flex-wrap p-4 pl-10 w-full ${props.className}`}>
+    <nav
+      className={`flex items-center justify-between flex-wrap p-4 pl-10 w-full ${props.className}`}
+    >
       <div className='flex items-center'>
         <Logo className='w-10' />
         <h1 className='ml-4 text-2xl font-semibold tracking-wider'>

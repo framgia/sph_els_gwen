@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import 
+{  Container,
   Card,
   Button,
   ProjectLogoGroup,
   FormInput,
-  Notification,
-} from '../components';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-
-import { useCookies } from 'react-cookie';
-import { Link, useNavigate } from 'react-router-dom';
-import { Response } from './Login';
-import { API_URL } from '../App';
-import Loader from '../icons/Loader';
+  Notification }
+ from '@components/index';
+import Loader from '@icons/Loader';
+import {registerUser} from '@api/UserApi';
+import { Response } from './UserLogin';
 
 type Inputs = {
   name: string;
@@ -25,7 +22,6 @@ type Inputs = {
 
 export default function Register() {
   const [isInvalid, setIsInvalid] = useState(false);
-  const [cookies, setCookie] = useCookies();
   const [formState, setFormState] = useState({
     isSuccess: false,
     isSubmitted: false,
@@ -40,8 +36,7 @@ export default function Register() {
   } = useForm<Inputs>();
 
   const password = watch('password', '');
-  const navigate = useNavigate();
-
+  
   const loginValidation = {
     name: {
       required: {
@@ -70,21 +65,13 @@ export default function Register() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setFormState({...formState, isLoading:true});
-    axios
-      .post(`${API_URL}/users/register`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers':
-            'Origin, X-Requested-With, Content-Type, Accept',
-        },
-      })
+    registerUser(data)
       .then((response: Response) => {
         if (response.status === 201) {
           setFormState({
             isSubmitted: true,
             isSuccess: true,
-            isLoading:false
+            isLoading: false,
           });
         }
       })
@@ -105,12 +92,6 @@ export default function Register() {
         }
       });
   };
-
-  useEffect(() => {
-    if (cookies.user) {
-      cookies.admin_token ? navigate('/admin/dashboard') : navigate('/');
-    }
-  }, [cookies, navigate]);
 
   return (
     <>
@@ -184,7 +165,7 @@ export default function Register() {
                 />
               </div>
               <Button
-                text='Create an account'
+                text='Create a user account'
                 className='md:w-56 xs:w-48 md:mt-5 xs:mt-10'
                 dark={true}
               />
@@ -192,7 +173,7 @@ export default function Register() {
                 <h3>Already have an account?</h3>
                 <Link
                   to='/login'
-                  className='underline text-purple-700 hover:bg-primary hover:text-black px-1 mt-1'
+                  className='link'
                 >
                   Click here to sign in
                 </Link>

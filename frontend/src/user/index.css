@@ -4,3 +4,7 @@
     xl:w-6/12 lg:w-9/12 md:w-10/12 xs:w-full
     md:flex-row xs:flex-col
 }
+
+.link {
+    @apply underline text-purple-700 hover:bg-primary hover:text-black px-1 mt-1
+}

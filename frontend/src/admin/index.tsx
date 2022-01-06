@@ -1,23 +1,8 @@
 import React, { useEffect } from 'react';
-import { Nav } from '../components';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { Nav } from '@components/';
 
 
 export default function AdminDashboard() {
-  const [cookies, setCookie] = useCookies();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if(cookies.user) {
-      if (!cookies.admin_token || cookies.admin_token === 'undefined') {
-        navigate('/');
-      }
-    } else {
-      navigate('/login');
-    }
-  }, [cookies]);
-
     return (
       <div>
         <Nav className='bg-purple-200' />

@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../icons/Logo';
+import Logo from '@icons/Logo';
 import './index.css'
 
 export default function ProjectLogoGroup(props: {dark:boolean}) {
