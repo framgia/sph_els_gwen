@@ -13,6 +13,7 @@ module.exports = {
       '@admin': path.resolve(__dirname, 'src/admin'),
       '@api': path.resolve(__dirname, 'src/api'),
       '@user': path.resolve(__dirname, 'src/user'),
+      '@middleware': path.resolve(__dirname, 'src/middleware'),
     },
   },
 };

@@ -6,7 +6,8 @@
             "@admin/*": ["admin/*"],
             "@icons/*": ["icons/*"],
             "@api/*": ["api/*"],
-            "@user/*": ["user/*"]
+            "@user/*": ["user/*"],
+            "@middleware/*": ["middleware/*"]
         }
     }
 }
