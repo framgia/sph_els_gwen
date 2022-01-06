@@ -10,7 +10,7 @@ import
   Notification }
  from '@components/index';
 import Loader from '@icons/Loader';
-import {registerUser} from '@api/UserApi';
+import { registerUser } from '@api/UserApi';
 import { Response } from './UserLogin';
 
 type Inputs = {

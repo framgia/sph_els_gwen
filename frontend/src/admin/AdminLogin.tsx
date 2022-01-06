@@ -11,7 +11,7 @@ import {
   Notification,
 } from '@components/';
 import Loader from '@icons/Loader';
-import {Response} from '@user/UserLogin';
+import { Response } from '@user/UserLogin';
 import { login } from '@api/UserApi';
 
 type Inputs = {

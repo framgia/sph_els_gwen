@@ -39,8 +39,6 @@ export default function UserLogin() {
     isError: false,
     isLoading: false,
   });
-  // const [isError, setIsError] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 

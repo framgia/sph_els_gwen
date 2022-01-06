@@ -2,7 +2,6 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-// import { RouteProps } from '.';
 
 export default function AdminRoute (props: {children: JSX.Element}) {
   const [cookies, setCookie] = useCookies();
