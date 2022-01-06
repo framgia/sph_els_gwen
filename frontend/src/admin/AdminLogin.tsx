@@ -60,6 +60,7 @@ export default function AdminLogin() {
         if (response.status === 200) {
           setCookie('user', response.data?.data, { path: '/' });
           setCookie('admin_token', response.data?.token, { path: '/' });
+          setFormState({ ...formState, isLoading: false });
           navigate('/admin/dashboard');
         }
     })
@@ -69,8 +70,8 @@ export default function AdminLogin() {
         } else {
           setFormState({ ...formState, isError: true });
         }
+        setFormState({ ...formState, isLoading: false });
     });
-    setFormState({ ...formState, isLoading: false });
   };
 
   return (

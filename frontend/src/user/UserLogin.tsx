@@ -12,6 +12,7 @@ import {
 } from '@components/';
 import Loader from '@icons/Loader';
 import { login } from '@api/UserApi';
+import './index.css';
 
 type Inputs = {
   email: string;
@@ -34,8 +35,12 @@ export interface Response {
 export default function UserLogin() {
   const [isInvalid, setIsInvalid] = useState(false);
   const [cookies, setCookie] = useCookies();
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [formState, setFormState] = useState({
+    isError: false,
+    isLoading: false,
+  });
+  // const [isError, setIsError] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -63,12 +68,14 @@ export default function UserLogin() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setFormState({ ...formState, isLoading: true });
+
     login(data)
       .then((response: Response) => {
         if (response.status === 200) {
-          setIsLoading(true);
           setCookie('user', response.data?.data, { path: '/' });
           setCookie('token', response.data?.token, { path: '/' });
+          setFormState({ ...formState, isLoading: false });
           navigate('/');
         }
       })
@@ -76,14 +83,15 @@ export default function UserLogin() {
         if (error.response?.status === 401) {
           setIsInvalid(true);
         } else {
-          setIsError(true);
+          setFormState({ ...formState, isError: true });
         }
+        setFormState({ ...formState, isLoading: false });
       });
   };
 
   return (
     <>
-      {isError && !isLoading && (
+      {formState.isError && !formState.isLoading && (
         <Container>
           <Notification
             isSuccess={false}
@@ -91,15 +99,13 @@ export default function UserLogin() {
           />
         </Container>
       )}
-      {!isError && isLoading && <Loader />}
-      {!isError && !isLoading && (
+      {!formState.isError && formState.isLoading && <Loader />}
+      {!formState.isError && !formState.isLoading && (
         <Container>
           <Card className='card xs:h-full md:h-3/5'>
             <ProjectLogoGroup dark={true} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
-              <h1 className='form-title'>
-                User Login
-              </h1>
+              <h1 className='form-title'>User Login</h1>
               <div className='w-full flex flex-col justify-evenly'>
                 <FormInput
                   label='Email'
@@ -131,15 +137,12 @@ export default function UserLogin() {
                 className='md:w-56 xs:w-48 md:mt-5 xs:mt-10'
                 dark={true}
               />
-                <div className='flex flex-col items-center justify-center mt-4'>
-                  <h3>Don't have an account yet?</h3>
-                  <Link
-                    to='/register'
-                    className='link'
-                  >
-                    Register here
-                  </Link>
-                </div>
+              <div className='flex flex-col items-center justify-center mt-4'>
+                <h3>Don't have an account yet?</h3>
+                <Link to='/register' className='link'>
+                  Register here
+                </Link>
+              </div>
             </form>
           </Card>
         </Container>
