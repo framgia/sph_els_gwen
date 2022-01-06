@@ -4,20 +4,56 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import Register from './account/Register';
-import Home from './home';
-import Login from './account/Login';
+import AdminDashboard from '@admin/index';
+import AdminLogin from '@admin/AdminLogin';
+import Register from '@user/Register';
+import UserLogin from '@user/UserLogin';
+import UserDashboard from '@user/index';
+import {
+  AdminRoute,
+  AuthAdminRoute,
+  UserRoute,
+  AuthUserRoute,
+} from '@middleware/index';
 
-const App = () => {
-    return (
-      <Router>
-        <Routes>
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/' element={<Home />} />
-        </Routes>
-      </Router>
-    );
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path='/admin/dashboard'
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/admin/login'
+          element={
+            <AuthAdminRoute>
+              <AdminLogin />
+            </AuthAdminRoute>
+          }
+        />
+        <Route
+          path='/login'
+          element={
+            <AuthUserRoute>
+              <UserLogin />
+            </AuthUserRoute>
+          }
+        />
+        <Route
+          path='/'
+          element={
+            <UserRoute>
+              <UserDashboard />
+            </UserRoute>
+          }
+        />
+        <Route path='/register' element={<Register />} />
+      </Routes>
+    </Router>
+  );
 }
-
-export default App;

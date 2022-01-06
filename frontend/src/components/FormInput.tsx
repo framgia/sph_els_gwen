@@ -12,7 +12,7 @@ interface FormInputProps {
 
 const FormInput = (props: FormInputProps) => {
   return (
-    <div className='w-full'>
+    <div className='w-full mt-4'>
       <label className='input-label'>
         {props.label}:
         {props.required && <span className='text-lg text-red-500 ml-1'>*</span>}

@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Container,
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import 
+{  Container,
   Card,
   Button,
   ProjectLogoGroup,
   FormInput,
-  Notification,
-} from '../components';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-
-import { useCookies } from 'react-cookie';
-import { Link, useNavigate } from 'react-router-dom';
-import { Response } from './Login';
+  Notification }
+ from '@components/index';
+import Loader from '@icons/Loader';
+import { registerUser } from '@api/UserApi';
+import { Response } from './UserLogin';
 
 type Inputs = {
   name: string;
@@ -23,10 +22,10 @@ type Inputs = {
 
 export default function Register() {
   const [isInvalid, setIsInvalid] = useState(false);
-  const [cookies, setCookie] = useCookies();
   const [formState, setFormState] = useState({
     isSuccess: false,
     isSubmitted: false,
+    isLoading: false
   });
 
   const {
@@ -37,8 +36,7 @@ export default function Register() {
   } = useForm<Inputs>();
 
   const password = watch('password', '');
-  const navigate = useNavigate();
-
+  
   const loginValidation = {
     name: {
       required: {
@@ -66,43 +64,39 @@ export default function Register() {
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    axios
-      .post('http://127.0.0.1:8000/api/users/register', data, {
-        headers: { 'Content-Type': 'application/json' },
-      })
+    setFormState({...formState, isLoading:true});
+    registerUser(data)
       .then((response: Response) => {
         if (response.status === 201) {
           setFormState({
             isSubmitted: true,
             isSuccess: true,
+            isLoading: false,
           });
         }
       })
-      .catch((error) => {      
+      .catch((error) => {
         if (error.response?.status === 422) {
           setIsInvalid(true);
           setFormState({
             isSubmitted: false,
             isSuccess: false,
+            isLoading: false,
           });
         } else {
           setFormState({
             isSubmitted: true,
             isSuccess: false,
+            isLoading: false,
           });
         }
       });
   };
 
-  useEffect(() => {
-    if (cookies.token && cookies.user) {
-      navigate('/');
-    }
-  }, [cookies, navigate]);
-
   return (
     <>
-      {formState.isSubmitted && (
+      {formState.isLoading && <Loader/>}
+      {!formState.isLoading && formState.isSubmitted && (
         <Container>
           <Notification
             isSuccess={formState.isSuccess}
@@ -114,13 +108,13 @@ export default function Register() {
           />
         </Container>
       )}
-      {!formState.isSubmitted && (
+      {!formState.isLoading && !formState.isSubmitted && (
         <Container>
-          <Card className='card md:h-4/5 sm:h-full'>
-            <ProjectLogoGroup />
+          <Card className='card md:h-4/5 xs:h-full'>
+            <ProjectLogoGroup dark={true} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
               <h1 className='form-title'>Register</h1>
-              <div className='w-full flex flex-col mb-4 justify-evenly flex-grow'>
+              <div className='w-full flex flex-col mb-4 justify-evenly'>
                 <FormInput
                   label='Name'
                   type='text'
@@ -170,12 +164,16 @@ export default function Register() {
                   placeholder='&bull;&bull;&bull;&bull;&bull;'
                 />
               </div>
-              <Button text='Create an account' className='md:w-56 xs:w-48' />
+              <Button
+                text='Create a user account'
+                className='md:w-56 xs:w-48 md:mt-5 xs:mt-10'
+                dark={true}
+              />
               <div className='flex flex-col items-center justify-center mt-4'>
                 <h3>Already have an account?</h3>
                 <Link
                   to='/login'
-                  className='underline text-purple-700 hover:bg-primary hover:text-black px-1 mt-1'
+                  className='link'
                 >
                   Click here to sign in
                 </Link>

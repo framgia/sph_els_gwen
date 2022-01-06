@@ -1,40 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Card,
   Button,
   ProjectLogoGroup,
   FormInput,
-  Notification
-} from '../components';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-
-import { useCookies } from 'react-cookie';
-import { Link, useNavigate } from 'react-router-dom';
-import Loader from '../icons/Loader';
+  Notification,
+} from '@components/';
+import Loader from '@icons/Loader';
+import { Response } from '@user/UserLogin';
+import { login } from '@api/UserApi';
 
 type Inputs = {
   email: string;
   password: string;
 };
 
-export interface Response {
-  status: number;
-  data: {
-    id: number;
-    name: string;
-    email: string;
-    user_image?: string;
-  };
-  token?: string;
-}
-
-export default function Login() {
+export default function AdminLogin() {
   const [isInvalid, setIsInvalid] = useState(false);
   const [cookies, setCookie] = useCookies();
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [formState, setFormState] = useState({
+    isError:false,
+    isLoading:false
+  });
 
   const navigate = useNavigate();
 
@@ -62,36 +53,30 @@ export default function Login() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    axios
-      .post('http://127.0.0.1:8000/api/users/login', data, {
-        headers: { 'Content-Type': 'application/json' },
-      })
-      .then((response: Response) => {
+    setFormState({ ...formState, isLoading: true });
+    
+    login(data)
+    .then((response:Response) => {
         if (response.status === 200) {
-          setIsLoading(true);
-          setCookie('user', response.data);
-          setCookie('token', response.token);
-          navigate('/');
+          setCookie('user', response.data?.data, { path: '/' });
+          setCookie('admin_token', response.data?.token, { path: '/' });
+          setFormState({ ...formState, isLoading: false });
+          navigate('/admin/dashboard');
         }
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         if (error.response?.status === 401) {
           setIsInvalid(true);
         } else {
-          setIsError(true);
+          setFormState({ ...formState, isError: true });
         }
-      });
+        setFormState({ ...formState, isLoading: false });
+    });
   };
-
-  useEffect(() => {
-    if (cookies.token && cookies.user) {
-      navigate('/');
-    }
-  }, [cookies, navigate]);
 
   return (
     <>
-      {isError && !isLoading && (
+      {formState.isError && !formState.isLoading && (
         <Container>
           <Notification
             isSuccess={false}
@@ -99,14 +84,14 @@ export default function Login() {
           />
         </Container>
       )}
-      {!isError && isLoading && <Loader />}
-      {!isError && !isLoading && (
+      {!formState.isError && formState.isLoading && <Loader />}
+      {!formState.isError && !formState.isLoading && (
         <Container>
-          <Card className='card md:h-3/5 sm:h-full'>
-            <ProjectLogoGroup />
+          <Card className='card xs:h-full md:h-3/5'>
+            <ProjectLogoGroup dark={false} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
-              <h1 className='form-title'>Login</h1>
-              <div className='w-full flex flex-col justify-evenly flex-grow'>
+              <h1 className='form-title'>Admin Login</h1>
+              <div className='w-full flex flex-col justify-evenly'>
                 <FormInput
                   label='Email'
                   type='email'
@@ -125,22 +110,18 @@ export default function Login() {
                   required
                   placeholder='&bull;&bull;&bull;&bull;&bull;'
                 />
+
                 {isInvalid && (
                   <span className='text-red-500 text-md text-center'>
                     Your username or password is incorrect.
                   </span>
                 )}
               </div>
-              <Button text='Login' className='md:w-56 xs:w-48' />
-              <div className='flex flex-col items-center justify-center mt-4'>
-                <h3>Don't have an account yet?</h3>
-                <Link
-                  to='/register'
-                  className='underline text-purple-700 hover:bg-primary hover:text-black px-1 mt-1'
-                >
-                  Register here
-                </Link>
-              </div>
+              <Button
+                text='Login'
+                className='md:w-56 xs:w-48 md:mt-5 xs:mt-10'
+                dark={false}
+              />
             </form>
           </Card>
         </Container>
