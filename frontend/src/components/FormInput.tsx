@@ -17,7 +17,20 @@ const FormInput = (props: FormInputProps) => {
         {props.label}:
         {props.required && <span className='text-lg text-red-500 ml-1'>*</span>}
       </label>
-      <input type={props.type}  {...props.register} className='form-input' placeholder={props.placeholder}/>
+      {props.type === 'textarea' ? (
+        <textarea
+          className='mt-2 w-full px-3 py-2 rounded-xl border border-black resize-none focus:outline-none'
+          rows={4}
+          placeholder={props.placeholder}
+        ></textarea>
+      ) : (
+        <input
+          type={props.type}
+          {...props.register}
+          className='form-input'
+          placeholder={props.placeholder}
+        />
+      )}
       <span className='error'>{props.errors?.message}</span>
     </div>
   );

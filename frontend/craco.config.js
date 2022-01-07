@@ -14,6 +14,8 @@ module.exports = {
       '@api': path.resolve(__dirname, 'src/api'),
       '@user': path.resolve(__dirname, 'src/user'),
       '@middleware': path.resolve(__dirname, 'src/middleware'),
+      '@categories': path.resolve(__dirname, 'src/categories'),
+      '@store': path.resolve(__dirname, 'src/store')
     },
   },
 };

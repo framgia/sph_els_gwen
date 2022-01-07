@@ -1,5 +1,5 @@
-const Container = (props: { children:JSX.Element[] | JSX.Element | boolean } ) => {
-  return <div className='h-screen flex items-center'>{props.children}</div>;
+const Container = (props: { children:JSX.Element[] | JSX.Element | boolean, className?: string } ) => {
+  return <div className={`flex items-center ${props.className}`}>{props.children}</div>;
 };
 
 export default Container;

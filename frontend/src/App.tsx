@@ -1,9 +1,5 @@
 import './index.css';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AdminDashboard from '@admin/index';
 import AdminLogin from '@admin/AdminLogin';
 import Register from '@user/Register';
@@ -15,6 +11,8 @@ import {
   UserRoute,
   AuthUserRoute,
 } from '@middleware/index';
+import CategoryDetails from '@admin/categories/CategoryDetails';
+import AddCategory from '@admin/categories/AddCategory';
 
 export default function App() {
   return (
@@ -50,6 +48,22 @@ export default function App() {
             <UserRoute>
               <UserDashboard />
             </UserRoute>
+          }
+        />
+        <Route
+          path='/admin/categories/:category_id'
+          element={
+            <AdminRoute>
+              <CategoryDetails />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/admin/categories/add'
+          element={
+            <AdminRoute>
+              <AddCategory />
+            </AdminRoute>
           }
         />
         <Route path='/register' element={<Register />} />

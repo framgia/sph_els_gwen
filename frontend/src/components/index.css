@@ -68,9 +68,24 @@
 }
 
 .button {
-    @apply w-56 rounded-full py-2 px-4 hover:bg-secondary hover:text-white
+    @apply rounded-full
+    py-2 px-4
+    hover:bg-secondary hover:text-white
+    md:text-base xs:text-sm
+}
+
+.red-button {
+    @apply rounded-full
+    py-2 px-4
+    bg-red-400
+    hover:bg-red-700 hover:text-white
+    md:text-base xs:text-sm
 }
 
 .error {
     @apply text-sm text-red-500
+}
+
+.page-label {
+    @apply md:text-3xl xs:text-xl font-bold
 }

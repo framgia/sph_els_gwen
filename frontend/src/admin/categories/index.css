@@ -1,0 +1,24 @@
+
+/*********** FOR ADD CATEGORY ************/
+.button-group {
+  @apply flex 
+  md:w-2/5 xs:w-full 
+  md:flex-row xs:flex-col
+  xs:items-center
+}
+
+/*********** idkkkkk ************/
+.category-list-group {
+  @apply pb-10 xl:grid-cols-4 
+  md:grid md:grid-cols-3 md:gap-10 
+  xs:flex xs:flex-col xs:justify-evenly
+  xs:mb-10
+}
+
+.category-item-card {
+  @apply w-full rounded-xl 
+  md:p-8 xs:p-6
+  flex md:flex-col xs:flex-row
+  md:mb-0 xs:mb-8
+  items-center justify-between}
+

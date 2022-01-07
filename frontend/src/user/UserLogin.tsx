@@ -9,8 +9,8 @@ import {
   ProjectLogoGroup,
   FormInput,
   Notification,
+  Loader,
 } from '@components/';
-import Loader from '@icons/Loader';
 import { login } from '@api/UserApi';
 import './index.css';
 
@@ -90,16 +90,17 @@ export default function UserLogin() {
   return (
     <>
       {formState.isError && !formState.isLoading && (
-        <Container>
+        <Container className='h-screen'>
           <Notification
             isSuccess={false}
             title='An error has occurred. Please try again later.'
+            errorAction='refresh'
           />
         </Container>
       )}
       {!formState.isError && formState.isLoading && <Loader />}
       {!formState.isError && !formState.isLoading && (
-        <Container>
+        <Container className='h-screen'>
           <Card className='card xs:h-full md:h-3/5'>
             <ProjectLogoGroup dark={true} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>

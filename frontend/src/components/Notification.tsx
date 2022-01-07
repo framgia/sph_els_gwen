@@ -7,20 +7,18 @@ interface ModalProps {
   isSuccess: boolean;
   title?: string;
   children?: any;
+  errorAction?: string
 }
 
 export default function Notification(props: ModalProps) {
   const navigate = useNavigate();
 
   return (
-    <div className='w-full flex flex-col items-center justify-between h-1/3'>
+    <div className='w-full flex flex-col items-center justify-between h-full'>
       {props.isSuccess ? <Check /> : <Error />}
-      <h1 className='text-4xl'>{props.title}</h1>
-      {props.isSuccess ? (
-        <Link to='/login' className='button bg-primary text-center'>
-          Proceed to login
-        </Link>
-      ) : (
+      <h1 className='md:text-4xl xs:text-xl'>{props.title}</h1>
+      {props.isSuccess && props.children}
+      {!props.isSuccess && props.errorAction === 'back' && (
         <button
           className='button bg-primary text-center'
           onClick={() => {
@@ -28,6 +26,16 @@ export default function Notification(props: ModalProps) {
           }}
         >
           Go back
+        </button>
+      )}
+      {!props.isSuccess && props.errorAction === 'refresh' && (
+        <button
+          className='button bg-primary text-center'
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
+          Refresh and try again
         </button>
       )}
     </div>

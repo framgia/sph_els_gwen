@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import 
-{  Container,
+import {
+  Container,
   Card,
   Button,
   ProjectLogoGroup,
   FormInput,
-  Notification }
- from '@components/index';
-import Loader from '@icons/Loader';
+  Notification,
+  Loader,
+} from '@components/';
 import { registerUser } from '@api/UserApi';
 import { Response } from './UserLogin';
 
@@ -95,7 +95,7 @@ export default function Register() {
 
   return (
     <>
-      {formState.isLoading && <Loader/>}
+      {formState.isLoading && <Loader />}
       {!formState.isLoading && formState.isSubmitted && (
         <Container>
           <Notification
@@ -105,7 +105,12 @@ export default function Register() {
                 ? 'Your account has been successfully created'
                 : 'An error has occurred. Please try again later.'
             }
-          />
+            errorAction='back'
+          >
+            <Link to='/login' className='button bg-primary text-center'>
+              Proceed to login
+            </Link>
+          </Notification>
         </Container>
       )}
       {!formState.isLoading && !formState.isSubmitted && (
@@ -135,7 +140,7 @@ export default function Register() {
                     placeholder='your_email@email.com'
                   />
                   {isInvalid && (
-                    <span className='text-red-500 -mt-2 text-sm text-center'>
+                    <span className='text-red-500 mt-2 text-sm text-center'>
                       Email has already been taken.
                     </span>
                   )}
@@ -171,10 +176,7 @@ export default function Register() {
               />
               <div className='flex flex-col items-center justify-center mt-4'>
                 <h3>Already have an account?</h3>
-                <Link
-                  to='/login'
-                  className='link'
-                >
+                <Link to='/login' className='link'>
                   Click here to sign in
                 </Link>
               </div>

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Container } from '../components';
-import Loading from './Loading'
+import { Container } from '.';
+import Loading from '../icons/Loading'
 
 export default function Loader() {
   return (
