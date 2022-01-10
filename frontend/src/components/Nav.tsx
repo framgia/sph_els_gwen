@@ -1,22 +1,20 @@
-import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { removeToken } from '@store/user';
 import Logo from '@icons/Logo';
 
 const Nav = (props: { className?: string }) => {
-  const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    removeCookie('user', { path: '/' });
-    cookies.admin_token
-      ? removeCookie('admin_token', { path: '/' })
-      : removeCookie('token', { path: '/' });
+    dispatch(removeToken);
     navigate('/');
   };
 
   return (
     <nav
-      className={`flex items-center justify-between flex-wrap p-4 pl-10 w-full ${props.className}`}
+      className={`flex items-center justify-between flex-wrap p-4 pl-10 w-full ${props.className} sticky top-0 z-50`}
     >
       <div className='flex items-center'>
         <Logo className='w-10' />

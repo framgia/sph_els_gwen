@@ -7,7 +7,9 @@
             "@icons/*": ["icons/*"],
             "@api/*": ["api/*"],
             "@user/*": ["user/*"],
-            "@middleware/*": ["middleware/*"]
+            "@middleware/*": ["middleware/*"],
+            "@store/*": ["store/*"],
+            "@categories/*": ["categories/*"],
         }
     }
 }
