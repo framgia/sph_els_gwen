@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -12,6 +12,7 @@ import {
   Loader,
 } from '@components/';
 import { login } from '@api/UserApi';
+import { setUserToken } from '@store/user';
 import './index.css';
 
 type Inputs = {
@@ -34,13 +35,13 @@ export interface Response {
 
 export default function UserLogin() {
   const [isInvalid, setIsInvalid] = useState(false);
-  const [cookies, setCookie] = useCookies();
   const [formState, setFormState] = useState({
     isError: false,
     isLoading: false,
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginValidation = {
     email: {
@@ -71,8 +72,7 @@ export default function UserLogin() {
     login(data)
       .then((response: Response) => {
         if (response.status === 200) {
-          setCookie('user', response.data?.data, { path: '/' });
-          setCookie('token', response.data?.token, { path: '/' });
+          dispatch(setUserToken(response.data?.token));
           setFormState({ ...formState, isLoading: false });
           navigate('/');
         }

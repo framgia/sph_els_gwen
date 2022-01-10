@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UserState {
-  token: string;
+  user_token: string;
+  admin_token: string;
   user: [
     {
       id: number;
@@ -13,7 +14,8 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  token: '',
+  user_token: '',
+  admin_token: '',
   user: [
     {
       id: 0,
@@ -28,14 +30,18 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    setToken: (state, action) => {
-      state.token = action.payload;
+    setUserToken: (state, action) => {
+      state.user_token = action.payload;
+    },
+    setAdminToken: (state, action) => {
+      state.admin_token = action.payload;
     },
     removeToken: (state, action) => {
-      state.token = '';
+      state.user_token = '';
+      state.admin_token = '';
     },
   },
 });
 
-export const { setToken, removeToken } = userSlice.actions;
+export const { setUserToken, setAdminToken, removeToken } = userSlice.actions;
 export default userSlice.reducer;

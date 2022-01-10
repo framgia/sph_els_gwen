@@ -1,16 +1,14 @@
-import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { removeToken } from '@store/user';
 import Logo from '@icons/Logo';
 
 const Nav = (props: { className?: string }) => {
-  const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    removeCookie('user', { path: '/' });
-    cookies.admin_token
-      ? removeCookie('admin_token', { path: '/' })
-      : removeCookie('token', { path: '/' });
+    dispatch(removeToken);
     navigate('/');
   };
 

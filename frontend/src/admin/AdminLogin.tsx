@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -14,7 +13,7 @@ import {
 } from '@components/';
 import { Response } from '@user/UserLogin';
 import { login } from '@api/UserApi';
-import { setToken } from '@store/user';
+import { setAdminToken } from '@store/user';
 
 type Inputs = {
   email: string;
@@ -23,7 +22,6 @@ type Inputs = {
 
 export default function AdminLogin() {
   const [isInvalid, setIsInvalid] = useState(false);
-  const [cookies, setCookie] = useCookies();
   const [formState, setFormState] = useState({
     isError: false,
     isLoading: false,
@@ -60,9 +58,7 @@ export default function AdminLogin() {
     login(data)
       .then((response: Response) => {
         if (response.status === 200) {
-          setCookie('user', response.data?.data, { path: '/' });
-          setCookie('admin_token', response.data?.token, { path: '/' });
-          dispatch(setToken(response.data?.token));
+          dispatch(setAdminToken(response.data?.token));
           setFormState({ ...formState, isLoading: false });
           navigate('/admin/dashboard');
         }

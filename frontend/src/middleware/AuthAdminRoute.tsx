@@ -1,10 +1,12 @@
 import { Navigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/store';
 
 export default function AuthAdminRoute(props: { children: JSX.Element }) {
-  const [cookies, setCookie] = useCookies();
-  if (cookies.token) {
+  const state = useSelector((state: RootState) => state.user);
+
+  if (state.user_token) {
     return <Navigate to='/' />;
   }
-  return !cookies.admin_token ? (props.children) : (<Navigate to='/admin/dashboard' />);
+  return !state.admin_token ? (props.children) : (<Navigate to='/admin/dashboard' />);
 }
