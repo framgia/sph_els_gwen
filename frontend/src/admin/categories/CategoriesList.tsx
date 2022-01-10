@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Nav, Container, Notification, Loader } from '@components/';
+import { Container, Notification, Loader } from '@components/';
 import { getAllCategories } from '@api/CategoryApi';
 import { getAll, setIsLoading, setIsError } from '@store/category';
 import { RootState } from '@store/store';
@@ -17,8 +17,8 @@ export interface CategoryResponse {
 }
 
 export default function CategoriesList() {
-  const [cookies, setCookie] = useCookies();
-  const state = useSelector((state:RootState) => state.category);
+  const [cookies] = useCookies();
+  const state = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,12 +39,11 @@ export default function CategoriesList() {
 
   return (
     <>
-      {/* <Nav className='bg-purple-200' /> */}
-      <Container className='m-10 flex-col'>
+      <Container className='m-10 flex-col z-10'>
         <>
           {state.isLoading && !state.isError && <Loader />}
           {state.isError && !state.isLoading && (
-            <div className='flex flex-col justify-center h-screen'>
+            <div className='flex flex-col justify-center h-full'>
               <Notification
                 isSuccess={false}
                 title='An error has occurred. Please try again later.'

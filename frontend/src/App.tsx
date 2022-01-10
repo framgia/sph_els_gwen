@@ -13,6 +13,7 @@ import {
 } from '@middleware/index';
 import CategoryDetails from '@admin/categories/CategoryDetails';
 import AddCategory from '@admin/categories/AddCategory';
+import EditCategory from '@admin/categories/EditCategory';
 
 export default function App() {
   return (
@@ -63,6 +64,14 @@ export default function App() {
           element={
             <AdminRoute>
               <AddCategory />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/admin/categories/:category_id/edit'
+          element={
+            <AdminRoute>
+              <EditCategory />
             </AdminRoute>
           }
         />

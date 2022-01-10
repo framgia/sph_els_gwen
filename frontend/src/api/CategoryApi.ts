@@ -27,3 +27,21 @@ export const getSpecificCategory = (token: string, id: string) => {
     }
   })
 }
+
+export const deleteCategory = (token:string, id:string) => {
+  return axios.delete(`${API_URL}/categories/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    }
+  });
+}
+
+export const editCategory = (token: string, id: string, body: { name: string, description?: string }) => {
+  return axios.put(`${API_URL}/categories/${id}`, body, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    }
+  });
+}

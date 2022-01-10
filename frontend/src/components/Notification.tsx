@@ -1,7 +1,9 @@
 
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Check from '@icons/Check';
 import Error from '@icons/Error';
+import { setIsError } from '@store/category';
 
 interface ModalProps {
   isSuccess: boolean;
@@ -12,17 +14,20 @@ interface ModalProps {
 
 export default function Notification(props: ModalProps) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   return (
     <div className='w-full flex flex-col items-center justify-between h-full'>
       {props.isSuccess ? <Check /> : <Error />}
-      <h1 className='md:text-4xl xs:text-xl'>{props.title}</h1>
+      <h1 className='md:text-4xl xs:text-xl mt-8'>{props.title}</h1>
       {props.isSuccess && props.children}
       {!props.isSuccess && props.errorAction === 'back' && (
         <button
-          className='button bg-primary text-center'
+          className='button bg-primary text-center mt-8'
           onClick={() => {
-            navigate(0);
+            navigate('/admin/dashboard');
+            dispatch(setIsError(false));
           }}
         >
           Go back
@@ -30,7 +35,7 @@ export default function Notification(props: ModalProps) {
       )}
       {!props.isSuccess && props.errorAction === 'refresh' && (
         <button
-          className='button bg-primary text-center'
+          className='button bg-primary text-center mt-8'
           onClick={() => {
             window.location.reload();
           }}

@@ -1,6 +1,6 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ import {
 } from '@components/';
 import { setIsInvalid, setIsLoading, setIsError } from '@store/category';
 import { RootState } from '@store/store';
-import { addCategory } from '@api/CategoryApi';
+import { getSpecificCategory, editCategory } from '@api/CategoryApi';
 import './index.css';
 
 type Inputs = {
@@ -22,14 +22,24 @@ type Inputs = {
   description: string;
 };
 
-export default function AddCategory() {
+export default function EditCategory() {
   const state = useSelector((state: RootState) => state.category);
+  const [categoryItem, setCategoryItem] = useState({
+    id: 0,
+    name: '',
+    description: '',
+    created_at: '',
+    updated_at: '',
+  });
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [cookies] = useCookies();
+  const { category_id } = useParams();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -42,16 +52,16 @@ export default function AddCategory() {
       onChange: () => dispatch(setIsInvalid(false)),
     },
     description: {
-      
+      required: false,
     },
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(setIsLoading(true));    
+    dispatch(setIsLoading(true));
     if (!data.description) {
       data.description = 'null';
-    }    
-    addCategory(cookies.admin_token, data)
+    }
+    editCategory(cookies.admin_token, categoryItem.id.toString(), data)
       .then((response) => {
         dispatch(setIsLoading(false));
         navigate('/admin/dashboard');
@@ -66,6 +76,38 @@ export default function AddCategory() {
       });
   };
 
+  const _getSpecificCategory = (id: string) => {
+    getSpecificCategory(cookies.admin_token, id)
+      .then((response) => {
+        setCategoryItem(response.data.data);
+        reset({
+          name: response.data.data.name,
+          description:
+            response.data.data.description === 'null'
+              ? ''
+              : response.data.data.description,
+        });
+        dispatch(setIsLoading(false));
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 404) {
+          setErrorMessage('Resource not found')
+        }
+        dispatch(setIsError(true));
+      });
+  };
+
+  useEffect(() => {
+    setIsInvalid(false);
+    if (!category_id) {
+      navigate('/admin/categories');
+    } else {
+      dispatch(setIsLoading(true));
+      _getSpecificCategory(category_id);
+    }
+  }, []);
+
   return (
     <>
       <Nav className='bg-purple-200' />
@@ -73,17 +115,20 @@ export default function AddCategory() {
         <>
           {state.isLoading && !state.isError && <Loader />}
           {state.isError && (
-            <div className='flex flex-col w-full h-96 items-center justify-center'>
+            <div className='flex flex-col items-center justify-center'>
               <Notification
                 isSuccess={false}
-                title='An error has occurred. Please try again later.'
-                errorAction='refresh'
+                title={
+                  errorMessage ??
+                  'An error has occurred. Please try again later.'
+                }
+                errorAction={errorMessage ? 'back' : 'refresh'}
               />
             </div>
           )}
           {!state.isLoading && !state.isError && (
             <>
-              <h1 className='page-label'>Add new category</h1>
+              <h1 className='page-label'>Edit category</h1>
               <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
                 <div className='w-full'>
                   <FormInput
@@ -93,6 +138,7 @@ export default function AddCategory() {
                     errors={errors.name}
                     required
                     placeholder='Choose a unique category name'
+                    defaultValue={categoryItem.name}
                   />
                   {state.isInvalid && (
                     <span className='text-red-500 text-sm text-center'>
@@ -103,13 +149,16 @@ export default function AddCategory() {
                 <FormInput
                   label='Description'
                   type='textarea'
-                  register={{ ...register('description', categoryValidation.description) }}
+                  register={{
+                    ...register('description', categoryValidation.description),
+                  }}
                   placeholder='Add a description to give more information on this category'
+                  defaultValue={categoryItem.description}
                 />
-                <div className='button-group w-full mx-auto justify-center border mt-10'>
-                  <Button text='Save category' className='w-56 md:mr-4' />
+                <div className='button-group w-full mx-auto justify-center mt-10'>
+                  <Button text='Update category' className='w-56 md:mr-4' />
                   <Link
-                    to='/admin/dashboard'
+                    to={`/admin/categories/${categoryItem.id}`}
                     className='red-button text-center md:mt-0 xs:mt-6 w-56'
                   >
                     Cancel
