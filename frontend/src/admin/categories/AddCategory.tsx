@@ -106,7 +106,7 @@ export default function AddCategory() {
                   register={{ ...register('description', categoryValidation.description) }}
                   placeholder='Add a description to give more information on this category'
                 />
-                <div className='button-group w-full mx-auto justify-center border mt-10'>
+                <div className='button-group w-full mx-auto justify-center mt-10'>
                   <Button text='Save category' className='w-56 md:mr-4' />
                   <Link
                     to='/admin/dashboard'

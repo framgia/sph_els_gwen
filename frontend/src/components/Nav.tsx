@@ -16,7 +16,7 @@ const Nav = (props: { className?: string }) => {
 
   return (
     <nav
-      className={`flex items-center justify-between flex-wrap p-4 pl-10 w-full ${props.className}`}
+      className={`flex items-center justify-between flex-wrap p-4 pl-10 w-full ${props.className} sticky top-0 z-50`}
     >
       <div className='flex items-center'>
         <Logo className='w-10' />
