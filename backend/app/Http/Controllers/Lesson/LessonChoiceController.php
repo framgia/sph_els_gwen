@@ -32,7 +32,7 @@ class LessonChoiceController extends Controller
     {
         $this->checkIfAdmin();
         $data = $request->validate([
-            'name' => ['required', Rule::unique('choices', 'name')],
+            'name' => 'required',
             'is_correct' => ['required', 'boolean']
         ]);
 
