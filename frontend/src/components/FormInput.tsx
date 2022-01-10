@@ -2,7 +2,7 @@ import React from 'react';
 import { FieldError } from 'react-hook-form';
 
 interface FormInputProps {
-  label: string;
+  label?: string;
   register: {};
   errors?: FieldError;
   required?: boolean;
@@ -15,7 +15,7 @@ const FormInput = (props: FormInputProps) => {
   return (
     <div className='w-full mt-4'>
       <label className='input-label'>
-        {props.label}:
+        {props.label ?? ''}
         {props.required && <span className='text-lg text-red-500 ml-1'>*</span>}
       </label>
       {props.type === 'textarea' ? (
