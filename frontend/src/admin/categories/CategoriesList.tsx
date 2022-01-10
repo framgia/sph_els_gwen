@@ -27,7 +27,7 @@ export default function CategoriesList() {
 
   const _getAllCategories = () => {
     dispatch(setIsLoading(true));
-    getAllCategories(cookies.admin_token)
+    getAllCategories()
       .then((response) => {
         dispatch(getAll(response.data.data));
         dispatch(setIsLoading(false));

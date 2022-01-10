@@ -2,7 +2,6 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import {
   Nav,
@@ -26,7 +25,6 @@ export default function AddCategory() {
   const state = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [cookies] = useCookies();
   const {
     register,
     handleSubmit,
@@ -41,17 +39,15 @@ export default function AddCategory() {
       },
       onChange: () => dispatch(setIsInvalid(false)),
     },
-    description: {
-      
-    },
+    description: {},
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(setIsLoading(true));    
+    dispatch(setIsLoading(true));
     if (!data.description) {
-      data.description = 'null';
-    }    
-    addCategory(cookies.admin_token, data)
+      data.description = '';
+    }
+    addCategory(data)
       .then((response) => {
         dispatch(setIsLoading(false));
         navigate('/admin/dashboard');
@@ -60,7 +56,6 @@ export default function AddCategory() {
         if (error.response?.status === 422) {
           dispatch(setIsInvalid(true));
         } else {
-          console.log(error);
           dispatch(setIsError(true));
         }
       });
@@ -103,7 +98,9 @@ export default function AddCategory() {
                 <FormInput
                   label='Description'
                   type='textarea'
-                  register={{ ...register('description', categoryValidation.description) }}
+                  register={{
+                    ...register('description', categoryValidation.description),
+                  }}
                   placeholder='Add a description to give more information on this category'
                 />
                 <div className='button-group w-full mx-auto justify-center mt-10'>

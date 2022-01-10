@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
 import { RootState } from '@store/store';
 import { Nav, Container, Loader, Modal, Card } from '@components/';
 import { getSpecificCategory } from '@api/CategoryApi';
 import { setIsError, setIsLoading } from '@store/category';
 import { deleteCategory } from '@api/CategoryApi';
+import WarningIcon from '@icons/WarningIcon';
 
 export default function CategoryDetails() {
-  const [cookies] = useCookies();
   const { category_id } = useParams();
   const state = useSelector((state: RootState) => state.category);
   const navigate = useNavigate();
@@ -29,28 +28,25 @@ export default function CategoryDetails() {
       navigate('/admin/categories');
     } else {
       dispatch(setIsLoading(true));
-      _getSpecificCategory(category_id);
+      _getSpecificCategory(parseInt(category_id));
     }
   }, []);
 
-  const _getSpecificCategory = (id: string) => {
-    getSpecificCategory(cookies.admin_token, id)
+  const _getSpecificCategory = (id: number) => {
+    getSpecificCategory(id)
       .then((response) => {
         setCategoryItem(response.data.data);
-        console.log(response);
         dispatch(setIsLoading(false));
       })
       .catch((error) => {
-        console.log(error);
         dispatch(setIsError(true));
       });
   };
 
   const _deleteCategory = () => {
-    deleteCategory(cookies.admin_token, categoryItem.id.toString())
-      .then((response) => console.log(response.data.data))
-      .catch((error) => console.log(error));
-    navigate('/admin/dashboard');
+    deleteCategory(categoryItem.id)
+      .then(() => navigate('/admin/dashboard'))
+      .catch(() => dispatch(setIsError(true)));    
   };
 
   return (
@@ -63,8 +59,16 @@ export default function CategoryDetails() {
           <Modal
             isOpen={isModalOpen}
             toggleModal={(value) => setIsModalOpen(value)}
-            deleteCategory={_deleteCategory}
-          />
+            buttonAction={{
+              buttonText: 'Yes, delete this category',
+              action: _deleteCategory,
+            }}
+          >
+            <WarningIcon className='w-32 text-red-300' />
+            <h1 className='text-3xl font-semibold'>
+              Are you sure you want to delete this category?
+            </h1>
+          </Modal>
           {state.isLoading && !state.isError && <Loader />}
           {state.isError && !state.isLoading && <h1>error</h1>}
           {!state.isError && !state.isLoading && (
@@ -81,7 +85,9 @@ export default function CategoryDetails() {
                     <h1 className='text-4xl font-bold'>{categoryItem.name}</h1>
                     <p className='text-xl mt-7'>
                       {categoryItem.description === 'null' ? (
-                        <span className='italic text-gray-400'>No description provided</span>
+                        <span className='italic text-gray-400'>
+                          No description provided
+                        </span>
                       ) : (
                         categoryItem.description
                       )}

@@ -7,13 +7,6 @@ export default function CategoryItem(props: {
   name: string;
   description: string;
 }) {
-  // const handleDelete = (id: string) => {
-  //   props.toggleModal(true);
-  //   // deleteCategory(cookies.admin_token, props.id.toString())
-  //   // .then(response => console.log(response.data.data))
-  //   // .catch(error => console.log(error));
-  // };
-
   return (
     <Card className='category-item-card'>
       <div className='w-full'>
@@ -44,11 +37,3 @@ export default function CategoryItem(props: {
     </Card>
   );
 }
-
-//  <button
-//    // to={`/categories/${props.id}/delete`}
-//    className='red-button md:w-28 xs:w-full text-center md:mt-0 xs:mt-5'
-//    onClick={() => handleDelete(props.id.toString())}
-//  >
-//    Delete
-//  </button>;

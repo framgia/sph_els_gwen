@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import {
   Nav,
@@ -34,7 +33,6 @@ export default function EditCategory() {
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [cookies] = useCookies();
   const { category_id } = useParams();
   const {
     register,
@@ -59,9 +57,9 @@ export default function EditCategory() {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     dispatch(setIsLoading(true));
     if (!data.description) {
-      data.description = 'null';
+      data.description = '';
     }
-    editCategory(cookies.admin_token, categoryItem.id.toString(), data)
+    editCategory(categoryItem.id, data)
       .then((response) => {
         dispatch(setIsLoading(false));
         navigate('/admin/dashboard');
@@ -70,14 +68,13 @@ export default function EditCategory() {
         if (error.response?.status === 422) {
           dispatch(setIsInvalid(true));
         } else {
-          console.log(error);
           dispatch(setIsError(true));
         }
       });
   };
 
-  const _getSpecificCategory = (id: string) => {
-    getSpecificCategory(cookies.admin_token, id)
+  const _getSpecificCategory = (id: number) => {
+    getSpecificCategory(id)
       .then((response) => {
         setCategoryItem(response.data.data);
         reset({
@@ -90,7 +87,6 @@ export default function EditCategory() {
         dispatch(setIsLoading(false));
       })
       .catch((error) => {
-        console.log(error);
         if (error.response.status === 404) {
           setErrorMessage('Resource not found')
         }
@@ -104,7 +100,7 @@ export default function EditCategory() {
       navigate('/admin/categories');
     } else {
       dispatch(setIsLoading(true));
-      _getSpecificCategory(category_id);
+      _getSpecificCategory(parseInt(category_id));
     }
   }, []);
 

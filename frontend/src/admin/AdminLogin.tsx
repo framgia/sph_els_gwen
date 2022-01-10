@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -9,10 +10,11 @@ import {
   ProjectLogoGroup,
   FormInput,
   Notification,
-  Loader
+  Loader,
 } from '@components/';
 import { Response } from '@user/UserLogin';
 import { login } from '@api/UserApi';
+import { setToken } from '@store/user';
 
 type Inputs = {
   email: string;
@@ -23,11 +25,12 @@ export default function AdminLogin() {
   const [isInvalid, setIsInvalid] = useState(false);
   const [cookies, setCookie] = useCookies();
   const [formState, setFormState] = useState({
-    isError:false,
-    isLoading:false
+    isError: false,
+    isLoading: false,
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginValidation = {
     email: {
@@ -54,24 +57,24 @@ export default function AdminLogin() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setFormState({ ...formState, isLoading: true });
-    
     login(data)
-    .then((response:Response) => {
+      .then((response: Response) => {
         if (response.status === 200) {
           setCookie('user', response.data?.data, { path: '/' });
           setCookie('admin_token', response.data?.token, { path: '/' });
+          dispatch(setToken(response.data?.token));
           setFormState({ ...formState, isLoading: false });
           navigate('/admin/dashboard');
         }
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         if (error.response?.status === 401) {
           setIsInvalid(true);
         } else {
           setFormState({ ...formState, isError: true });
         }
         setFormState({ ...formState, isLoading: false });
-    });
+      });
   };
 
   return (
