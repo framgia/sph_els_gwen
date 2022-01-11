@@ -15,7 +15,11 @@ import { Response } from '@user/UserLogin';
 import { login } from '@api/UserApi';
 import { setAdminToken } from '@store/user';
 import { useCookies } from 'react-cookie';
+<<<<<<< HEAD
 import { store } from '@store/store'
+=======
+import {store} from '@store/store'
+>>>>>>> 6d43df4 ([SELS-TASK][FE] Lessons and Words Management Markup)
 
 type Inputs = {
   email: string;
