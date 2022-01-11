@@ -15,6 +15,7 @@ import { Response } from '@user/UserLogin';
 import { login } from '@api/UserApi';
 import { setAdminToken } from '@store/user';
 import { useCookies } from 'react-cookie';
+import { store } from '@store/store'
 
 type Inputs = {
   email: string;
