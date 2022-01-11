@@ -14,27 +14,13 @@ import {
 import CategoryDetails from '@admin/categories/CategoryDetails';
 import AddCategory from '@admin/categories/AddCategory';
 import EditCategory from '@admin/categories/EditCategory';
+import EditLesson from '@admin/lessons/EditLesson';
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path='/admin/dashboard'
-          element={
-            <AdminRoute>
-              <AdminDashboard />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path='/admin/login'
-          element={
-            <AuthAdminRoute>
-              <AdminLogin />
-            </AuthAdminRoute>
-          }
-        />
+        {/* USER ROUTES */}
         <Route
           path='/login'
           element={
@@ -49,6 +35,24 @@ export default function App() {
             <UserRoute>
               <UserDashboard />
             </UserRoute>
+          }
+        />
+        <Route path='/register' element={<Register />} />
+        {/* ADMIN ROUTES */}
+        <Route
+          path='/admin/dashboard'
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/admin/login'
+          element={
+            <AuthAdminRoute>
+              <AdminLogin />
+            </AuthAdminRoute>
           }
         />
         <Route
@@ -75,7 +79,14 @@ export default function App() {
             </AdminRoute>
           }
         />
-        <Route path='/register' element={<Register />} />
+        <Route
+          path='/admin/categories/:category_id/lessons/:lesson_id/edit'
+          element={
+            <AdminRoute>
+              <EditLesson />
+            </AdminRoute>
+          }
+        />
       </Routes>
     </Router>
   );

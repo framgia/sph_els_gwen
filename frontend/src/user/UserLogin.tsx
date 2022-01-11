@@ -14,6 +14,7 @@ import {
 import { login } from '@api/UserApi';
 import { setUserToken } from '@store/user';
 import './index.css';
+import { useCookies } from 'react-cookie';
 
 type Inputs = {
   email: string;
@@ -34,6 +35,7 @@ export interface Response {
 }
 
 export default function UserLogin() {
+  const [cookies,setCookie] = useCookies();
   const [isInvalid, setIsInvalid] = useState(false);
   const [formState, setFormState] = useState({
     isError: false,
@@ -72,6 +74,7 @@ export default function UserLogin() {
     login(data)
       .then((response: Response) => {
         if (response.status === 200) {
+          setCookie('token', response.data?.token, { path: '/' });
           dispatch(setUserToken(response.data?.token));
           setFormState({ ...formState, isLoading: false });
           navigate('/');
@@ -101,7 +104,7 @@ export default function UserLogin() {
       {!formState.isError && formState.isLoading && <Loader />}
       {!formState.isError && !formState.isLoading && (
         <Container className='h-screen'>
-          <Card className='card xs:h-full md:h-3/5'>
+          <Card className='card mx-auto xs:h-full md:h-3/5'>
             <ProjectLogoGroup dark={true} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
               <h1 className='form-title'>User Login</h1>

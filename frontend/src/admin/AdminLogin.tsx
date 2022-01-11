@@ -14,6 +14,8 @@ import {
 import { Response } from '@user/UserLogin';
 import { login } from '@api/UserApi';
 import { setAdminToken } from '@store/user';
+import { useCookies } from 'react-cookie';
+import {store} from '@store/store'
 
 type Inputs = {
   email: string;
@@ -21,6 +23,7 @@ type Inputs = {
 };
 
 export default function AdminLogin() {
+  const [cookies, setCookie] = useCookies();
   const [isInvalid, setIsInvalid] = useState(false);
   const [formState, setFormState] = useState({
     isError: false,
@@ -58,7 +61,11 @@ export default function AdminLogin() {
     login(data)
       .then((response: Response) => {
         if (response.status === 200) {
+          setCookie('admin_token', response.data?.token, { path: '/' });
           dispatch(setAdminToken(response.data?.token));
+          const state = store.getState();
+          console.log(state);
+          
           setFormState({ ...formState, isLoading: false });
           navigate('/admin/dashboard');
         }
@@ -87,7 +94,7 @@ export default function AdminLogin() {
       {!formState.isError && formState.isLoading && <Loader />}
       {!formState.isError && !formState.isLoading && (
         <Container className='h-screen'>
-          <Card className='card xs:h-full md:h-3/5'>
+          <Card className='card mx-auto xs:h-full md:h-3/5'>
             <ProjectLogoGroup dark={false} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
               <h1 className='form-title'>Admin Login</h1>

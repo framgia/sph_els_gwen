@@ -114,8 +114,8 @@ export default function Register() {
         </Container>
       )}
       {!formState.isLoading && !formState.isSubmitted && (
-        <Container>
-          <Card className='card md:h-4/5 xs:h-full'>
+        <Container className='h-screen'>
+          <Card className='card mx-auto md:h-4/5 xs:h-full'>
             <ProjectLogoGroup dark={true} />
             <form onSubmit={handleSubmit(onSubmit)} className='form-group'>
               <h1 className='form-title'>Register</h1>

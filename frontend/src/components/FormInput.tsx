@@ -3,12 +3,13 @@ import { FieldError } from 'react-hook-form';
 
 interface FormInputProps {
   label?: string;
-  register: {};
+  register?: {};
   errors?: FieldError;
   required?: boolean;
   type?: string;
   placeholder?: string;
-  defaultValue?:string
+  defaultValue?:string;
+  disabled?:boolean
 }
 
 const FormInput = (props: FormInputProps) => {
@@ -23,6 +24,7 @@ const FormInput = (props: FormInputProps) => {
           {...props.register}
           className='mt-2 w-full px-3 py-2 rounded-xl border border-black resize-none focus:outline-none'
           rows={4}
+          disabled={props.disabled}
           placeholder={props.placeholder}
           defaultValue={props.defaultValue}
         ></textarea>
@@ -31,6 +33,7 @@ const FormInput = (props: FormInputProps) => {
           type={props.type}
           {...props.register}
           className='form-input'
+          disabled={props.disabled}
           placeholder={props.placeholder}
           defaultValue={props.defaultValue}
         />

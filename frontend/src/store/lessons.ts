@@ -13,7 +13,7 @@ interface LessonState {
   isLoading: boolean,
   isError: boolean,
   isInvalid: boolean,
-  isSubmitted: boolean
+  isAddingLesson: boolean
 }
 
 const initialState: LessonState = {
@@ -21,11 +21,11 @@ const initialState: LessonState = {
   isLoading: false,
   isError: false,
   isInvalid: false,
-  isSubmitted: false,
+  isAddingLesson: false
 };
 
 export const lessonSlice = createSlice({
-  name: 'category',
+  name: 'lesson',
   initialState: initialState,
   reducers: {
     getAll: (state, action) => {
@@ -42,12 +42,11 @@ export const lessonSlice = createSlice({
       state.isLoading = false;
       state.isInvalid = action.payload;
     },
-    setIsSubmitted: (state, action) => {
-      state.isLoading = false;
-      state.isSubmitted = action.payload;
+    setIsAddingLesson: (state, action) => {
+      state.isAddingLesson = action.payload;
     }
   },
 });
 
-export const { getAll, setIsLoading, setIsError, setIsInvalid } = lessonSlice.actions;
+export const { getAll, setIsLoading, setIsError, setIsInvalid, setIsAddingLesson } = lessonSlice.actions;
 export default lessonSlice.reducer;

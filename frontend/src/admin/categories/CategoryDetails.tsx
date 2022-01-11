@@ -7,6 +7,8 @@ import { getSpecificCategory } from '@api/CategoryApi';
 import { setIsError, setIsLoading } from '@store/category';
 import { deleteCategory } from '@api/CategoryApi';
 import WarningIcon from '@icons/WarningIcon';
+import LessonItem from '@admin/lessons/LessonItem';
+
 
 export default function CategoryDetails() {
   const { category_id } = useParams();
@@ -58,7 +60,7 @@ export default function CategoryDetails() {
         <>
           <Modal
             isOpen={isModalOpen}
-            toggleModal={(value) => setIsModalOpen(value)}
+            toggleModal={(value:boolean) => setIsModalOpen(value)}
             buttonAction={{
               buttonText: 'Yes, delete this category',
               action: _deleteCategory,
@@ -114,7 +116,11 @@ export default function CategoryDetails() {
                   Lessons in this category
                 </h1>
                 {/* static placeholder for lessons list, will change in lessons management */}
-                <p className='italic'>Place lessons here</p>
+                <div className='grid grid-cols-3 gap-6 mt-5 w-full'>
+                  {[1, 2, 3].map((index) => {
+                    return <LessonItem key={index} lesson_id={index} isEditable={false}/>;
+                  })}
+                </div>
               </div>
             </>
           )}
