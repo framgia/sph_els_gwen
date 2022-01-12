@@ -15,6 +15,7 @@ import { setIsInvalid, setIsLoading, setIsError } from '@store/category';
 import { RootState } from '@store/store';
 import { getSpecificCategory, editCategory } from '@api/CategoryApi';
 import './index.css';
+import LessonsList from '@admin/lessons/LessonsList';
 
 type Inputs = {
   name: string;
@@ -107,7 +108,7 @@ export default function EditCategory() {
   return (
     <>
       <Nav className='bg-purple-200' />
-      <Container className='m-10 flex-col md:w-3/5 xs:w-4/5 mx-auto'>
+      <Container className='my-10 flex-col w-full'>
         <>
           {state.isLoading && !state.isError && <Loader />}
           {state.isError && (
@@ -123,45 +124,53 @@ export default function EditCategory() {
             </div>
           )}
           {!state.isLoading && !state.isError && (
-            <>
-              <h1 className='page-label'>Edit category</h1>
-              <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
-                <div className='w-full'>
+            <div className='flex w-full px-10'>
+              <div className='flex flex-col w-1/3'>
+                <h1 className='page-label'>Edit category</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
+                  <div className='w-full'>
+                    <FormInput
+                      label='Category name'
+                      type='text'
+                      register={{
+                        ...register('name', categoryValidation.name),
+                      }}
+                      errors={errors.name}
+                      required
+                      placeholder='Choose a unique category name'
+                      defaultValue={categoryItem.name}
+                    />
+                    {state.isInvalid && (
+                      <span className='text-red-500 text-sm text-center'>
+                        Category name has already been taken.
+                      </span>
+                    )}
+                  </div>
                   <FormInput
-                    label='Category name'
-                    type='text'
-                    register={{ ...register('name', categoryValidation.name) }}
-                    errors={errors.name}
-                    required
-                    placeholder='Choose a unique category name'
-                    defaultValue={categoryItem.name}
+                    label='Description'
+                    type='textarea'
+                    register={{
+                      ...register(
+                        'description',
+                        categoryValidation.description
+                      ),
+                    }}
+                    placeholder='Add a description to give more information on this category'
+                    defaultValue={categoryItem.description}
                   />
-                  {state.isInvalid && (
-                    <span className='text-red-500 text-sm text-center'>
-                      Category name has already been taken.
-                    </span>
-                  )}
-                </div>
-                <FormInput
-                  label='Description'
-                  type='textarea'
-                  register={{
-                    ...register('description', categoryValidation.description),
-                  }}
-                  placeholder='Add a description to give more information on this category'
-                  defaultValue={categoryItem.description}
-                />
-                <div className='button-group w-full mx-auto justify-center mt-10'>
-                  <Button text='Update category' className='w-56 md:mr-4' />
-                  <Link
-                    to={`/admin/categories/${categoryItem.id}`}
-                    className='red-button text-center md:mt-0 xs:mt-6 w-56'
-                  >
-                    Cancel
-                  </Link>
-                </div>
-              </form>
-            </>
+                  <div className='button-group w-full mx-auto justify-center mt-10'>
+                    <Button text='Update category' className='w-56 md:mr-4' />
+                    <Link
+                      to={`/admin/categories/${categoryItem.id}`}
+                      className='red-button text-center md:mt-0 xs:mt-6 w-56'
+                    >
+                      Cancel
+                    </Link>
+                  </div>
+                </form>
+              </div>
+              <LessonsList isEditable={true} />
+            </div>
           )}
         </>
       </Container>

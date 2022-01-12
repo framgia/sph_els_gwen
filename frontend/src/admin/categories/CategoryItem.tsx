@@ -8,7 +8,7 @@ export default function CategoryItem(props: {
   description: string;
 }) {
   return (
-    <Card className='category-item-card'>
+    <Card className='category-item-card mx-auto'>
       <div className='w-full'>
         <h1 className='md:text-2xl xs:text-xl font-medium'>{props.name}</h1>
         <>

@@ -1,16 +1,15 @@
 import React from 'react';
 
 interface CardProps {
-    rounded?:boolean
-    className?:string,
-    children?:JSX.Element[] | JSX.Element
+  rounded?: boolean;
+  className?: string;
+  children?: JSX.Element[] | JSX.Element;
 }
 
-
-const Card = (props:CardProps) => {
+const Card = (props: CardProps) => {
   return (
     <div
-      className={`mx-auto  
+      className={` 
           bg-white border
           border-lightgray
           ${props.rounded ? 'rounded-2xl' : ''}

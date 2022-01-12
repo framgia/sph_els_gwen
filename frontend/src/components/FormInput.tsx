@@ -2,20 +2,21 @@ import React from 'react';
 import { FieldError } from 'react-hook-form';
 
 interface FormInputProps {
-  label: string;
-  register: {};
+  label?: string;
+  register?: {};
   errors?: FieldError;
   required?: boolean;
   type?: string;
   placeholder?: string;
-  defaultValue?:string
+  defaultValue?:string;
+  disabled?:boolean
 }
 
 const FormInput = (props: FormInputProps) => {
   return (
     <div className='w-full mt-4'>
       <label className='input-label'>
-        {props.label}:
+        {props.label ?? ''}
         {props.required && <span className='text-lg text-red-500 ml-1'>*</span>}
       </label>
       {props.type === 'textarea' ? (
@@ -23,6 +24,7 @@ const FormInput = (props: FormInputProps) => {
           {...props.register}
           className='mt-2 w-full px-3 py-2 rounded-xl border border-black resize-none focus:outline-none'
           rows={4}
+          disabled={props.disabled}
           placeholder={props.placeholder}
           defaultValue={props.defaultValue}
         ></textarea>
@@ -31,6 +33,7 @@ const FormInput = (props: FormInputProps) => {
           type={props.type}
           {...props.register}
           className='form-input'
+          disabled={props.disabled}
           placeholder={props.placeholder}
           defaultValue={props.defaultValue}
         />

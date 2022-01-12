@@ -2,7 +2,7 @@ const Button = (props: {
   className?: string;
   text?: string;
   dark?: boolean;
-  onClick?: (event?: React.MouseEventHandler<HTMLButtonElement>) => void;
+  onClick?: () => void;
 }) => {
   return (
     <button

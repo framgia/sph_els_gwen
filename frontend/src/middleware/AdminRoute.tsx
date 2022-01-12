@@ -1,14 +1,17 @@
 import {
   Navigate,
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '@store/store';
+import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
+import { setAdminToken } from '@store/user';
 
 export default function AdminRoute (props: {children: JSX.Element}) {
-  const state = useSelector((state: RootState) => state.user);
+  const [cookies,] = useCookies();
+  const dispatch = useDispatch();
+  dispatch(setAdminToken(cookies.admin_token));
 
-  if (state.user_token) {
+  if (cookies.token) {
     return <Navigate to='/' />;
   }
-  return state.admin_token ? props.children : <Navigate to='/admin/login' />;
+  return cookies.admin_token ? props.children : <Navigate to='/admin/login' />;
 };
