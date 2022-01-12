@@ -10,6 +10,15 @@ export default function LessonItem(props: {
   isEditable?: boolean;
   toggleModal?: (isOpen: boolean, id: number) => void;
 }) {
+  const state = useSelector((state: RootState) => state);
+
+  const [lessonChoices, setLessonChoices] = useState([
+    {
+      answer: [],
+      other_choices: [],
+    },
+  ]);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const answer = props.lesson.choices.find((choice:Choice) => (choice.is_correct));
@@ -29,6 +38,32 @@ export default function LessonItem(props: {
       props.toggleModal(true, props.lesson.id);
     }
   };
+
+  const _getChoices = () => {
+    state.lessons.lessons.forEach((lesson) => {
+      console.log('hello');
+      // getAllChoices(lesson.id)
+      //   .then((response) => {
+      //     const choices = response.data.data;
+      //     dispatch(getChoices(response.data.data));
+
+      //     //getting choices of specific lesson
+      //     const _correct_answer = choices.filter((choice: Choice) => {
+      //       if (choice.lesson_id === lesson.id) {
+      //         return choice;
+      //       }
+      //     });
+      //     // console.log(_correct_answer);
+
+      //     // setLessonChoices({...lessonChoices, answer: {..._correct_answer}});
+      //   })
+      //   .catch((error) => console.error(error));
+    });
+  };
+
+  useEffect(() => {
+    _getChoices();
+  }, []);
 
   return (
     <Card className='lesson-item-card'>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AddIcon, WarningIcon } from '@icons/';
+<<<<<<< HEAD
 import { Card, Modal, Notification } from '@components/';
 import LessonItem from './LessonItem';
 import AddLessons from './AddLessons';
@@ -9,6 +10,16 @@ import { deleteLesson, getAllLessons } from '@api/LessonApi';
 
 import { RootState } from '@store/store';
 import { getLessons, Lesson, setIsAddingLesson, setIsLoading } from '@store/lessons';
+=======
+import { Card, Modal, Loader } from '@components/';
+import LessonItem from './LessonItem';
+import AddLessons from './AddLessons';
+
+import { getAllLessons } from '@api/LessonApi';
+
+import { RootState } from '@store/store';
+import { getLessons, setIsAddingLesson, setIsLoading } from '@store/lessons';
+>>>>>>> 3de9716 ([SELS-TASK][FE] Lessons and Words Management Functionality)
 import './index.css';
 import { setIsError } from '@store/category';
 
@@ -18,7 +29,6 @@ export default function LessonsList(props: {
 }) {
   const state = useSelector((state: RootState) => state);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedLesson, setSelectedLesson] = useState(0);
   const dispatch = useDispatch();
 
   const _getLessons = () => {
@@ -33,16 +43,7 @@ export default function LessonsList(props: {
     }
   };
 
-  const handleDelete = () => {
-    if (selectedLesson != 0 && props.category_id) {
-      deleteLesson(props.category_id, selectedLesson)
-        .then((response) => setIsModalOpen(false))
-        .catch((error) => dispatch(setIsError(true)));
-      setSelectedLesson(0);
-    }
-  };
-
-  useEffect(() => {    
+  useEffect(() => {
     _getLessons();
   }, []);
 
@@ -79,10 +80,7 @@ export default function LessonsList(props: {
                       key={lesson.id}
                       lesson={lesson}
                       isEditable={props.isEditable}
-                      toggleModal={(isOpen: boolean, id: number) => {
-                        setIsModalOpen(isOpen);
-                        setSelectedLesson(id);
-                      }}
+                      toggleModal={(isOpen: boolean) => setIsModalOpen(isOpen)}
                     />
                   );
                 })}
