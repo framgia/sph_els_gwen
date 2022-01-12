@@ -14,8 +14,6 @@ const Nav = (props: { className?: string }) => {
     cookies.admin_token
       ? removeCookie('admin_token', { path: '/' })
       : removeCookie('token', { path: '/' });
-    console.log(cookies);
-    
     navigate('/');
   };
 

@@ -73,7 +73,7 @@ export default function EditLesson() {
               <div className='button-group w-full mx-auto justify-center mt-10'>
                 <Button text='Update lesson' className='w-56 md:mr-4' />
                 <Link
-                  to={ `${currentPath.split('/lessons')[0]}/edit`}
+                  to={`${currentPath.split('/lessons')[0]}/edit`}
                   className='red-button text-center md:mt-0 xs:mt-6 w-56'
                 >
                   Cancel
