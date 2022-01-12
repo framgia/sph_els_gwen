@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { removeToken } from '@store/user';
-import Logo from '@icons/Logo';
+import { Logo } from '@icons/';
 import { useCookies } from 'react-cookie';
 
 const Nav = (props: { className?: string }) => {

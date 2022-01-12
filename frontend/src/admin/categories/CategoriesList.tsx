@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Container, Notification, Loader } from '@components/';
@@ -7,17 +6,9 @@ import { getAllCategories } from '@api/CategoryApi';
 import { getAll, setIsLoading, setIsError } from '@store/category';
 import { RootState } from '@store/store';
 import CategoryItem from './CategoryItem';
-
-export interface CategoryResponse {
-  id: number;
-  name: string;
-  description: string;
-  created_at: Date;
-  updated_at: Date;
-}
+import { Category } from '@store/category';
 
 export default function CategoriesList() {
-  const [cookies] = useCookies();
   const state = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch();
 
@@ -32,7 +23,7 @@ export default function CategoriesList() {
         dispatch(getAll(response.data.data));
         dispatch(setIsLoading(false));
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(setIsError(true));
       });
   };
@@ -65,7 +56,7 @@ export default function CategoriesList() {
                 </Link>
               </div>
               <div className='category-list-group'>
-                {state.categories.map((category: CategoryResponse) => {
+                {state.categories.map((category: Category) => {
                   return (
                     <CategoryItem
                       id={category.id}

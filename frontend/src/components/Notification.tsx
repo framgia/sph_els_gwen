@@ -1,21 +1,18 @@
-
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import CheckIcon from '@icons/CheckIcon';
-import ErrorIcon from '@icons/ErrorIcon';
+import { CheckIcon, ErrorIcon } from '@icons/';
 import { setIsError } from '@store/category';
 
 interface ModalProps {
   isSuccess: boolean;
   title?: string;
   children?: any;
-  errorAction?: string
+  errorAction?: string;
 }
 
 export default function Notification(props: ModalProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   return (
     <div className='w-full flex flex-col items-center justify-between h-full'>

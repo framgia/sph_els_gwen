@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CategoryResponse } from '@admin/categories/CategoriesList';
+import { Lesson } from './lessons';
+export interface Category {
+  id: number;
+  name: string;
+  description: string;
+}
 interface CategoryState {
-  categories: CategoryResponse[],
+  categories: Category[],
   isLoading: boolean,
   isError: boolean,
   isInvalid: boolean,
