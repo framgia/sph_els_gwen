@@ -112,7 +112,7 @@ export default function EditLesson() {
             .catch((error) => dispatch(setIsError(true)));
         }
       );
-      navigate('/admin/categories/39/edit');
+      navigate(`/admin/categories/${categoryItem.id}/edit`);
     }
   };
 

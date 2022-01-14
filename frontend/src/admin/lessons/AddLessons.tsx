@@ -74,7 +74,7 @@ export default function AddLessons(props: { category_id: number }) {
           .then((response) => {
             if (response.status === 200) {
               dispatch(setIsLoading(false));
-              navigate('/admin/categories/39/edit');
+              navigate(`/admin/categories/${props.category_id}/edit`);
             }
           })
           .catch((error) => dispatch(setIsError(true)));
