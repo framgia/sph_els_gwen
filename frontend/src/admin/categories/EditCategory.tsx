@@ -16,6 +16,7 @@ import { RootState } from '@store/store';
 import { getSpecificCategory, editCategory } from '@api/CategoryApi';
 import './index.css';
 import LessonsList from '@admin/lessons/LessonsList';
+import { setIsAddingLesson } from '@store/lessons';
 
 type Inputs = {
   name: string;
@@ -34,7 +35,7 @@ export default function EditCategory() {
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { category_id } = useParams();
+  const { category_id } = useParams<{category_id: string}>();
   const {
     register,
     handleSubmit,
@@ -88,7 +89,7 @@ export default function EditCategory() {
         dispatch(setIsLoading(false));
       })
       .catch((error) => {
-        if (error.response.status === 404) {
+        if (error.response?.status === 404) {
           setErrorMessage('Resource not found')
         }
         dispatch(setIsError(true));
@@ -160,16 +161,19 @@ export default function EditCategory() {
                   />
                   <div className='button-group w-full mx-auto justify-center mt-10'>
                     <Button text='Update category' className='w-56 md:mr-4' />
-                    <Link
-                      to={`/admin/categories/${categoryItem.id}`}
+                    <button
                       className='red-button text-center md:mt-0 xs:mt-6 w-56'
+                      onClick={() => {
+                        dispatch(setIsAddingLesson(false))
+                        navigate(`/admin/categories/${categoryItem.id}`);
+                      }}
                     >
                       Cancel
-                    </Link>
+                    </button>
                   </div>
                 </form>
               </div>
-              <LessonsList isEditable={true} />
+              <LessonsList category_id={categoryItem.id} isEditable={true} />
             </div>
           )}
         </>

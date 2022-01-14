@@ -10,9 +10,13 @@ import { Lesson, setIsAddingLesson } from '@store/lessons';
 import { Choice, getChoices } from '@store/choices';
 
 export default function LessonItem(props: {
-  lesson: Lesson;
+  lesson: {
+    id: number;
+    word: string;
+    category_id?: number;
+  };
   isEditable?: boolean;
-  toggleModal?: (isOpen: boolean) => void;
+  toggleModal?: (isOpen: boolean, id: number) => void;
 }) {
   const state = useSelector((state: RootState) => state);
 
@@ -38,30 +42,17 @@ export default function LessonItem(props: {
 
   const handleDelete = () => {
     if (props.toggleModal) {
-      props.toggleModal(true);
+      props.toggleModal(true, props.lesson.id);
     }
   };
 
   const _getChoices = () => {
-    state.lessons.lessons.forEach((lesson) => {
-      console.log('hello');
-      // getAllChoices(lesson.id)
-      //   .then((response) => {
-      //     const choices = response.data.data;
-      //     dispatch(getChoices(response.data.data));
-
-      //     //getting choices of specific lesson
-      //     const _correct_answer = choices.filter((choice: Choice) => {
-      //       if (choice.lesson_id === lesson.id) {
-      //         return choice;
-      //       }
-      //     });
-      //     // console.log(_correct_answer);
-
-      //     // setLessonChoices({...lessonChoices, answer: {..._correct_answer}});
-      //   })
-      //   .catch((error) => console.error(error));
-    });
+    getAllChoices(props.lesson.id)
+      .then((response) => {
+        const choices = response.data.data;
+        dispatch(getChoices(response.data.data));
+      })
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
@@ -85,7 +76,7 @@ export default function LessonItem(props: {
             </div>
             <div className='word-group md:mt-0 xs:mt-4'>
               <h1 className='italic'>answer</h1>
-              {/* {state.choices.choices.map((choice) => {
+              {state.choices.choices.map((choice) => {
                 if (choice.lesson_id === props.lesson.id && choice.is_correct) {
                   return (
                     <h1
@@ -96,7 +87,7 @@ export default function LessonItem(props: {
                     </h1>
                   );
                 }
-              })} */}
+              })}
             </div>
           </div>
           <div
@@ -106,14 +97,14 @@ export default function LessonItem(props: {
           >
             <h1 className='md:text-center italic'>choices</h1>
             <div className='choices-list'>
-              {/* {state.choices.choices.map((choice) => {
+              {state.choices.choices.map((choice) => {
                 if (
                   choice.lesson_id === props.lesson.id &&
                   !choice.is_correct
                 ) {
-                  return <h1 className='choices-item'>{choice.name}</h1>;
+                  return <h1 className='choices-item' key={choice.id}>{choice.name}</h1>;
                 }
-              })} */}
+              })}
             </div>
           </div>
         </div>

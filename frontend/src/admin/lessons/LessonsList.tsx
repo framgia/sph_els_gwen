@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AddIcon, WarningIcon } from '@icons/';
-import { Card, Modal, Loader } from '@components/';
+import { Card, Modal, Notification } from '@components/';
 import LessonItem from './LessonItem';
 import AddLessons from './AddLessons';
 
-import { getAllLessons } from '@api/LessonApi';
+import { deleteLesson, getAllLessons } from '@api/LessonApi';
 
 import { RootState } from '@store/store';
 import { getLessons, setIsAddingLesson, setIsLoading } from '@store/lessons';
 import './index.css';
+import { setIsError } from '@store/category';
 
 export default function LessonsList(props: {
   category_id?: number;
@@ -17,6 +18,7 @@ export default function LessonsList(props: {
 }) {
   const state = useSelector((state: RootState) => state);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedLesson, setSelectedLesson] = useState(0);
   const dispatch = useDispatch();
 
   const _getLessons = () => {
@@ -24,20 +26,25 @@ export default function LessonsList(props: {
     if (props.category_id) {
       getAllLessons(props.category_id)
         .then((response) => {
-          console.log(1);
-          
           dispatch(getLessons(response.data.data));
-          console.log(2);
-          
           dispatch(setIsLoading(false));
         })
         .catch((error) => console.error(error));
     }
   };
 
+  const handleDelete = () => {
+    if (selectedLesson != 0 && props.category_id) {
+      deleteLesson(props.category_id, selectedLesson)
+        .then((response) => setIsModalOpen(false))
+        .catch((error) => dispatch(setIsError(true)));
+        setSelectedLesson(0);
+    }
+  };
+
   useEffect(() => {
     _getLessons();
-  }, []);
+  }, [selectedLesson]);
 
   return (
     <>
@@ -51,7 +58,9 @@ export default function LessonsList(props: {
           toggleModal={(isOpen: boolean) => setIsModalOpen(isOpen)}
           buttonAction={{
             buttonText: 'Yes, delete this lesson',
-            action: () => {},
+            action: () => {
+              handleDelete();
+            },
           }}
         >
           <WarningIcon className='w-32 text-red-300' />
@@ -64,14 +73,16 @@ export default function LessonsList(props: {
             <>
               <h1 className='page-label'>Lessons in this category</h1>
               <div className='lessons-card-group'>
-                {!state.lessons.isLoading && state.lessons.lessons.map((lesson) => {
-                  console.log('lessons');                  
+                {state.lessons.lessons.map((lesson) => {
                   return (
                     <LessonItem
                       key={lesson.id}
                       lesson={lesson}
                       isEditable={props.isEditable}
-                      toggleModal={(isOpen: boolean) => setIsModalOpen(isOpen)}
+                      toggleModal={(isOpen: boolean, id: number) => {
+                        setIsModalOpen(isOpen);
+                        setSelectedLesson(id);
+                      }}
                     />
                   );
                 })}
@@ -87,7 +98,7 @@ export default function LessonsList(props: {
           )}
           {state.lessons.isAddingLesson && (
             <>
-              <AddLessons />
+              <AddLessons category_id={props.category_id ?? 0} />
             </>
           )}
         </>
