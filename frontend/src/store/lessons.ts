@@ -4,7 +4,10 @@ export interface Lesson {
   id: number;
   word: string;
   category_id: number;
+<<<<<<< HEAD
   choices: Choice[]
+=======
+>>>>>>> 0a3ea21 (implemented editing and adding of lessons)
 }
 
 export interface Choice {

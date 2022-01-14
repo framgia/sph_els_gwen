@@ -6,7 +6,11 @@ import { RootState } from '@store/store';
 import { Lesson, Choice, setIsAddingLesson } from '@store/lessons';
 
 export default function LessonItem(props: {
-  lesson: Lesson;
+  lesson: {
+    id: number;
+    word: string;
+    category_id?: number;
+  };
   isEditable?: boolean;
   toggleModal?: (isOpen: boolean, id: number) => void;
 }) {
@@ -40,25 +44,12 @@ export default function LessonItem(props: {
   };
 
   const _getChoices = () => {
-    state.lessons.lessons.forEach((lesson) => {
-      console.log('hello');
-      // getAllChoices(lesson.id)
-      //   .then((response) => {
-      //     const choices = response.data.data;
-      //     dispatch(getChoices(response.data.data));
-
-      //     //getting choices of specific lesson
-      //     const _correct_answer = choices.filter((choice: Choice) => {
-      //       if (choice.lesson_id === lesson.id) {
-      //         return choice;
-      //       }
-      //     });
-      //     // console.log(_correct_answer);
-
-      //     // setLessonChoices({...lessonChoices, answer: {..._correct_answer}});
-      //   })
-      //   .catch((error) => console.error(error));
-    });
+    getAllChoices(props.lesson.id)
+      .then((response) => {
+        const choices = response.data.data;
+        dispatch(getChoices(response.data.data));
+      })
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
