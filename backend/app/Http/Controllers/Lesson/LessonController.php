@@ -16,6 +16,7 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        return $this->returnOne($lesson);
+        $withChoices = $lesson->load('choices');
+        return $this->returnOne($withChoices);
     }
 }

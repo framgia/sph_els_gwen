@@ -18,7 +18,7 @@ class CategoryLessonController extends Controller
      */
     public function index(Category $category)
     {
-        $lessons = $category->lessons;    
+        $lessons = $category->lessons()->with('choices')->get();
         return $this->successResponse($lessons);
     }
 

@@ -57,7 +57,7 @@ class LessonChoiceController extends Controller
         $this->checkIfAdmin();
         $this->checkChoice($lesson, $choice);
         $request->validate([
-            'name' => ['required_without_all:is_correct', Rule::unique('choices', 'name')],
+            'name' => ['required_without_all:is_correct', Rule::unique('choices', 'name')->ignore($choice->id)],
             'is_correct' => ['required_without_all:name', 'boolean']
         ]);
 
