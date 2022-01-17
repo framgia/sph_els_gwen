@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Category;
 
 use App\Models\Word;
+use App\Models\Choice;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -32,36 +33,24 @@ class CategoryWordController extends Controller
     {
         $this->checkIfAdmin();
         $data = $request->validate([
-            'word' => [
-                'required', 
-                Rule::unique('words', 'word')
-            ]
+          'word'=> ['required', 'string'],
+          'choices' => ['required', 'array', 'min:4'],
+          'choices.*.name' => ['required', 'string'],
+          'choices.*.is_correct'=> ['required', 'boolean']
         ]);
 
         $data['category_id'] = $category->id;
         $newWord = Word::create($data);
-        return $this->returnOne($newWord, 201);
+        foreach($request->choices as $choice) {
+           Choice::create([
+             'word_id'=>$newWord->id,
+              'name' => $choice['name'],
+              'is_correct' => $choice['is_correct']
+           ]);
+        }
+        return $this->returnOne($newWord->load('choices'), 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Category $category, Word $word)
-    {
-        $this->checkIfAdmin();
-        $this->checkWord($category, $word);
-        $request->validate([
-            'word' => ['required', Rule::unique('words', 'word')->ignore($word->id)]
-        ]);
-
-        $word->fill($request->only(['word']));
-        $word->save();
-        return $this->returnOne($word);
-    }
 
     /**
      * Remove the specified resource from storage.
