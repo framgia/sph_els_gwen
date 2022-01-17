@@ -11,6 +11,7 @@ import { deleteLesson, getAllLessons } from '@api/LessonApi';
 
 import { RootState } from '@store/store';
 import { getLessons, Lesson, setIsAddingLesson, setIsLoading } from '@store/lessons';
+<<<<<<< HEAD
 =======
 import { Card, Modal, Loader } from '@components/';
 =======
@@ -24,6 +25,8 @@ import { deleteLesson, getAllLessons } from '@api/LessonApi';
 import { RootState } from '@store/store';
 import { getLessons, setIsAddingLesson, setIsLoading } from '@store/lessons';
 >>>>>>> 3de9716 ([SELS-TASK][FE] Lessons and Words Management Functionality)
+=======
+>>>>>>> a390109 (fixed bug of multiple re-rendering of choices)
 import './index.css';
 import { setIsError } from '@store/category';
 
@@ -53,13 +56,13 @@ export default function LessonsList(props: {
       deleteLesson(props.category_id, selectedLesson)
         .then((response) => setIsModalOpen(false))
         .catch((error) => dispatch(setIsError(true)));
-        setSelectedLesson(0);
+      setSelectedLesson(0);
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {    
     _getLessons();
-  }, [selectedLesson]);
+  }, []);
 
   return (
     <>
@@ -89,10 +92,14 @@ export default function LessonsList(props: {
               <h1 className='page-label'>Lessons in this category</h1>
               <div className='lessons-card-group'>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 {state.lessons.lessons.map((lesson:Lesson) => {                  
 =======
                 {state.lessons.lessons.map((lesson) => {
 >>>>>>> 0a3ea21 (implemented editing and adding of lessons)
+=======
+                {state.lessons.lessons.map((lesson:Lesson) => {                  
+>>>>>>> a390109 (fixed bug of multiple re-rendering of choices)
                   return (
                     <LessonItem
                       key={lesson.id}

@@ -6,22 +6,11 @@ import { RootState } from '@store/store';
 import { Lesson, Choice, setIsAddingLesson } from '@store/lessons';
 
 export default function LessonItem(props: {
-  lesson: {
-    id: number;
-    word: string;
-    category_id?: number;
-  };
+  lesson: Lesson;
   isEditable?: boolean;
   toggleModal?: (isOpen: boolean, id: number) => void;
 }) {
-  const state = useSelector((state: RootState) => state);
-
-  const [lessonChoices, setLessonChoices] = useState([
-    {
-      answer: [],
-      other_choices: [],
-    },
-  ]);
+  // const state = useSelector((state: RootState) => state);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,19 +31,6 @@ export default function LessonItem(props: {
       props.toggleModal(true, props.lesson.id);
     }
   };
-
-  const _getChoices = () => {
-    getAllChoices(props.lesson.id)
-      .then((response) => {
-        const choices = response.data.data;
-        dispatch(getChoices(response.data.data));
-      })
-      .catch((error) => console.error(error));
-  };
-
-  useEffect(() => {
-    _getChoices();
-  }, []);
 
   return (
     <Card className='lesson-item-card'>

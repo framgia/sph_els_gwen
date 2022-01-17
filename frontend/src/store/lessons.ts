@@ -5,9 +5,13 @@ export interface Lesson {
   word: string;
   category_id: number;
 <<<<<<< HEAD
+<<<<<<< HEAD
   choices: Choice[]
 =======
 >>>>>>> 0a3ea21 (implemented editing and adding of lessons)
+=======
+  choices: Choice[]
+>>>>>>> a390109 (fixed bug of multiple re-rendering of choices)
 }
 
 export interface Choice {
@@ -36,6 +40,8 @@ export const lessonSlice = createSlice({
   reducers: {
     getLessons: (state, action) => {
       state.lessons = action.payload;
+      console.log(state.lessons);
+      
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
