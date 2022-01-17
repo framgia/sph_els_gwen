@@ -41,7 +41,7 @@ export default function EditLesson() {
       .then((response) => {
         setCategoryItem(response.data.data);
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(setIsError(true));
       });
   };
@@ -63,7 +63,7 @@ export default function EditLesson() {
         });
         dispatch(setIsLoading(false));
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(setIsError(true));
       });
   };
@@ -169,7 +169,9 @@ export default function EditLesson() {
                         <FormInput
                           type='text'
                           register={{
-                            ...register('choices.1.name'),
+                            ...register('choices.1.name', {
+                              onChange: () => setErrorMsg(''),
+                            }),
                           }}
                         />
                         <FormInput

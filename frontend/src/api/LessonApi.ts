@@ -18,6 +18,10 @@ export const deleteLesson = (category_id: number, lesson_id: number) => {
   return axios.delete(`${API_URL}/categories/${category_id}/lessons/${lesson_id}`, setAdminHeaders());
 }
 
+// export const addChoices = (lesson_id: number, body: { name: string, is_correct: boolean }) => {
+//   return axios.post(`${API_URL}/lessons/${lesson_id}/choices`, body, setAdminHeaders())
+// }
+
 export const getLesson = (lesson_id: number) => {
   return axios.get(`${API_URL}/lessons/${lesson_id}`, setAdminHeaders());
 }
