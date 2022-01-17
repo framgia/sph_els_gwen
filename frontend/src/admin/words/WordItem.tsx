@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@components/';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -41,18 +41,24 @@ export default function WordItem(props: {
           >
             <div className='word-group'>
               <span className='italic'>word</span>
-              <span className='md:text-2xl text-purple-400 font-bold'>
+              <span className='text-2xl text-purple-400 font-bold'>
                 {props.word.word}
               </span>
             </div>
             <div className='word-group md:mt-0 xs:mt-4'>
               <span className='italic'>answer</span>
-              <span
-                className='text-2xl text-purple-400 font-semibold'
-                key={answer?.id}
-              >
-                {answer?.name}
-              </span>
+              {props.word.choices.map((choice: Choice) => {
+                if (choice.is_correct) {
+                  return (
+                    <span
+                      className='text-2xl text-purple-400 font-semibold'
+                      key={choice.id}
+                    >
+                      {choice.name}
+                    </span>
+                  );
+                }
+              })}
             </div>
           </div>
           <div
