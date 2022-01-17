@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Word;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Choice extends Model
 {
@@ -11,12 +12,12 @@ class Choice extends Model
 
      protected $fillable = [
         'name',
-        'lesson_id',
+        'word_id',
         'is_correct'
     ];
 
 
-    public function lesson() {
-        return $this->belongsTo(Lesson::class);
+    public function word() {
+        return $this->belongsTo(Word::class);
     }
 }

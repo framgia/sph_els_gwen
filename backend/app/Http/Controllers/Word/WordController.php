@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Lesson;
+namespace App\Http\Controllers\Word;
 use App\Models\Choice;
-use App\Models\Lesson;
+use App\Models\Word;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class LessonController extends Controller
+class WordController extends Controller
 {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Lesson  $lesson
+     * @param  \App\Models\Word  $word
      * @return \Illuminate\Http\Response
      */
-    public function show(Lesson $lesson)
+    public function show(Word $word)
     {
-        $withChoices = $lesson->load('choices');
+        $withChoices = $word->load('choices');
         return $this->returnOne($withChoices);
     }
 
-    public function update(Request $request, Lesson $lesson)
+    public function update(Request $request, Word $word)
     {
         $this->checkIfAdmin();
 
@@ -33,9 +33,9 @@ class LessonController extends Controller
           'choices.*.is_correct'=> ['required', 'boolean']
         ]);
 
-        // update lesson
-        $lesson->fill($request->only(['word']));
-        $lesson->save();
+        // update word
+        $word->fill($request->only(['word']));
+        $word->save();
 
         // update choices
         foreach($request->choices as $choice) {
@@ -44,6 +44,6 @@ class LessonController extends Controller
             'is_correct' => $choice['is_correct']            
           ]);
         }        
-        return $this->returnOne($lesson->load('choices'));
+        return $this->returnOne($word->load('choices'));
     }
 }

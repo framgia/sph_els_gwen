@@ -4,11 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Lesson\LessonController;
+use App\Http\Controllers\Word\WordController;
 use App\Http\Controllers\Category\CategoryController;
-use App\Http\Controllers\Category\CategoryLessonController;
+use App\Http\Controllers\Category\CategoryWordController;
 use App\Http\Controllers\Choice\ChoiceController;
-use App\Http\Controllers\Lesson\LessonChoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,11 +37,11 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     //--------------------CATEGORIES----------------------//
     Route::resource('categories', CategoryController::class)
         ->except(['create', 'edit']);
-    Route::resource('categories.lessons',CategoryLessonController::class)
+    Route::resource('categories.words',CategoryWordController::class)
         ->except(['create', 'edit', 'show', 'update']);
 
-    //--------------------LESSONS----------------------//
-    Route::resource('lessons',LessonController::class)
+    //--------------------WORDS----------------------//
+    Route::resource('words',WordController::class)
       ->only(['show', 'update']);
 
     //--------------------CHOICES----------------------//

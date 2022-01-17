@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Category;
 
 use App\Models\Choice;
-use App\Models\Lesson;
+use App\Models\Word;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class CategoryLessonController extends Controller
+class CategoryWordController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,8 @@ class CategoryLessonController extends Controller
      */
     public function index(Category $category)
     {
-        $lessons = $category->lessons()->with('choices')->get();
-        return $this->successResponse($lessons);
+        $words = $category->words()->with('choices')->get();
+        return $this->successResponse($words);
     }
 
     /**
@@ -40,15 +40,15 @@ class CategoryLessonController extends Controller
         ]);
 
         $data['category_id'] = $category->id;
-        $newLesson = Lesson::create($data);
+        $newWord = Word::create($data);
         foreach($request->choices as $choice) {
            Choice::create([
-             'lesson_id'=>$newLesson->id,
+             'word_id'=>$newWord->id,
               'name' => $choice['name'],
               'is_correct' => $choice['is_correct']
            ]);
         }
-        return $this->returnOne($newLesson->load('choices'), 201);
+        return $this->returnOne($newWord->load('choices'), 201);
     }
 
 
@@ -58,17 +58,17 @@ class CategoryLessonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category, Lesson $lesson)
+    public function destroy(Category $category, Word $word)
     {
         $this->checkIfAdmin();
-        $this->checkLesson($category, $lesson);
-        $lesson->delete();
-        return $this->returnOne($lesson);
+        $this->checkWord($category, $word);
+        $word->delete();
+        return $this->returnOne($word);
     }
 
-    protected function checkLesson(Category $category, Lesson $lesson) {
-        if($lesson->category_id != $category->id) {
-            throw new HttpException(422, 'Lesson does not belong to this category');
+    protected function checkWord(Category $category, Word $word) {
+        if($word->category_id != $category->id) {
+            throw new HttpException(422, 'Word does not belong to this category');
         }
     }
 

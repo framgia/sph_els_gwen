@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Word;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -14,7 +15,7 @@ class Category extends Model
         'description',
     ];
 
-    public function lessons() {
-        return $this->hasMany(Lesson::class);
+    public function words() {
+        return $this->hasMany(Word::class);
     }
 }
