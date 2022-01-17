@@ -1,11 +1,13 @@
 /*********** FOR WORDS LIST ************/
 .words-list-group {
-  @apply flex flex-col
-  lg:mx-10
+  @apply flex flex-col 
+  md:mx-10
+  /* md:w-2/3 
+  xs:w-full; */
 }
 
 .words-card-group {
-  @apply mt-8 md:grid md:gap-4
+  @apply mt-8 md:grid md:grid-cols-3 md:gap-6
   xs:flex xs:flex-col;
 }
 
@@ -17,17 +19,18 @@
 
 /*********** FOR WORDS ITEM ************/
 .word-item-card {
-  @apply rounded-xl md:flex-col p-6
-  md:mb-0 xs:mb-7;
+  @apply rounded-xl md:flex-col 
+  md:p-9 xs:p-7 
+  md:mb-0 xs:mb-7
 }
 
 .word-answer-group {
   @apply flex md:flex-row xs:flex-col justify-around
-  md:w-full xs:w-1/2;
+  md:w-full xs:w-1/2
 }
 
 .word-group {
-  @apply flex flex-wrap
+  @apply flex 
   flex-col
   md:justify-around;
 }
@@ -40,11 +43,11 @@
 }
 
 .choices-list {
-  @apply text-center flex flex-wrap md:justify-around md:flex-row xs:items-end xs:flex-col md:mt-2 w-full;
+  @apply text-center md:grid md:grid-cols-2 md:gap-3 xs:flex xs:items-end xs:flex-col md:mt-2 w-full;
 }
 
 .choices-item {
-  @apply font-medium md:border md:border-secondary md:px-2 rounded-md;
+  @apply font-medium md:border md:border-secondary md:px-3 rounded-md;
 }
 
 .word-item-buttons {

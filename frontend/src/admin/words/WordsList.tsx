@@ -51,7 +51,11 @@ export default function WordsList(props: {
 
   return (
     <>
-      <div className='words-list-group w-full'>
+      <div
+        className={`words-list-group ${
+          props.isEditable ? 'md:w-2/3 xs:w-full' : 'w-full'
+        }`}
+      >
         <Modal
           isOpen={isModalOpen}
           toggleModal={(isOpen: boolean) => setIsModalOpen(isOpen)}
