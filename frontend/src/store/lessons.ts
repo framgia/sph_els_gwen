@@ -32,9 +32,7 @@ export const lessonSlice = createSlice({
   initialState: initialState,
   reducers: {
     getLessons: (state, action) => {
-      state.lessons = action.payload;
-      console.log(state.lessons);
-      
+      state.lessons = action.payload;      
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
