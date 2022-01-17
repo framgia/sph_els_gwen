@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Nav, Container, Loader, Modal, Card } from '@components/';
+import { Nav, Container, Loader, Modal } from '@components/';
 import { WarningIcon, BackIcon } from '@icons/';
 import WordsList from '@admin/words/WordsList';
 
@@ -36,7 +36,7 @@ export default function CategoryDetails() {
     getSpecificCategory(id)
       .then((response) => {
         setCategoryItem(response.data.data);
-        dispatch(setIsError(false));
+        dispatch(setIsLoading(false));
       })
       .catch((error) => {
         dispatch(setIsError(true));

@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Word } from './words';
 export interface Category {
   id: number;
   name: string;

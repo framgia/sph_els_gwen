@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie';
 const Nav = (props: { className?: string }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, , removeCookie] = useCookies();
 
   const handleLogout = () => {
     dispatch(removeToken);

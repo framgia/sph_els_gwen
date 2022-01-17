@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@store/store';
+import { useDispatch } from 'react-redux';
 
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
 import { Button, FormInput } from '@components/';
@@ -15,7 +14,7 @@ type Inputs = {
 };
 
 export default function AddWords(props: { category_id: number }) {
-  const [isInvalid, setIsInvalid] = useState(false);
+  const [, setIsInvalid] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const dispatch = useDispatch();
   const {
@@ -24,7 +23,6 @@ export default function AddWords(props: { category_id: number }) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const state = useSelector((state: RootState) => state);
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'choices',

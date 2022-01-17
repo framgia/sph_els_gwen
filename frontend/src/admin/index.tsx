@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Nav } from '@components/';
 import CategoriesList from './categories/CategoriesList';
 

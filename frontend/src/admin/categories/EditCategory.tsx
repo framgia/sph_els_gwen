@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {

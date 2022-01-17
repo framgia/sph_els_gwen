@@ -1,5 +1,4 @@
 import React from 'react'
-import { Container } from '.';
 import LoadingIcon from '../icons/LoadingIcon';
 
 export default function Loader() {

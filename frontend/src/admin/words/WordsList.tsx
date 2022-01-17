@@ -33,7 +33,7 @@ export default function WordsList(props: {
   };
 
   const handleDelete = () => {
-    if (selectedWord != 0 && props.category_id) {
+    if (selectedWord !== 0 && props.category_id) {
       deleteWord(props.category_id, selectedWord)
         .then((response) => {
           if (response.status === 200) {
