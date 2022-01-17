@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
-import { Button, FormInput } from '@components/';
-import { getLessons, setIsAddingLesson, setIsLoading } from '@store/lessons';
-import { getChoices } from '@store/choices';
-import { addChoices, addLesson } from '@api/LessonApi';
+import { Button, FormInput, Loader } from '@components/';
+import { setIsAddingLesson, setIsLoading } from '@store/lessons';
+import { addLesson } from '@api/LessonApi';
 import { setIsError } from '@store/category';
 import { useNavigate } from 'react-router-dom';
 
@@ -51,51 +50,39 @@ export default function AddLessons(props: { category_id: number }) {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    dispatch(setIsLoading(true));
-    if (checkChoices(data.choices)) {
-      const newLessonId = await addLesson(props.category_id, {
-        word: data.word,
-      })
-        .then((response) => response.data.data.id)
-        .catch((error) => 0);
+    if (checkChoice(data.choices)) {
+      const choices = data.choices.map((choice: { name: string }) => ({
+        ...choice,
+        is_correct: false,
+      }));
 
-      const choices = data.choices.map(
-        (choice: { name: string; is_correct: boolean }) => ({
-          ...choice,
-          is_correct: false,
+      addLesson(props.category_id, {
+        word: data.word,
+        choices: [{ name: data.correct_answer, is_correct: true }, ...choices],
+      })
+        .then((response) => {
+          if (response.status === 201) {
+            dispatch(setIsAddingLesson(false));
+          }
         })
-      );
-      const payload = [
-        { name: data.correct_answer, is_correct: true },
-        ...choices,
-      ];
-      payload.forEach((choice) => {
-        addChoices(newLessonId, choice)
-          .then((response) => {
-            if (response.status === 200) {
-              dispatch(setIsLoading(false));
-              navigate(`/admin/categories/${props.category_id}/edit`);
-            }
-          })
-          .catch((error) => dispatch(setIsError(true)));
-      });
-      dispatch(setIsAddingLesson(false));
+        .catch((error) => dispatch(setIsError(true)));
     }
   };
 
-  const checkChoices = (choices: []) => {
-    //check if choices added are empty
+  const checkChoice = (choices: []) => {
     const emptyChoice = choices.find(
       (choice: { name: string }) => choice.name === ''
     );
-    emptyChoice ? setErrorMsg('Choices cannot be empty.') : setErrorMsg('');
-    //check if choices are less than 3
-    if (choices.length < 3) {
+
+    if (emptyChoice) {
+      setErrorMsg('Choices cannot be empty.');
+      return false;
+    } else if (choices.length < 3) {
       setErrorMsg('The lesson must have at least 3 choices.');
-    } else {
-      return true;
+      return false;
     }
-    return false;
+
+    return true;
   };
 
   useEffect(() => {
@@ -153,7 +140,11 @@ export default function AddLessons(props: { category_id: number }) {
                   >
                     <FormInput
                       type='text'
-                      register={{ ...register(`choices[${index}].name`) }}
+                      register={{
+                        ...register(`choices.${index}.name`, {
+                          onChange: () => setErrorMsg(''),
+                        }),
+                      }}
                       placeholder='Choice'
                     />
                     {index !== 0 && (

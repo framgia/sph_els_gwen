@@ -7,7 +7,7 @@ import { Nav, Container, FormInput, Button, Loader } from '@components/';
 import { getSpecificCategory } from '@api/CategoryApi';
 import { Category, setIsError, setIsLoading } from '@store/category';
 import { RootState } from '@store/store';
-import { getLesson, updateChoice, updateLesson } from '@api/LessonApi';
+import { getLesson, updateLesson } from '@api/LessonApi';
 import { Choice } from '@store/lessons';
 
 type Inputs = {
@@ -21,10 +21,7 @@ export default function EditLesson() {
   const currentPath = window.location.pathname;
   const navigate = useNavigate();
   const state = useSelector((state: RootState) => state);
-  const [errorMsg, setErrorMsg] = useState({
-    word: '',
-    choice: '',
-  });
+  const [errorMsg, setErrorMsg] = useState('');
   const [categoryItem, setCategoryItem] = useState({
     id: 0,
     name: '',
@@ -33,28 +30,18 @@ export default function EditLesson() {
   const {
     register,
     reset,
-    control,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const { category_id, lesson_id } = useParams();
   const dispatch = useDispatch();
-  const lessonValidation = {
-    word: {
-      required: {
-        value: true,
-        message: 'Word is required.',
-      },
-      onChange: () => setErrorMsg({ ...errorMsg, word: '' }),
-    },
-  };
 
   const _getSpecificCategory = (category_id: number) => {
     getSpecificCategory(category_id)
       .then((response) => {
         setCategoryItem(response.data.data);
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(setIsError(true));
       });
   };
@@ -76,7 +63,7 @@ export default function EditLesson() {
         });
         dispatch(setIsLoading(false));
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(setIsError(true));
       });
   };
@@ -85,34 +72,19 @@ export default function EditLesson() {
       (choice: { name: string }) => choice.name === ''
     );
     if (emptyChoice) {
-      setErrorMsg({ ...errorMsg, choice: 'Choices cannot be empty' });
+      setErrorMsg('Choices cannot be empty');
     } else {
-      updateLesson(categoryItem.id, data.id, { word: data.word })
+      setErrorMsg('');
+      updateLesson(data.id, {
+        word: data.word,
+        choices: [...data.choices, ...data.correct_answer],
+      })
         .then((response) => {
-          response.data.status === 200
-            ? setErrorMsg({ ...errorMsg, word: '' })
-            : setErrorMsg({ ...errorMsg, word: 'Word is already taken' });
+          if(response.status===200) {
+            navigate(`/admin/categories/${categoryItem.id}/edit`);
+          }
         })
-        .catch((error) => dispatch(setIsError(true)));          
-      [...data.choices, ...data.correct_answer].forEach(
-        (choice: Choice) => {          
-          updateChoice(data.id, {
-            id: choice.id,
-            name: choice.name,
-            is_correct: choice.is_correct,
-          })
-            .then((response) =>
-              response.data.status === 200
-                ? setErrorMsg({ ...errorMsg, choice: '' })
-                : setErrorMsg({
-                    ...errorMsg,
-                    choice: 'Choice name is already taken',
-                  })
-            )
-            .catch((error) => dispatch(setIsError(true)));
-        }
-      );
-      navigate(`/admin/categories/${categoryItem.id}/edit`);
+        .catch((error) => dispatch(setIsError(true)));
     }
   };
 
@@ -162,14 +134,16 @@ export default function EditLesson() {
                         label='Word:'
                         type='text'
                         register={{
-                          ...register('word', lessonValidation.word),
+                          ...register('word', {
+                            required: {
+                              value: true,
+                              message: 'Word is required.',
+                            },
+                          }),
                         }}
                         errors={errors.word}
                         required
                       />
-                      {errorMsg.word && (
-                        <span className='error'>{errorMsg.word}</span>
-                      )}
                     </div>
                     <div className='w-3/6 px-10'>
                       <FormInput
@@ -187,24 +161,28 @@ export default function EditLesson() {
                         <FormInput
                           type='text'
                           register={{
-                            ...register('choices.0.name'),
+                            ...register('choices.0.name', {
+                              onChange: () => setErrorMsg(''),
+                            }),
                           }}
                         />
                         <FormInput
                           type='text'
                           register={{
-                            ...register('choices.1.name'),
+                            ...register('choices.1.name', {
+                              onChange: () => setErrorMsg(''),
+                            }),
                           }}
                         />
                         <FormInput
                           type='text'
                           register={{
-                            ...register('choices.2.name'),
+                            ...register('choices.2.name', {
+                              onChange: () => setErrorMsg(''),
+                            }),
                           }}
                         />
-                        {errorMsg.choice && (
-                          <span className='error'>{errorMsg.choice}</span>
-                        )}
+                        {errorMsg && <span className='error'>{errorMsg}</span>}
                       </div>
                     </div>
                   </div>
