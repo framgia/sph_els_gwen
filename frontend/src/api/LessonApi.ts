@@ -29,7 +29,7 @@ export const updateLesson = (category_id:number, lesson_id: number, body: {word:
   return axios.put(`${API_URL}/categories/${category_id}/lessons/${lesson_id}`, body, setAdminHeaders());
 }
 
-export const updateChoice = (lesson_id:number, body: {id:number, name:string, is_correct:boolean}) => { 
+export const updateChoice = (lesson_id:number, body: {id:number, name:string, is_correct:boolean}) => {   
   return axios.put(`${API_URL}/lessons/${lesson_id}/choices/${body.id}`,{
       name: body.name,
       is_correct: body.is_correct

@@ -4,7 +4,16 @@ export interface Lesson {
   id: number;
   word: string;
   category_id: number;
+  choices: Choice[]
 }
+
+export interface Choice {
+  id: number;
+  name: string;
+  lesson_id: number;
+  is_correct: boolean;
+}
+
 
 interface LessonState {
   lessons: Lesson[],
@@ -24,6 +33,8 @@ export const lessonSlice = createSlice({
   reducers: {
     getLessons: (state, action) => {
       state.lessons = action.payload;
+      console.log(state.lessons);
+      
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;

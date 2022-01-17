@@ -20,7 +20,7 @@ export const choiceSlice = createSlice({
   initialState: initialState,
   reducers: {
     getChoices: (state, action) => {
-      state.choices = [...state.choices, ...action.payload];
+      // state.choices = [...state.choices, ...action.payload];
     },
   },
 });
