@@ -126,9 +126,9 @@ export default function EditCategory() {
             </div>
           )}
           {!state.category.isLoading && !state.category.isError && (
-            <div className='flex w-full px-10'>
-              <div className='flex flex-col w-1/3'>
-                <h1 className='page-label'>Edit category</h1>
+            <div className='flex lg:flex-row xs:flex-col w-full px-10'>
+              <div className='flex flex-col lg:w-1/3 xs:w-full mb-10'>
+                <h1 className='page-label text-center'>Edit category</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
                   <div className='w-full'>
                     <FormInput
@@ -163,10 +163,10 @@ export default function EditCategory() {
                     disabled={state.words.isAddingWord}
                   />
                   {!state.words.isAddingWord && (
-                    <div className='button-group w-full mx-auto justify-center mt-10'>
+                    <div className='flex items-center justify-center w-full mx-auto mt-10'>
                       <Button text='Update category' className='w-56 md:mr-4' />
                       <button
-                        className='red-button text-center md:mt-0 xs:mt-6 w-56'
+                        className='red-button text-center w-56'
                         onClick={() => {
                           dispatch(setIsAddingWord(false));
                           navigate(`/admin/categories/${categoryItem.id}`);

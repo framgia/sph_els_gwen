@@ -22,8 +22,8 @@ const Nav = (props: { className?: string }) => {
       className={`flex items-center justify-between flex-wrap p-4 pl-10 w-full ${props.className} sticky top-0 z-50`}
     >
       <div className='flex items-center'>
-        <Logo className='w-10' />
-        <span className='ml-4 text-2xl font-semibold tracking-wider'>
+        <Logo className='md:w-10 xs:w-8' />
+        <span className='ml-4 md:text-2xl sm:text-lg xs:text-md font-semibold tracking-wider'>
           E-Learning System
         </span>
       </div>

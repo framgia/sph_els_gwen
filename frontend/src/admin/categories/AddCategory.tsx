@@ -76,7 +76,7 @@ export default function AddCategory() {
           )}
           {!state.category.isLoading && !state.category.isError && (
             <div className='flex md:flex-row xs:flex-col w-full justify-evenly'>
-              <div className='flex flex-col md:w-1/3 xs:w-full items-center'>
+              <div className='flex flex-col lg:w-1/3 xs:w-full items-center'>
                 <h1 className='page-label'>Add new category</h1>
                 <form
                   onSubmit={handleSubmit(onSubmit)}

@@ -45,17 +45,13 @@ export default function WordsList(props: {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     _getWords();
   }, []);
 
   return (
     <>
-      <div
-        className={`words-list-group ${
-          props.isEditable ? 'md:w-2/3 xs:w-full' : 'w-full'
-        }`}
-      >
+      <div className='words-list-group w-full'>
         <Modal
           isOpen={isModalOpen}
           toggleModal={(isOpen: boolean) => setIsModalOpen(isOpen)}
@@ -75,7 +71,13 @@ export default function WordsList(props: {
           {!state.words.isAddingWord && (
             <>
               <h2 className='page-label'>Words in this category</h2>
-              <div className='words-card-group'>
+              <div
+                className={`words-card-group ${
+                  props.isEditable
+                    ? 'lg:grid-cols-3 md:grid-cols-2'
+                    : 'lg:grid-cols-4 md:grid-cols-2'
+                }`}
+              >
                 {state.words.words.length < 1 && (
                   <span className='italic text-lg text-gray-400'>
                     No words yet. Edit this category to add words.

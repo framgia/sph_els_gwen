@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD:frontend/src/admin/lessons/LessonItem.tsx
-import { Card, Loader } from '@components/';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@store/store';
-import { Lesson, Choice, setIsAddingLesson } from '@store/lessons';
-=======
 import { Card } from '@components/';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Word, Choice, setIsAddingWord } from '@store/words';
->>>>>>> 5b641f4 (changed filenames and terms to words in frontend side):frontend/src/admin/words/WordItem.tsx
 
 export default function WordItem(props: {
   word: Word;
@@ -49,10 +41,14 @@ export default function WordItem(props: {
           >
             <div className='word-group'>
               <span className='italic'>word</span>
+<<<<<<< HEAD
               <span className='text-2xl text-purple-400 font-bold'>
 <<<<<<< HEAD:frontend/src/admin/lessons/LessonItem.tsx
                 {props.lesson.word}
 =======
+=======
+              <span className='md:text-2xl text-purple-400 font-bold'>
+>>>>>>> 85c4ce5 (made components to be responsive)
                 {props.word.word}
 >>>>>>> 5b641f4 (changed filenames and terms to words in frontend side):frontend/src/admin/words/WordItem.tsx
               </span>
@@ -71,7 +67,7 @@ export default function WordItem(props: {
                 if (choice.is_correct) {
                   return (
                     <span
-                      className='text-2xl text-purple-400 font-semibold'
+                      className='md:text-2xl text-purple-400 font-semibold'
                       key={choice.id}
                     >
                       {choice.name}
