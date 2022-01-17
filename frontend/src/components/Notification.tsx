@@ -15,9 +15,9 @@ export default function Notification(props: ModalProps) {
   const dispatch = useDispatch();
 
   return (
-    <div className='w-full flex flex-col items-center justify-between h-full'>
+    <div className='w-full flex flex-col items-center justify-center h-full py-36'>
       {props.isSuccess ? <CheckIcon /> : <ErrorIcon />}
-      <h1 className='md:text-4xl xs:text-xl mt-8'>{props.title}</h1>
+      <span className='md:text-4xl xs:text-xl mt-8'>{props.title}</span>
       {props.isSuccess && props.children}
       {!props.isSuccess && props.errorAction === 'back' && (
         <button
@@ -32,7 +32,7 @@ export default function Notification(props: ModalProps) {
       )}
       {!props.isSuccess && props.errorAction === 'refresh' && (
         <button
-          className='button bg-primary text-center mt-8'
+          className='button bg-primary text-center mt-14'
           onClick={() => {
             window.location.reload();
           }}

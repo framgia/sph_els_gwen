@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Nav, Container, Loader, Modal, Notification } from '@components/';
+import { Nav, Container, Loader, Modal, Card } from '@components/';
 import { WarningIcon } from '@icons/';
-import LessonsList from '@admin/lessons/LessonsList';
+import WordsList from '@admin/words/WordsList';
 
 import { deleteCategory, getSpecificCategory } from '@api/CategoryApi';
 
@@ -64,9 +64,9 @@ export default function CategoryDetails() {
             }}
           >
             <WarningIcon className='w-32 text-red-300' />
-            <h1 className='text-3xl font-semibold'>
+            <p className='text-3xl font-semibold'>
               Are you sure you want to delete this category?
-            </h1>
+            </p>
           </Modal>
           {state.category.isLoading && !state.category.isError && <Loader />}
           {state.category.isError && !state.category.isLoading && (
@@ -116,7 +116,7 @@ export default function CategoryDetails() {
                   </div>
                 </div>
               </div>
-              <LessonsList category_id={categoryItem.id} />
+              <WordsList category_id={categoryItem.id} />
             </>
           )}
         </>

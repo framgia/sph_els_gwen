@@ -1,22 +1,22 @@
-/*********** FOR LESSONS LIST ************/
-.lessons-list-group {
+/*********** FOR WORDS LIST ************/
+.words-list-group {
   @apply flex flex-col 
   md:mx-10
 }
 
-.lessons-card-group {
+.words-card-group {
   @apply mt-8 md:grid md:grid-cols-3 md:gap-6
   xs:flex xs:flex-col;
 }
 
-.add-lesson-card {
+.add-word-card {
   @apply rounded-xl px-7 py-24 
   flex justify-center
   hover:bg-gray-200;
 }
 
-/*********** FOR LESSONS ITEM ************/
-.lesson-item-card {
+/*********** FOR WORDS ITEM ************/
+.word-item-card {
   @apply rounded-xl md:flex-col 
   md:p-9 xs:p-7 
   md:mb-0 xs:mb-7
@@ -41,17 +41,15 @@
 }
 
 .choices-list {
-  @apply flex md:flex-row md:items-center xs:items-end xs:flex-col justify-evenly md:mt-2 w-full;
+  @apply text-center md:grid md:grid-cols-2 md:gap-3 xs:flex xs:items-end xs:flex-col md:mt-2 w-full;
 }
 
 .choices-item {
   @apply font-medium md:border md:border-secondary md:px-3 rounded-md;
 }
 
-.lesson-item-buttons {
+.word-item-buttons {
   @apply pt-6 h-2/6  
-  flex items-center justify-between 
+  flex items-center justify-center 
   md:w-full xs:w-2/3 mx-auto;
 }
-
-/*********** FOR ADD LESSONS ************/

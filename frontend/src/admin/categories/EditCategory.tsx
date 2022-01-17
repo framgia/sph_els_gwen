@@ -15,8 +15,8 @@ import { setIsInvalid, setIsLoading, setIsError } from '@store/category';
 import { RootState } from '@store/store';
 import { getSpecificCategory, editCategory } from '@api/CategoryApi';
 import './index.css';
-import LessonsList from '@admin/lessons/LessonsList';
-import { setIsAddingLesson } from '@store/lessons';
+import WordsList from '@admin/words/WordsList';
+import { setIsAddingWord } from '@store/words';
 
 type Inputs = {
   name: string;
@@ -104,7 +104,7 @@ export default function EditCategory() {
       dispatch(setIsLoading(true));
       _getSpecificCategory(parseInt(category_id));
     }
-  }, [state.lessons.isAddingLesson]);
+  }, [state.words.isAddingWord]);
 
   return (
     <>
@@ -141,6 +141,7 @@ export default function EditCategory() {
                       required
                       placeholder='Choose a unique category name'
                       defaultValue={categoryItem.name}
+                      disabled={state.words.isAddingWord}
                     />
                     {state.category.isInvalid && (
                       <span className='text-red-500 text-sm text-center'>
@@ -159,22 +160,25 @@ export default function EditCategory() {
                     }}
                     placeholder='Add a description to give more information on this category'
                     defaultValue={categoryItem.description}
+                    disabled={state.words.isAddingWord}
                   />
-                  <div className='button-group w-full mx-auto justify-center mt-10'>
-                    <Button text='Update category' className='w-56 md:mr-4' />
-                    <button
-                      className='red-button text-center md:mt-0 xs:mt-6 w-56'
-                      onClick={() => {
-                        dispatch(setIsAddingLesson(false));
-                        navigate(`/admin/categories/${categoryItem.id}`);
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                  {!state.words.isAddingWord && (
+                    <div className='button-group w-full mx-auto justify-center mt-10'>
+                      <Button text='Update category' className='w-56 md:mr-4' />
+                      <button
+                        className='red-button text-center md:mt-0 xs:mt-6 w-56'
+                        onClick={() => {
+                          dispatch(setIsAddingWord(false));
+                          navigate(`/admin/categories/${categoryItem.id}`);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
                 </form>
               </div>
-              <LessonsList category_id={categoryItem.id} isEditable={true} />
+              <WordsList category_id={categoryItem.id} isEditable={true} />
             </div>
           )}
         </>

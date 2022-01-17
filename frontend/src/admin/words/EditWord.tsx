@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
-
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+
 import { Nav, Container, FormInput, Button, Loader } from '@components/';
-import { getSpecificCategory } from '@api/CategoryApi';
-import { Category, setIsError, setIsLoading } from '@store/category';
+import { setIsError, setIsLoading } from '@store/category';
 import { RootState } from '@store/store';
-import { getLesson, updateLesson } from '@api/LessonApi';
-import { Choice } from '@store/lessons';
+import { getSpecificWord, updateWord } from '@api/WordApi';
+import { getSpecificCategory } from '@api/CategoryApi';
 
 type Inputs = {
   id: number;
@@ -17,7 +16,7 @@ type Inputs = {
   choices: [];
 };
 
-export default function EditLesson() {
+export default function EditWord() {
   const currentPath = window.location.pathname;
   const navigate = useNavigate();
   const state = useSelector((state: RootState) => state);
@@ -33,7 +32,7 @@ export default function EditLesson() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { category_id, lesson_id } = useParams();
+  const { category_id, word_id } = useParams();
   const dispatch = useDispatch();
 
   const _getSpecificCategory = (category_id: number) => {
@@ -46,8 +45,8 @@ export default function EditLesson() {
       });
   };
 
-  const _getSpecificLesson = (lesson_id: number) => {
-    getLesson(lesson_id)
+  const _getSpecificWord = (word_id: number) => {
+    getSpecificWord(word_id)
       .then((response) => {
         const { choices, id, word } = response.data.data;
         reset({
@@ -75,7 +74,7 @@ export default function EditLesson() {
       setErrorMsg('Choices cannot be empty');
     } else {
       setErrorMsg('');
-      updateLesson(data.id, {
+      updateWord(data.id, {
         word: data.word,
         choices: [...data.choices, ...data.correct_answer],
       })
@@ -89,10 +88,10 @@ export default function EditLesson() {
   };
 
   useEffect(() => {
-    if (category_id && lesson_id) {
+    if (category_id && word_id) {
       dispatch(setIsLoading(true));
       _getSpecificCategory(parseInt(category_id));
-      _getSpecificLesson(parseInt(lesson_id));
+      _getSpecificWord(parseInt(word_id));
     }
   }, []);
 
@@ -103,12 +102,12 @@ export default function EditLesson() {
         <>
           {state.category.isLoading && <Loader />}
           {state.category.isError && !state.category.isLoading && (
-            <h1>error</h1>
+            <span>error</span>
           )}
           {!state.category.isLoading && !state.category.isLoading && (
             <div className='flex w-full justify-evenly'>
               <div className='flex flex-col w-1/3'>
-                <h1 className='page-label'>Category Details</h1>
+                <h3 className='page-label'>Category Details</h3>
                 <div className='w-full'>
                   <FormInput
                     label='Category name:'
@@ -126,7 +125,7 @@ export default function EditLesson() {
                 />
               </div>
               <div className='flex flex-col w-2/3 mx-10'>
-                <h1 className='page-label'>Edit lesson in this category</h1>
+                <h1 className='page-label'>Edit word in this category</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className='flex'>
                     <div className='w-3/6'>
@@ -187,9 +186,9 @@ export default function EditLesson() {
                     </div>
                   </div>
                   <div className='button-group w-full mx-auto justify-center mt-10'>
-                    <Button text='Update lesson' className='w-56 md:mr-4' />
+                    <Button text='Update word' className='w-56 md:mr-4' />
                     <Link
-                      to={`${currentPath.split('/lessons')[0]}/edit`}
+                      to={`${currentPath.split('/words')[0]}/edit`}
                       className='red-button text-center md:mt-0 xs:mt-6 w-56'
                     >
                       Cancel

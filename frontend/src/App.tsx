@@ -14,7 +14,7 @@ import {
 import CategoryDetails from '@admin/categories/CategoryDetails';
 import AddCategory from '@admin/categories/AddCategory';
 import EditCategory from '@admin/categories/EditCategory';
-import EditLesson from '@admin/lessons/EditLesson';
+import EditWord from '@admin/words/EditWord';
 
 export default function App() {
   return (
@@ -80,10 +80,10 @@ export default function App() {
           }
         />
         <Route
-          path='/admin/categories/:category_id/lessons/:lesson_id/edit'
+          path='/admin/categories/:category_id/words/:word_id/edit'
           element={
             <AdminRoute>
-              <EditLesson />
+              <EditWord />
             </AdminRoute>
           }
         />

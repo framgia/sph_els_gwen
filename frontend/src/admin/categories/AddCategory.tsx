@@ -50,7 +50,7 @@ export default function AddCategory() {
     addCategory(data)
       .then((response) => {
         dispatch(setIsLoading(false));
-        navigate('/admin/dashboard');
+        navigate(`/admin/categories/${response.data.data.id}`);
       })
       .catch((error) => {
         if (error.response?.status === 422) {
@@ -90,7 +90,7 @@ export default function AddCategory() {
                         ...register('name', categoryValidation.name),
                       }}
                       errors={errors.name}
-                      disabled={state.lessons.isAddingLesson}
+                      disabled={state.words.isAddingWord}
                       required
                       placeholder='Choose a unique category name'
                     />
@@ -109,10 +109,10 @@ export default function AddCategory() {
                         categoryValidation.description
                       ),
                     }}
-                    disabled={state.lessons.isAddingLesson}
+                    disabled={state.words.isAddingWord}
                     placeholder='Add a description to give more information on this category'
                   />
-                  {!state.lessons.isAddingLesson && (
+                  {!state.words.isAddingWord && (
                     <div className='button-group w-full mx-auto justify-center mt-20'>
                       <Button text='Save category' className='w-56 md:mr-4' />
                       <Link
