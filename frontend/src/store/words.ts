@@ -10,7 +10,7 @@ export interface Word {
 export interface Choice {
   id: number;
   name: string;
-  lesson_id: number;
+  word_id: number;
   is_correct: boolean;
 }
 
