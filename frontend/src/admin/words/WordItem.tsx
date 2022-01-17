@@ -40,7 +40,7 @@ export default function WordItem(props: {
           >
             <div className='word-group'>
               <span className='italic'>word</span>
-              <span className='text-2xl text-purple-400 font-bold'>
+              <span className='md:text-2xl text-purple-400 font-bold'>
                 {props.word.word}
               </span>
             </div>
@@ -50,7 +50,7 @@ export default function WordItem(props: {
                 if (choice.is_correct) {
                   return (
                     <span
-                      className='text-2xl text-purple-400 font-semibold'
+                      className='md:text-2xl text-purple-400 font-semibold'
                       key={choice.id}
                     >
                       {choice.name}
