@@ -36,7 +36,7 @@ export default function CategoryDetails() {
     getSpecificCategory(id)
       .then((response) => {
         setCategoryItem(response.data.data);
-        dispatch(setIsError(false));
+        dispatch(setIsLoading(false));
       })
       .catch((error) => {
         dispatch(setIsError(true));
