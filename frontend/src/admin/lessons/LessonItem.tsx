@@ -2,30 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Card, Loader } from '@components/';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
-import { getAllChoices } from '@api/LessonApi';
-
 import { RootState } from '@store/store';
 import { Lesson, setIsAddingLesson } from '@store/lessons';
-import { Choice, getChoices } from '@store/choices';
+import { Choice } from '@store/choices';
 
 export default function LessonItem(props: {
-  lesson: {
-    id: number;
-    word: string;
-    category_id?: number;
-  };
+  lesson: Lesson;
   isEditable?: boolean;
   toggleModal?: (isOpen: boolean, id: number) => void;
 }) {
-  const state = useSelector((state: RootState) => state);
-
-  const [lessonChoices, setLessonChoices] = useState([
-    {
-      answer: [],
-      other_choices: [],
-    },
-  ]);
+  // const state = useSelector((state: RootState) => state);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,19 +32,6 @@ export default function LessonItem(props: {
     }
   };
 
-  const _getChoices = () => {
-    getAllChoices(props.lesson.id)
-      .then((response) => {
-        const choices = response.data.data;
-        dispatch(getChoices(response.data.data));
-      })
-      .catch((error) => console.error(error));
-  };
-
-  useEffect(() => {
-    _getChoices();
-  }, []);
-
   return (
     <Card className='lesson-item-card'>
       <>
@@ -76,8 +49,8 @@ export default function LessonItem(props: {
             </div>
             <div className='word-group md:mt-0 xs:mt-4'>
               <h1 className='italic'>answer</h1>
-              {state.choices.choices.map((choice) => {
-                if (choice.lesson_id === props.lesson.id && choice.is_correct) {
+              {props.lesson.choices.map((choice:Choice) => {
+                if (choice.is_correct) {
                   return (
                     <h1
                       className='text-2xl text-purple-400 font-semibold'
@@ -97,13 +70,12 @@ export default function LessonItem(props: {
           >
             <h1 className='md:text-center italic'>choices</h1>
             <div className='choices-list'>
-              {state.choices.choices.map((choice) => {
-                if (
-                  choice.lesson_id === props.lesson.id &&
-                  !choice.is_correct
-                ) {
-                  return <h1 className='choices-item' key={choice.id}>{choice.name}</h1>;
-                }
+              {props.lesson.choices.map((choice) => {
+                  return (
+                    <h1 className='choices-item' key={choice.id}>
+                      {choice.name}
+                    </h1>
+                  );
               })}
             </div>
           </div>

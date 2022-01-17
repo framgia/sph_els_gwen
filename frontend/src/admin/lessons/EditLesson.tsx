@@ -8,6 +8,7 @@ import { getSpecificCategory } from '@api/CategoryApi';
 import { Category, setIsError, setIsLoading } from '@store/category';
 import { RootState } from '@store/store';
 import { getLesson, updateChoice, updateLesson } from '@api/LessonApi';
+import { Choice } from '@store/lessons';
 
 type Inputs = {
   id: number;
@@ -22,9 +23,8 @@ export default function EditLesson() {
   const state = useSelector((state: RootState) => state);
   const [errorMsg, setErrorMsg] = useState({
     word: '',
-    choice: ''
+    choice: '',
   });
-
   const [categoryItem, setCategoryItem] = useState({
     id: 0,
     name: '',
@@ -45,7 +45,7 @@ export default function EditLesson() {
         value: true,
         message: 'Word is required.',
       },
-      onChange: () => setErrorMsg({...errorMsg, word: ''}),
+      onChange: () => setErrorMsg({ ...errorMsg, word: '' }),
     },
   };
 
@@ -91,11 +91,11 @@ export default function EditLesson() {
         .then((response) => {
           response.data.status === 200
             ? setErrorMsg({ ...errorMsg, word: '' })
-            : setErrorMsg({ ...errorMsg, word: 'Word is already taken'})
+            : setErrorMsg({ ...errorMsg, word: 'Word is already taken' });
         })
-        .catch((error) => dispatch(setIsError(true)));
+        .catch((error) => dispatch(setIsError(true)));          
       [...data.choices, ...data.correct_answer].forEach(
-        (choice: { id: number; name: string; is_correct: boolean }) => {
+        (choice: Choice) => {          
           updateChoice(data.id, {
             id: choice.id,
             name: choice.name,
