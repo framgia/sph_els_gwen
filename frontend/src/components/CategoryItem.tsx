@@ -7,8 +7,11 @@ export default function CategoryItem(props: {
   name: string;
   description: string;
   link: string;
+<<<<<<< HEAD:frontend/src/components/CategoryItem.tsx
   buttonColor?: string;
   buttonText?: string;
+=======
+>>>>>>> 2740263 ([SELS-TASK][FE] Answering words):frontend/src/admin/categories/CategoryItem.tsx
 }) {
   return (
     <Card className='category-item-card border-gray-400 mx-auto'>
