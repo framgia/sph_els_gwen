@@ -10,7 +10,7 @@ export default function CategoryItem(props: {
   return (
     <Card className='category-item-card mx-auto'>
       <div className='w-full'>
-        <h1 className='md:text-2xl xs:text-xl font-medium'>{props.name}</h1>
+        <p className='md:text-2xl xs:text-xl font-medium'>{props.name}</p>
         <>
           {props.description === 'null' ? (
             <p className='italic text-sm text-gray-400'>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Close() {
+export default function CloseIcon() {
   return (
     <svg
       viewBox='0 0 512 512'

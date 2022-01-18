@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Loading() {
+export default function LoadingIcon() {
     return (
       <svg
         xmlns='http://www.w3.org/2000/svg'

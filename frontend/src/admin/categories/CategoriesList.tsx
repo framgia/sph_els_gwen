@@ -34,13 +34,11 @@ export default function CategoriesList() {
         <>
           {state.isLoading && !state.isError && <Loader />}
           {state.isError && !state.isLoading && (
-            <div className='flex flex-col justify-center h-full'>
               <Notification
                 isSuccess={false}
                 title='An error has occurred. Please try again later.'
                 errorAction='refresh'
               />
-            </div>
           )}
           {!state.isLoading && !state.isError && (
             <>

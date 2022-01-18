@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@store/store';
+import { useDispatch } from 'react-redux';
 
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
-import { Button, FormInput, Loader } from '@components/';
-import { setIsAddingLesson, setIsLoading } from '@store/lessons';
-import { addLesson } from '@api/LessonApi';
+import { Button, FormInput } from '@components/';
+import { setIsAddingWord } from '@store/words';
+import { addWord } from '@api/WordApi';
 import { setIsError } from '@store/category';
-import { useNavigate } from 'react-router-dom';
 
 type Inputs = {
   word: string;
@@ -15,25 +13,22 @@ type Inputs = {
   choices: [];
 };
 
-export default function AddLessons(props: { category_id: number }) {
-  const [isInvalid, setIsInvalid] = useState(false);
-  const navigate = useNavigate();
+export default function AddWords(props: { category_id: number }) {
+  const [, setIsInvalid] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const dispatch = useDispatch();
   const {
     register,
-    watch,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const state = useSelector((state: RootState) => state);
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'choices',
   });
 
-  const lessonValidation = {
+  const wordValidation = {
     word: {
       required: {
         value: true,
@@ -56,16 +51,16 @@ export default function AddLessons(props: { category_id: number }) {
         is_correct: false,
       }));
 
-      addLesson(props.category_id, {
+      addWord(props.category_id, {
         word: data.word,
         choices: [{ name: data.correct_answer, is_correct: true }, ...choices],
       })
         .then((response) => {
           if (response.status === 201) {
-            dispatch(setIsAddingLesson(false));
+            dispatch(setIsAddingWord(false));
           }
         })
-        .catch((error) => dispatch(setIsError(true)));
+        .catch(() => dispatch(setIsError(true)));
     }
   };
 
@@ -78,7 +73,7 @@ export default function AddLessons(props: { category_id: number }) {
       setErrorMsg('Choices cannot be empty.');
       return false;
     } else if (choices.length < 3) {
-      setErrorMsg('The lesson must have at least 3 choices.');
+      setErrorMsg('The word must have at least 3 choices.');
       return false;
     }
 
@@ -92,23 +87,23 @@ export default function AddLessons(props: { category_id: number }) {
   return (
     <div className='flex-col w-4/5 mx-auto'>
       <>
-        <h1 className='page-label'>Add lesson to this category</h1>
+        <h2 className='page-label'>Add words to this category</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='flex'>
             <div className='w-3/6 flex flex-col justify-between'>
               <FormInput
                 label='Word'
                 type='text'
-                register={{ ...register('word', lessonValidation.word) }}
+                register={{ ...register('word', wordValidation.word) }}
                 required
                 errors={errors.word}
                 placeholder='ex: Valiant'
               />
               <div className='button-group w-full mt-10'>
-                <Button text='Add lesson' className='button w-56 md:mr-4' />
+                <Button text='Add word' className='button w-56 md:mr-4' />
                 <button
                   className='red-button text-center md:mt-0 xs:mt-6 w-56'
-                  onClick={() => dispatch(setIsAddingLesson(false))}
+                  onClick={() => dispatch(setIsAddingWord(false))}
                   type='button'
                 >
                   Cancel
@@ -120,10 +115,7 @@ export default function AddLessons(props: { category_id: number }) {
                 label='Correct answer'
                 type='text'
                 register={{
-                  ...register(
-                    'correct_answer',
-                    lessonValidation.correct_answer
-                  ),
+                  ...register('correct_answer', wordValidation.correct_answer),
                 }}
                 required
                 errors={errors.correct_answer}

@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Lesson } from './lessons';
 export interface Category {
   id: number;
   name: string;

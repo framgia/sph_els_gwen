@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Nav, Container, Loader, Modal, Notification } from '@components/';
-import { WarningIcon } from '@icons/';
-import LessonsList from '@admin/lessons/LessonsList';
+import { WarningIcon, BackIcon } from '@icons/';
+import WordsList from '@admin/words/WordsList';
 
 import { deleteCategory, getSpecificCategory } from '@api/CategoryApi';
 
@@ -36,7 +36,7 @@ export default function CategoryDetails() {
     getSpecificCategory(id)
       .then((response) => {
         setCategoryItem(response.data.data);
-        dispatch(setIsError(false));
+        dispatch(setIsLoading(false));
       })
       .catch((error) => {
         dispatch(setIsError(true));
@@ -53,7 +53,7 @@ export default function CategoryDetails() {
     <>
       <Nav className='bg-purple-200' />
       {state.category.isLoading && !state.category.isError && <Loader />}
-      <Container className='md:w-2/3 xs:w-full flex flex-col mx-auto justify-evenly'>
+      <Container className='flex flex-col lg:w-4/5 xs:w-full xs:px-8 md:mx-auto justify-evenly'>
         <>
           <Modal
             isOpen={isModalOpen}
@@ -64,9 +64,9 @@ export default function CategoryDetails() {
             }}
           >
             <WarningIcon className='w-32 text-red-300' />
-            <h1 className='text-3xl font-semibold'>
+            <p className='text-3xl font-semibold'>
               Are you sure you want to delete this category?
-            </h1>
+            </p>
           </Modal>
           {state.category.isLoading && !state.category.isError && <Loader />}
           {state.category.isError && !state.category.isLoading && (
@@ -83,12 +83,13 @@ export default function CategoryDetails() {
               <div className='w-full flex flex-col justify-between my-10'>
                 <Link
                   to='/admin/dashboard'
-                  className='button bg-purple-200 text-center w-28 self-start'
+                  className='button flex bg-purple-200 items-center justify-around md:w-40 xs:w-32 self-start'
                 >
+                  <BackIcon className='w-7' />
                   Go back
                 </Link>
-                <div className='flex mt-10'>
-                  <div className='flex flex-col justify-between w-3/4'>
+                <div className='flex md:flex-row xs:flex-col mt-10'>
+                  <div className='flex flex-col md:w-3/4 xs:w-full justify-between'>
                     <h1 className='text-4xl font-bold'>{categoryItem.name}</h1>
                     <p className='text-xl mt-7'>
                       {categoryItem.description === 'null' ? (
@@ -100,15 +101,15 @@ export default function CategoryDetails() {
                       )}
                     </p>
                   </div>
-                  <div className='flex flex-col w-1/4 justify-evenly items-end text-center'>
+                  <div className='flex md:flex-col md:w-1/4 md:justify-around items-center xs:justify-around xs:mt-5 md:items-end text-center'>
                     <Link
                       to={`/admin/categories/${categoryItem.id}/edit`}
-                      className='button bg-purple-200 w-40'
+                      className='button bg-purple-200 md:w-40 xs:w-36'
                     >
                       Edit category
                     </Link>
                     <button
-                      className='red-button w-40'
+                      className='red-button md:w-40 xs:w-36'
                       onClick={() => setIsModalOpen(true)}
                     >
                       Delete category
@@ -116,7 +117,7 @@ export default function CategoryDetails() {
                   </div>
                 </div>
               </div>
-              <LessonsList category_id={categoryItem.id} />
+              <WordsList category_id={categoryItem.id} />
             </>
           )}
         </>

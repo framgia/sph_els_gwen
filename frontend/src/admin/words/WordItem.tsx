@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Loader } from '@components/';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@store/store';
-import { Lesson, Choice, setIsAddingLesson } from '@store/lessons';
+import React from 'react';
+import { Card } from '@components/';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Word, Choice, setIsAddingWord } from '@store/words';
 
-export default function LessonItem(props: {
-  lesson: Lesson;
+export default function WordItem(props: {
+  word: Word;
   isEditable?: boolean;
   toggleModal?: (isOpen: boolean, id: number) => void;
 }) {
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const answer = props.lesson.choices.find((choice:Choice) => (choice.is_correct));
+  const answer = props.word.choices.find((choice:Choice) => (choice.is_correct));
 
-  const handleEditLesson = () => {
+  const handleEditWord = () => {
     let currentPath = window.location.pathname;
     if (currentPath.includes('add')) {
-      dispatch(setIsAddingLesson(true));
+      dispatch(setIsAddingWord(true));
     } else {
       currentPath = currentPath.split('/edit')[0];
-      navigate(`${currentPath}/lessons/${props.lesson.id}/edit`);
+      navigate(`${currentPath}/words/${props.word.id}/edit`);
     }
   };
 
-  const handleDelete = () => {
+  const handleDeleteWord = () => {
     if (props.toggleModal) {
-      props.toggleModal(true, props.lesson.id);
+      props.toggleModal(true, props.word.id);
     }
   };
 
   return (
-    <Card className='lesson-item-card'>
+    <Card className='word-item-card'>
       <>
         <div className='flex md:flex-col'>
           <div
@@ -41,10 +41,10 @@ export default function LessonItem(props: {
           >
             <div className='word-group'>
               <span className='italic'>word</span>
-              <span className='text-2xl text-purple-400 font-bold'>
-                {props.lesson.word}
+              <span className='md:text-2xl text-purple-400 font-bold'>
+                {props.word.word}
               </span>
-            </div>
+            </div>              
             <div className='word-group md:mt-0 xs:mt-4'>
               <span className='italic'>answer</span>
               <span
@@ -62,7 +62,7 @@ export default function LessonItem(props: {
           >
             <span className='md:text-center italic'>choices</span>
             <div className='choices-list'>
-              {props.lesson.choices.map((choice) => {
+              {props.word.choices.map((choice) => {
                 return (
                   <span className='choices-item' key={choice.id}>
                     {choice.name}
@@ -73,15 +73,15 @@ export default function LessonItem(props: {
           </div>
         </div>
         {props.isEditable && (
-          <div className='lesson-item-buttons'>
+          <div className='word-item-buttons'>
             <button
-              onClick={handleEditLesson}
+              onClick={handleEditWord}
               className='button bg-purple-200 md:mr-4'
             >
-              Edit lesson
+              Edit word
             </button>
-            <button className='red-button text-center' onClick={handleDelete}>
-              Delete lesson
+            <button className='red-button text-center' onClick={handleDeleteWord}>
+              Delete word
             </button>
           </div>
         )}

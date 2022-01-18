@@ -1,0 +1,54 @@
+/*********** FOR WORDS LIST ************/
+.words-list-group {
+  @apply flex flex-col
+  lg:mx-10
+}
+
+.words-card-group {
+  @apply mt-8 md:grid md:gap-4
+  xs:flex xs:flex-col;
+}
+
+.add-word-card {
+  @apply rounded-xl px-7 py-24 
+  flex justify-center
+  hover:bg-gray-200;
+}
+
+/*********** FOR WORDS ITEM ************/
+.word-item-card {
+  @apply rounded-xl md:flex-col p-6
+  md:mb-0 xs:mb-7;
+}
+
+.word-answer-group {
+  @apply flex md:flex-row xs:flex-col justify-around
+  md:w-full xs:w-1/2;
+}
+
+.word-group {
+  @apply flex flex-wrap
+  flex-col
+  md:justify-around;
+}
+
+.choices-group {
+  @apply flex flex-col justify-evenly
+  md:w-full xs:w-1/2
+  md:items-center md:mt-3
+  xs:items-end;
+}
+
+.choices-list {
+  @apply text-center flex flex-wrap md:justify-around md:flex-row xs:items-end xs:flex-col md:mt-2 w-full;
+}
+
+.choices-item {
+  @apply font-medium md:border md:border-secondary md:px-2 rounded-md;
+}
+
+.word-item-buttons {
+  @apply pt-6 h-2/6  
+  flex items-center justify-center 
+  md:w-full xs:w-2/3 mx-auto;
+}

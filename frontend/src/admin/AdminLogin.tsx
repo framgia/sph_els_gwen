@@ -15,7 +15,6 @@ import { Response } from '@user/UserLogin';
 import { login } from '@api/UserApi';
 import { setAdminToken } from '@store/user';
 import { useCookies } from 'react-cookie';
-import { store } from '@store/store'
 
 type Inputs = {
   email: string;
@@ -23,7 +22,7 @@ type Inputs = {
 };
 
 export default function AdminLogin() {
-  const [cookies, setCookie] = useCookies();
+  const [, setCookie] = useCookies();
   const [isInvalid, setIsInvalid] = useState(false);
   const [formState, setFormState] = useState({
     isError: false,
@@ -63,7 +62,6 @@ export default function AdminLogin() {
         if (response.status === 200) {
           setCookie('admin_token', response.data?.token, { path: '/' });
           dispatch(setAdminToken(response.data?.token));
-          const state = store.getState();
           setFormState({ ...formState, isLoading: false });
           navigate('/admin/dashboard');
         }

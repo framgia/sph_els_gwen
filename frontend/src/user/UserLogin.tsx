@@ -35,7 +35,7 @@ export interface Response {
 }
 
 export default function UserLogin() {
-  const [cookies,setCookie] = useCookies();
+  const [, setCookie] = useCookies();
   const [isInvalid, setIsInvalid] = useState(false);
   const [formState, setFormState] = useState({
     isError: false,
