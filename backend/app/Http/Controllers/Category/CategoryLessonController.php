@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Category;
 
+use App\Models\Choice;
 use App\Models\Lesson;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class CategoryLessonController extends Controller
      */
     public function index(Category $category)
     {
-        $lessons = $category->lessons;    
+        $lessons = $category->lessons()->with('choices')->get();
         return $this->successResponse($lessons);
     }
 
@@ -32,36 +33,24 @@ class CategoryLessonController extends Controller
     {
         $this->checkIfAdmin();
         $data = $request->validate([
-            'word' => [
-                'required', 
-                Rule::unique('lessons', 'word')
-            ]
+          'word'=> ['required', 'string'],
+          'choices' => ['required', 'array', 'min:4'],
+          'choices.*.name' => ['required', 'string'],
+          'choices.*.is_correct'=> ['required', 'boolean']
         ]);
 
         $data['category_id'] = $category->id;
         $newLesson = Lesson::create($data);
-        return $this->returnOne($newLesson, 201);
+        foreach($request->choices as $choice) {
+           Choice::create([
+             'lesson_id'=>$newLesson->id,
+              'name' => $choice['name'],
+              'is_correct' => $choice['is_correct']
+           ]);
+        }
+        return $this->returnOne($newLesson->load('choices'), 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Category $category, Lesson $lesson)
-    {
-        $this->checkIfAdmin();
-        $this->checkLesson($category, $lesson);
-        $request->validate([
-            'word' => ['required', Rule::unique('lessons', 'word')->ignore($lesson->id)]
-        ]);
-
-        $lesson->fill($request->only(['word']));
-        $lesson->save();
-        return $this->returnOne($lesson);
-    }
 
     /**
      * Remove the specified resource from storage.

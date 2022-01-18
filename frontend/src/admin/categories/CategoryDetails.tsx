@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@store/store';
-import { Nav, Container, Loader, Modal, Card } from '@components/';
-import { getSpecificCategory } from '@api/CategoryApi';
-import { setIsError, setIsLoading } from '@store/category';
-import { deleteCategory } from '@api/CategoryApi';
-import WarningIcon from '@icons/WarningIcon';
-import LessonItem from '@admin/lessons/LessonItem';
+import { Nav, Container, Loader, Modal, Notification } from '@components/';
+import { WarningIcon } from '@icons/';
+import LessonsList from '@admin/lessons/LessonsList';
 
+import { deleteCategory, getSpecificCategory } from '@api/CategoryApi';
+
+import { RootState } from '@store/store';
+import { Category, setIsError, setIsLoading } from '@store/category';
 
 export default function CategoryDetails() {
   const { category_id } = useParams();
-  const state = useSelector((state: RootState) => state.category);
+  const state = useSelector((state: RootState) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [categoryItem, setCategoryItem] = useState({
+  const [categoryItem, setCategoryItem] = useState<Category>({
     id: 0,
     name: '',
     description: '',
-    created_at: '',
-    updated_at: '',
   });
 
   useEffect(() => {
@@ -38,7 +36,7 @@ export default function CategoryDetails() {
     getSpecificCategory(id)
       .then((response) => {
         setCategoryItem(response.data.data);
-        dispatch(setIsLoading(false));
+        dispatch(setIsError(false));
       })
       .catch((error) => {
         dispatch(setIsError(true));
@@ -48,19 +46,18 @@ export default function CategoryDetails() {
   const _deleteCategory = () => {
     deleteCategory(categoryItem.id)
       .then(() => navigate('/admin/dashboard'))
-      .catch(() => dispatch(setIsError(true)));    
+      .catch(() => dispatch(setIsError(true)));
   };
 
   return (
     <>
       <Nav className='bg-purple-200' />
-      {state.isLoading && !state.isError && <Loader />}
-
+      {state.category.isLoading && !state.category.isError && <Loader />}
       <Container className='md:w-2/3 xs:w-full flex flex-col mx-auto justify-evenly'>
         <>
           <Modal
             isOpen={isModalOpen}
-            toggleModal={(value:boolean) => setIsModalOpen(value)}
+            toggleModal={(value: boolean) => setIsModalOpen(value)}
             buttonAction={{
               buttonText: 'Yes, delete this category',
               action: _deleteCategory,
@@ -71,9 +68,17 @@ export default function CategoryDetails() {
               Are you sure you want to delete this category?
             </h1>
           </Modal>
-          {state.isLoading && !state.isError && <Loader />}
-          {state.isError && !state.isLoading && <h1>error</h1>}
-          {!state.isError && !state.isLoading && (
+          {state.category.isLoading && !state.category.isError && <Loader />}
+          {state.category.isError && !state.category.isLoading && (
+            <div className='flex flex-col justify-center h-full'>
+              <Notification
+                isSuccess={false}
+                title='An error has occurred. Please try again later.'
+                errorAction='refresh'
+              />
+            </div>
+          )}
+          {!state.category.isError && !state.category.isLoading && (
             <>
               <div className='w-full flex flex-col justify-between my-10'>
                 <Link
@@ -111,17 +116,7 @@ export default function CategoryDetails() {
                   </div>
                 </div>
               </div>
-              <div className='flex flex-col items-start w-full'>
-                <h1 className='text-2xl font-semibold'>
-                  Lessons in this category
-                </h1>
-                {/* static placeholder for lessons list, will change in lessons management */}
-                <div className='grid grid-cols-3 gap-6 mt-5 w-full'>
-                  {[1, 2, 3].map((index) => {
-                    return <LessonItem key={index} lesson_id={index} isEditable={false}/>;
-                  })}
-                </div>
-              </div>
+              <LessonsList category_id={categoryItem.id} />
             </>
           )}
         </>

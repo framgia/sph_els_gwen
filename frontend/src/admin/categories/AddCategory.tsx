@@ -14,7 +14,6 @@ import {
 import { setIsInvalid, setIsLoading, setIsError } from '@store/category';
 import { RootState } from '@store/store';
 import { addCategory } from '@api/CategoryApi';
-import LessonsList from '@admin/lessons/LessonsList';
 import './index.css';
 
 type Inputs = {
@@ -79,7 +78,10 @@ export default function AddCategory() {
             <div className='flex md:flex-row xs:flex-col w-full justify-evenly'>
               <div className='flex flex-col md:w-1/3 xs:w-full items-center'>
                 <h1 className='page-label'>Add new category</h1>
-                <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full'>
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className='w-full h-full'
+                >
                   <div className='w-full'>
                     <FormInput
                       label='Category name'
@@ -123,7 +125,6 @@ export default function AddCategory() {
                   )}
                 </form>
               </div>
-              <LessonsList isEditable={true}/>
             </div>
           )}
         </>

@@ -4,7 +4,7 @@
         "paths": {
             "@components/*": ["components"],
             "@admin/*": ["admin/*"],
-            "@icons/*": ["icons/*"],
+            "@icons/*": ["icons"],
             "@api/*": ["api/*"],
             "@user/*": ["user/*"],
             "@middleware/*": ["middleware/*"],

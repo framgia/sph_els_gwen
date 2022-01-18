@@ -1,26 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface LessonResponse {
-  id:number;
-  word:string;
-  category_id:number;
-  created_at: Date;
-  updated_at:Date;
+export interface Lesson {
+  id: number;
+  word: string;
+  category_id: number;
+  choices: Choice[]
 }
 
+export interface Choice {
+  id: number;
+  name: string;
+  lesson_id: number;
+  is_correct: boolean;
+}
+
+
 interface LessonState {
-  lessons: LessonResponse[],
+  lessons: Lesson[],
   isLoading: boolean,
-  isError: boolean,
-  isInvalid: boolean,
   isAddingLesson: boolean
 }
 
 const initialState: LessonState = {
   lessons: [],
   isLoading: false,
-  isError: false,
-  isInvalid: false,
   isAddingLesson: false
 };
 
@@ -28,25 +31,21 @@ export const lessonSlice = createSlice({
   name: 'lesson',
   initialState: initialState,
   reducers: {
-    getAll: (state, action) => {
+    getLessons: (state, action) => {
       state.lessons = action.payload;
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
     },
-    setIsError: (state, action) => {
-      state.isLoading = false;
-      state.isError = action.payload;
-    },
-    setIsInvalid: (state, action) => {
-      state.isLoading = false;
-      state.isInvalid = action.payload;
-    },
     setIsAddingLesson: (state, action) => {
       state.isAddingLesson = action.payload;
-    }
+    },
   },
 });
 
-export const { getAll, setIsLoading, setIsError, setIsInvalid, setIsAddingLesson } = lessonSlice.actions;
+export const {
+  getLessons, 
+  setIsLoading,
+  setIsAddingLesson,
+} = lessonSlice.actions;
 export default lessonSlice.reducer;

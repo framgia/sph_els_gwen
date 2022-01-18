@@ -16,6 +16,7 @@ import { RootState } from '@store/store';
 import { getSpecificCategory, editCategory } from '@api/CategoryApi';
 import './index.css';
 import LessonsList from '@admin/lessons/LessonsList';
+import { setIsAddingLesson } from '@store/lessons';
 
 type Inputs = {
   name: string;
@@ -23,7 +24,7 @@ type Inputs = {
 };
 
 export default function EditCategory() {
-  const state = useSelector((state: RootState) => state.category);
+  const state = useSelector((state: RootState) => state);
   const [categoryItem, setCategoryItem] = useState({
     id: 0,
     name: '',
@@ -34,7 +35,7 @@ export default function EditCategory() {
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { category_id } = useParams();
+  const { category_id } = useParams<{ category_id: string }>();
   const {
     register,
     handleSubmit,
@@ -88,8 +89,8 @@ export default function EditCategory() {
         dispatch(setIsLoading(false));
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          setErrorMessage('Resource not found')
+        if (error.response?.status === 404) {
+          setErrorMessage('Resource not found');
         }
         dispatch(setIsError(true));
       });
@@ -103,27 +104,28 @@ export default function EditCategory() {
       dispatch(setIsLoading(true));
       _getSpecificCategory(parseInt(category_id));
     }
-  }, []);
+  }, [state.lessons.isAddingLesson]);
 
   return (
     <>
       <Nav className='bg-purple-200' />
       <Container className='my-10 flex-col w-full'>
         <>
-          {state.isLoading && !state.isError && <Loader />}
-          {state.isError && (
+          {state.category.isLoading && !state.category.isError && <Loader />}
+          {state.category.isError && (
             <div className='flex flex-col items-center justify-center'>
               <Notification
                 isSuccess={false}
                 title={
-                  errorMessage ??
-                  'An error has occurred. Please try again later.'
+                  errorMessage === ''
+                    ? 'An error has occurred. Please try again later.'
+                    : errorMessage
                 }
                 errorAction={errorMessage ? 'back' : 'refresh'}
               />
             </div>
           )}
-          {!state.isLoading && !state.isError && (
+          {!state.category.isLoading && !state.category.isError && (
             <div className='flex w-full px-10'>
               <div className='flex flex-col w-1/3'>
                 <h1 className='page-label'>Edit category</h1>
@@ -140,7 +142,7 @@ export default function EditCategory() {
                       placeholder='Choose a unique category name'
                       defaultValue={categoryItem.name}
                     />
-                    {state.isInvalid && (
+                    {state.category.isInvalid && (
                       <span className='text-red-500 text-sm text-center'>
                         Category name has already been taken.
                       </span>
@@ -160,16 +162,19 @@ export default function EditCategory() {
                   />
                   <div className='button-group w-full mx-auto justify-center mt-10'>
                     <Button text='Update category' className='w-56 md:mr-4' />
-                    <Link
-                      to={`/admin/categories/${categoryItem.id}`}
+                    <button
                       className='red-button text-center md:mt-0 xs:mt-6 w-56'
+                      onClick={() => {
+                        dispatch(setIsAddingLesson(false));
+                        navigate(`/admin/categories/${categoryItem.id}`);
+                      }}
                     >
                       Cancel
-                    </Link>
+                    </button>
                   </div>
                 </form>
               </div>
-              <LessonsList isEditable={true} />
+              <LessonsList category_id={categoryItem.id} isEditable={true} />
             </div>
           )}
         </>

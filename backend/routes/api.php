@@ -39,12 +39,11 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::resource('categories', CategoryController::class)
         ->except(['create', 'edit']);
     Route::resource('categories.lessons',CategoryLessonController::class)
-        ->except(['create', 'edit', 'show']);
+        ->except(['create', 'edit', 'show', 'update']);
 
     //--------------------LESSONS----------------------//
-    Route::get('lessons/{lesson}',[LessonController::class, 'show']);
-    Route::resource('lessons.choices', LessonChoiceController::class)
-        ->except(['create', 'edit', 'show']);
+    Route::resource('lessons',LessonController::class)
+      ->only(['show', 'update']);
 
     //--------------------CHOICES----------------------//
     Route::get('choices/{choice}',[ChoiceController::class, 'show']);

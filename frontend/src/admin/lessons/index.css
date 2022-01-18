@@ -1,8 +1,7 @@
 /*********** FOR LESSONS LIST ************/
 .lessons-list-group {
   @apply flex flex-col 
-  md:w-2/3 md:mx-10
-  xs:w-full;
+  md:mx-10
 }
 
 .lessons-card-group {
@@ -24,14 +23,13 @@
 }
 
 .word-answer-group {
-  @apply flex flex-col justify-between
+  @apply flex md:flex-row xs:flex-col justify-around
   md:w-full xs:w-1/2
 }
 
 .word-group {
   @apply flex 
-  md:flex-row xs:flex-col 
-  md:items-center xs:justify-start 
+  flex-col
   md:justify-around;
 }
 
