@@ -1,10 +1,11 @@
 import { Nav } from '@components/';
+import CategoriesList from '@user/categories/CategoriesList';
 
 const UserDashboard = () => {
   return (
     <div>
       <Nav className='bg-primary' />
-      <h1>hello user homepage</h1>
+      <CategoriesList />
     </div>
   );
 };

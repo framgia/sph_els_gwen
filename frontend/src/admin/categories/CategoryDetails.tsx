@@ -85,7 +85,7 @@ export default function CategoryDetails() {
                   to='/admin/dashboard'
                   className='button flex bg-purple-200 items-center justify-around md:w-40 xs:w-32 self-start'
                 >
-                  <BackIcon className='w-7' />
+                  <ArrowLeftIcon className='w-7' />
                   Go back
                 </Link>
                 <div className='flex md:flex-row xs:flex-col mt-10'>

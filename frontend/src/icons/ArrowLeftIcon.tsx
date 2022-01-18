@@ -1,11 +1,11 @@
 import React from 'react'
 
-export default function BackIcon(props: { className?: string }) {
+export default function ArrowLeftIcon(props: { className?: string }) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       version='1.1'
-      xmlnsXlink='http://www.w3.org/1999/xlink'
+      // xmlnsXlink='http://www.w3.org/1999/xlink'
       x='0'
       y='0'
       viewBox='0 0 24 24'

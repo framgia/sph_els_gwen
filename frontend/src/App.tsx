@@ -15,6 +15,9 @@ import CategoryDetails from '@admin/categories/CategoryDetails';
 import AddCategory from '@admin/categories/AddCategory';
 import EditCategory from '@admin/categories/EditCategory';
 import EditWord from '@admin/words/EditWord';
+import TakingCategory from '@user/categories/TakingCategory';
+import CategoryResults from '@user/categories/CategoryResults';
+
 
 export default function App() {
   return (
@@ -38,6 +41,22 @@ export default function App() {
           }
         />
         <Route path='/register' element={<Register />} />
+        <Route
+          path='/categories/:category_id'
+          element={
+            <UserRoute>
+              <TakingCategory />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/categories/:category_id/results'
+          element={
+            <UserRoute>
+              <CategoryResults />
+            </UserRoute>
+          }
+        />
         {/* ADMIN ROUTES */}
         <Route
           path='/admin/dashboard'

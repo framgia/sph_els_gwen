@@ -11,7 +11,6 @@ const Card = (props: CardProps) => {
     <div
       className={` 
           bg-white border
-          border-lightgray
           ${props.rounded ? 'rounded-2xl' : ''}
           ${props.className}`}
     >

@@ -6,6 +6,7 @@ export default function CategoryItem(props: {
   id: number;
   name: string;
   description: string;
+  link: string;
 }) {
   return (
     <Card className='category-item-card mx-auto'>
@@ -29,7 +30,7 @@ export default function CategoryItem(props: {
         </>
       </div>
       <Link
-        to={`/admin/categories/${props.id}`}
+        to={props.link}
         className='button bg-purple-200 w-3/4 text-center mt-8'
       >
         <span className='flex xs:flex-col'>View more details</span>

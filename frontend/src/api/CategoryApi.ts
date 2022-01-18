@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { API_URL, setAdminHeaders } from '.';
+import { API_URL, setAdminHeaders, setHeaders } from '.';
 
 export const getAllCategories = () => {
-  return axios.get(`${API_URL}/categories`, setAdminHeaders());
+  return axios.get(`${API_URL}/categories`, setHeaders());
 }
 
 export const addCategory = (body: { name: string, description?: string }) => {
@@ -10,7 +10,7 @@ export const addCategory = (body: { name: string, description?: string }) => {
 }
 
 export const getSpecificCategory = (id: number) => {
-  return axios.get(`${API_URL}/categories/${id}`, setAdminHeaders())
+  return axios.get(`${API_URL}/categories/${id}`, setHeaders())
 }
 
 export const deleteCategory = (id: number) => {

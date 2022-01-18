@@ -1,9 +1,9 @@
 import { Choice } from '@store/words';
 import axios from 'axios';
-import { API_URL, setAdminHeaders } from '.';
+import { API_URL, setAdminHeaders, setHeaders } from '.';
 
 export const getAllWords = (category_id: number) => {
-  return axios.get(`${API_URL}/categories/${category_id}/words`, setAdminHeaders());
+  return axios.get(`${API_URL}/categories/${category_id}/words`, setHeaders());
 }
 
 export const addWord = (category_id: number, body: { word: string, choices: { name: string, is_correct: boolean }[] }) => {
