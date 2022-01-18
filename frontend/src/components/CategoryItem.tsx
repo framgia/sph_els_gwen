@@ -7,9 +7,11 @@ export default function CategoryItem(props: {
   name: string;
   description: string;
   link: string;
+  buttonColor?: string;
+  buttonText?: string;
 }) {
   return (
-    <Card className='category-item-card mx-auto'>
+    <Card className='category-item-card border-gray-400 mx-auto'>
       <div className='w-full'>
         <p className='md:text-2xl xs:text-xl font-medium'>{props.name}</p>
         <>
@@ -31,9 +33,13 @@ export default function CategoryItem(props: {
       </div>
       <Link
         to={props.link}
-        className='button bg-purple-200 w-3/4 text-center mt-8'
+        className={`button w-3/4 text-center mt-8 ${
+          props.buttonColor ?? 'bg-purple-200'
+        }`}
       >
-        <span className='flex xs:flex-col'>View more details</span>
+        <span className='flex xs:flex-col'>
+          {props.buttonText ?? 'View more details'}
+        </span>
       </Link>
     </Card>
   );

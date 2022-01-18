@@ -15,7 +15,7 @@ import CategoryDetails from '@admin/categories/CategoryDetails';
 import AddCategory from '@admin/categories/AddCategory';
 import EditCategory from '@admin/categories/EditCategory';
 import EditWord from '@admin/words/EditWord';
-import TakingCategory from '@user/categories/TakingCategory';
+import AnsweringCategory from '@user/categories/AnsweringCategory';
 import CategoryResults from '@user/categories/CategoryResults';
 
 
@@ -45,7 +45,7 @@ export default function App() {
           path='/categories/:category_id'
           element={
             <UserRoute>
-              <TakingCategory />
+              <AnsweringCategory />
             </UserRoute>
           }
         />

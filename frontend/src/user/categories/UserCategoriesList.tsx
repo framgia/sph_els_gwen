@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { Container, Loader, CategoryItem } from '@components/';
-
 import { RootState } from '@store/store';
 import { getAll, setIsLoading, setIsError, Category } from '@store/category';
 import { getAllCategories } from '@api/CategoryApi';
 
-export default function CategoriesList() {
+export default function UserCategoriesList() {
   const state = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch();
 
@@ -34,7 +32,7 @@ export default function CategoriesList() {
         {!state.isLoading && !state.isError && (
           <>
             <div className='flex flex-row w-full items-center justify-between mb-5'>
-              <h1 className='md:my-6 self-center md:text-3xl xs:text-xl font-bold'>
+              <h1 className='page-label'>
                 Categories list
               </h1>
             </div>
@@ -47,6 +45,8 @@ export default function CategoriesList() {
                     description={category.description}
                     key={`category${category.id}`}
                     link={`/categories/${category.id}`}
+                    buttonColor='bg-primary'
+                    buttonText='Start this category'
                   />
                 );
               })}

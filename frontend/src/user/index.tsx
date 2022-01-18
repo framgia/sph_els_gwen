@@ -1,11 +1,11 @@
 import { Nav } from '@components/';
-import CategoriesList from '@user/categories/CategoriesList';
+import UserCategoriesList from '@user/categories/UserCategoriesList';
 
 const UserDashboard = () => {
   return (
     <div>
       <Nav className='bg-primary' />
-      <CategoriesList />
+      <UserCategoriesList />
     </div>
   );
 };
