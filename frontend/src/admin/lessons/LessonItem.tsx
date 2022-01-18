@@ -3,18 +3,16 @@ import { Card, Loader } from '@components/';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@store/store';
-import { Lesson, setIsAddingLesson } from '@store/lessons';
-import { Choice } from '@store/choices';
+import { Lesson, Choice, setIsAddingLesson } from '@store/lessons';
 
 export default function LessonItem(props: {
   lesson: Lesson;
   isEditable?: boolean;
   toggleModal?: (isOpen: boolean, id: number) => void;
 }) {
-  // const state = useSelector((state: RootState) => state);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const answer = props.lesson.choices.find((choice:Choice) => (choice.is_correct));
 
   const handleEditLesson = () => {
     let currentPath = window.location.pathname;
@@ -42,25 +40,19 @@ export default function LessonItem(props: {
             }`}
           >
             <div className='word-group'>
-              <h1 className='italic'>word</h1>
-              <h1 className='text-2xl text-purple-400 font-bold'>
+              <span className='italic'>word</span>
+              <span className='text-2xl text-purple-400 font-bold'>
                 {props.lesson.word}
-              </h1>
+              </span>
             </div>
             <div className='word-group md:mt-0 xs:mt-4'>
-              <h1 className='italic'>answer</h1>
-              {props.lesson.choices.map((choice:Choice) => {
-                if (choice.is_correct) {
-                  return (
-                    <h1
-                      className='text-2xl text-purple-400 font-semibold'
-                      key={choice.id}
-                    >
-                      {choice.name}
-                    </h1>
-                  );
-                }
-              })}
+              <span className='italic'>answer</span>
+              <span
+                className='text-2xl text-purple-400 font-semibold'
+                key={answer?.id}
+              >
+                {answer?.name}
+              </span>
             </div>
           </div>
           <div
@@ -68,14 +60,14 @@ export default function LessonItem(props: {
               props.isEditable ? 'md:h-2/6' : 'md:h-1/2'
             }`}
           >
-            <h1 className='md:text-center italic'>choices</h1>
+            <span className='md:text-center italic'>choices</span>
             <div className='choices-list'>
               {props.lesson.choices.map((choice) => {
-                  return (
-                    <h1 className='choices-item' key={choice.id}>
-                      {choice.name}
-                    </h1>
-                  );
+                return (
+                  <span className='choices-item' key={choice.id}>
+                    {choice.name}
+                  </span>
+                );
               })}
             </div>
           </div>

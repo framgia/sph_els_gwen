@@ -32,7 +32,7 @@ export const lessonSlice = createSlice({
   initialState: initialState,
   reducers: {
     getLessons: (state, action) => {
-      state.lessons = action.payload;      
+      state.lessons = action.payload;
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
@@ -43,7 +43,8 @@ export const lessonSlice = createSlice({
   },
 });
 
-export const { getLessons, 
+export const {
+  getLessons, 
   setIsLoading,
   setIsAddingLesson,
 } = lessonSlice.actions;

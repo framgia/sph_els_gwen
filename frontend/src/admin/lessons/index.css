@@ -2,8 +2,6 @@
 .lessons-list-group {
   @apply flex flex-col 
   md:mx-10
-  /* md:w-2/3 
-  xs:w-full; */
 }
 
 .lessons-card-group {

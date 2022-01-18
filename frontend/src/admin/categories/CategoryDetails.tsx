@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Nav, Container, Loader, Modal, Card } from '@components/';
-import {WarningIcon} from '@icons/';
+import { Nav, Container, Loader, Modal, Notification } from '@components/';
+import { WarningIcon } from '@icons/';
 import LessonsList from '@admin/lessons/LessonsList';
 
 import { deleteCategory, getSpecificCategory } from '@api/CategoryApi';
@@ -70,7 +70,13 @@ export default function CategoryDetails() {
           </Modal>
           {state.category.isLoading && !state.category.isError && <Loader />}
           {state.category.isError && !state.category.isLoading && (
-            <h1>error</h1>
+            <div className='flex flex-col justify-center h-full'>
+              <Notification
+                isSuccess={false}
+                title='An error has occurred. Please try again later.'
+                errorAction='refresh'
+              />
+            </div>
           )}
           {!state.category.isError && !state.category.isLoading && (
             <>

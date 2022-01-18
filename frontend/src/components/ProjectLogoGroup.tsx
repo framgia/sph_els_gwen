@@ -3,7 +3,6 @@ import { Logo } from '@icons/';
 import './index.css';
 
 export default function ProjectLogoGroup(props: { dark: boolean }) {
-  // ${props.dark ? 'bg-secondary' : 'bg-primary'}
   return (
     <div
       className={`logo-name-group ${

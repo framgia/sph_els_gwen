@@ -49,10 +49,10 @@ export default function EditLesson() {
   const _getSpecificLesson = (lesson_id: number) => {
     getLesson(lesson_id)
       .then((response) => {
-        const choices = response.data.data.choices;
+        const { choices, id, word } = response.data.data;
         reset({
-          id: response.data.data.id,
-          word: response.data.data.word,
+          id: id,
+          word: word,
           correct_answer: choices.filter(
             (choice: { name: string; is_correct: boolean }) => choice.is_correct
           ),
@@ -80,7 +80,7 @@ export default function EditLesson() {
         choices: [...data.choices, ...data.correct_answer],
       })
         .then((response) => {
-          if(response.status===200) {
+          if (response.status===200) {
             navigate(`/admin/categories/${categoryItem.id}/edit`);
           }
         })
