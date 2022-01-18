@@ -12,7 +12,7 @@ export default function WordItem(props: {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const answer = props.lesson.choices.find((choice:Choice) => (choice.is_correct));
+  const answer = props.word.choices.find((choice:Choice) => (choice.is_correct));
 
   const handleEditWord = () => {
     let currentPath = window.location.pathname;
@@ -41,41 +41,18 @@ export default function WordItem(props: {
           >
             <div className='word-group'>
               <span className='italic'>word</span>
-<<<<<<< HEAD
-              <span className='text-2xl text-purple-400 font-bold'>
-<<<<<<< HEAD:frontend/src/admin/lessons/LessonItem.tsx
-                {props.lesson.word}
-=======
-=======
               <span className='md:text-2xl text-purple-400 font-bold'>
->>>>>>> 85c4ce5 (made components to be responsive)
                 {props.word.word}
->>>>>>> 5b641f4 (changed filenames and terms to words in frontend side):frontend/src/admin/words/WordItem.tsx
               </span>
-            </div>
+            </div>              
             <div className='word-group md:mt-0 xs:mt-4'>
               <span className='italic'>answer</span>
-<<<<<<< HEAD:frontend/src/admin/lessons/LessonItem.tsx
               <span
                 className='text-2xl text-purple-400 font-semibold'
                 key={answer?.id}
               >
                 {answer?.name}
               </span>
-=======
-              {props.word.choices.map((choice: Choice) => {
-                if (choice.is_correct) {
-                  return (
-                    <span
-                      className='md:text-2xl text-purple-400 font-semibold'
-                      key={choice.id}
-                    >
-                      {choice.name}
-                    </span>
-                  );
-                }
-              })}
->>>>>>> 5b641f4 (changed filenames and terms to words in frontend side):frontend/src/admin/words/WordItem.tsx
             </div>
           </div>
           <div
@@ -85,11 +62,7 @@ export default function WordItem(props: {
           >
             <span className='md:text-center italic'>choices</span>
             <div className='choices-list'>
-<<<<<<< HEAD:frontend/src/admin/lessons/LessonItem.tsx
-              {props.lesson.choices.map((choice) => {
-=======
               {props.word.choices.map((choice) => {
->>>>>>> 5b641f4 (changed filenames and terms to words in frontend side):frontend/src/admin/words/WordItem.tsx
                 return (
                   <span className='choices-item' key={choice.id}>
                     {choice.name}

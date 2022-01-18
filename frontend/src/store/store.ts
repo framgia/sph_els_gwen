@@ -7,11 +7,7 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
     category: categoryReducer,
-<<<<<<< HEAD
-    lessons: lessonReducer,
-=======
     words: wordReducer
->>>>>>> 5b641f4 (changed filenames and terms to words in frontend side)
   },
 });
 
