@@ -33,11 +33,11 @@ class LessonController extends Controller
           'choices.*.is_correct'=> ['required', 'boolean']
         ]);
 
-        //update lesson
+        // update lesson
         $lesson->fill($request->only(['word']));
         $lesson->save();
 
-        //update choices
+        // update choices
         foreach($request->choices as $choice) {
           Choice::where('id', $choice['id'])->update([
             'name' => $choice['name'],
