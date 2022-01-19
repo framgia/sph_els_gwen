@@ -4,10 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserCategoryLogController;
 use App\Http\Controllers\Word\WordController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Category\CategoryWordController;
 use App\Http\Controllers\Choice\ChoiceController;
+use App\Models\CategoryLog;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +33,11 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
 
     //--------------------USERS----------------------//    
     Route::post('users/logout',[AuthController::class, 'logout']);
-    Route::resource('users',UserController::class)
+    Route::resource('users', UserController::class)
         ->only(['index', 'show']);
+    Route::get('users/{id}/category_logs', [UserController::class, 'allCategoryLogs']);
+    Route::resource('users.categories.category_logs', UserCategoryLogController::class)
+        ->only(['index', 'store']);
 
     //--------------------CATEGORIES----------------------//
     Route::resource('categories', CategoryController::class)

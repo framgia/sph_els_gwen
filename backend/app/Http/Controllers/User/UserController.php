@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\CategoryLog;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -41,5 +42,11 @@ class UserController extends Controller
         return response()->json([
             'data' => $user
         ], 200);
+    }
+
+    public function allCategoryLogs($id)
+    {
+      $category_logs = CategoryLog::where('user_id', $id)->get();
+      return $this->returnAll($category_logs);
     }
 }
