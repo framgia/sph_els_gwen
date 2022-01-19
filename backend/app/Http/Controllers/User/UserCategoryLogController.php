@@ -36,7 +36,6 @@ class UserCategoryLogController extends Controller
       $data = $request->validate([
         'word_id' => ['required'],
         'choice_id' => ['required'],
-        'is_correct'=> ['required', 'boolean'],
       ]);
 
       $word = Word::where('id', $data['word_id'])->first();
@@ -60,7 +59,7 @@ class UserCategoryLogController extends Controller
         'category_id' => $category->id,
         'word_id' => $word->id,
         'choice_id' => $choice->id,
-        'is_correct'=> $data['is_correct'],
+        'is_correct'=> $choice->is_correct,
       ]);   
 
       return $this->returnOne($category_log);      
