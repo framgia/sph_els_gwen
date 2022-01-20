@@ -13,22 +13,22 @@ export default function CategoryWordItem(props: {
     props.onSelectAnswer(choice);
   };
 
-  const shuffleChoices = (choices: Choice[]) => {
-    let index = 0;
-
-    for(index = 0; index < choices.length; index++) {
-      let randomIndex = Math.floor(Math.random() * index + 1 );
-      let temp = choices[index];
-      choices[index] = choices[randomIndex];
+  const shuffleChoices = () => {
+    if (props.word?.choices) {
+      let newChoices = [...props.word.choices];
+      for (let index = 0; index < newChoices.length; index++) {
+        let randomIndex = Math.floor(Math.random() * newChoices.length);
+        let temp = newChoices[index];
+        newChoices[index] = newChoices[randomIndex];
+        newChoices[randomIndex] = temp;
+      }
+      setRandomChoices(newChoices);
     }
-    console.log(choices);
-    
-    setRandomChoices(choices);
   };
 
-  useEffect(()=>{
-    shuffleChoices(props.word?.choices ?? []);
-  },[]);
+  useEffect(() => {
+    shuffleChoices();
+  }, [props.word?.choices]);
 
   return (
     <div className='category-word-group'>
@@ -36,9 +36,7 @@ export default function CategoryWordItem(props: {
       <div className='word-choices-group'>
         <span className='md:text-2xl xs:text-xl italic'>choices:</span>
         <div className='choices-grid-group'>
-          {/* {console.log('//////random////', random)} */}
-          {console.log('//////actual////', props.word?.choices)}
-          {props.word?.choices.map((choice) => {
+          {randomChoices?.map((choice) => {
             return (
               <button
                 className={`choice-item ${

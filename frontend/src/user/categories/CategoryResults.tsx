@@ -21,7 +21,6 @@ export default function CategoryResults() {
       navigate('/');
     }    
     console.log(state.words);
-
   }, []);
 
   return (

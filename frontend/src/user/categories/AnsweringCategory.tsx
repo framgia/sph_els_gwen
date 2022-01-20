@@ -40,7 +40,6 @@ export default function AnsweringCategory() {
       setIndex(index + 1);
       setCurrentWord(state.words.words[index + 1]);
     } else {
-      //make the request here
       if (category_id && currentAnswer) {
         _addCategoryLog(parseInt(category_id), currentAnswer);
       }
@@ -52,6 +51,8 @@ export default function AnsweringCategory() {
       choices: [...state.words.answers, answer],
     })
       .then((response) => {
+        console.log(response.data.data);
+        
         navigate(`/categories/${category_id}/results`);
         dispatch(clearAnswers);
       })
