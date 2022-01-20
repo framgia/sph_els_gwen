@@ -12,6 +12,7 @@ export default function WordItem(props: {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const answer = props.word.choices.find((choice: Choice) => choice.is_correct);
 
   const handleEditWord = () => {
     let currentPath = window.location.pathname;
@@ -46,18 +47,12 @@ export default function WordItem(props: {
             </div>
             <div className='word-group md:mt-0 xs:mt-4'>
               <span className='italic'>answer</span>
-              {props.word.choices.map((choice: Choice) => {
-                if (choice.is_correct) {
-                  return (
-                    <span
-                      className='md:text-2xl text-purple-400 font-semibold'
-                      key={choice.id}
-                    >
-                      {choice.name}
-                    </span>
-                  );
-                }
-              })}
+              <span
+                className='text-2xl text-purple-400 font-semibold'
+                key={answer?.id}
+              >
+                {answer?.name}
+              </span>
             </div>
           </div>
           <div
@@ -85,7 +80,10 @@ export default function WordItem(props: {
             >
               Edit word
             </button>
-            <button className='red-button text-center' onClick={handleDeleteWord}>
+            <button
+              className='red-button text-center'
+              onClick={handleDeleteWord}
+            >
               Delete word
             </button>
           </div>

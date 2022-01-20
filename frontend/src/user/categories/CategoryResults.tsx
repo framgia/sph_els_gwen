@@ -43,9 +43,7 @@ export default function CategoryResults() {
               </span>{' '}
               out of {state.words.words.length}
             </span>
-            {state.words.words.map((word) => {
-              return <WordItemResult word={word} />;
-            })}
+            {state.words.words.map((word) => <WordItemResult word={word} />)}
           </div>
         </>
       </Container>

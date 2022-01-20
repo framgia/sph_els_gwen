@@ -10,7 +10,7 @@ export default function WordItemResult({ word }: { word: Word }) {
     return choiceAnswer.word_id === word.id;
   });
   const correctAnswer = word.choices.find((choice) => {
-    return choice.is_correct
+    return choice.is_correct;
   });
 
   return (
@@ -43,11 +43,10 @@ export default function WordItemResult({ word }: { word: Word }) {
                   >
                     {choice.name}
                   </span>
-                  {answer?.id === choice.id && (
-                    <span className='italic'>your answer</span>
-                  )}
-                  {choice.is_correct && answer?.id !== choice.id && (
-                    <span>correct answer</span>
+                  {choice.is_correct && answer?.id !== choice.id ? (
+                    <span className='italic'>correct answer</span>
+                  ) : (
+                    answer?.id === choice?.id && (<span>your answer</span>)
                   )}
                 </div>
               </>
