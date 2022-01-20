@@ -7,6 +7,7 @@ import ProjectLogoGroup from './ProjectLogoGroup';
 import Notification from './Notification';
 import Loader from './Loader';
 import Modal from './Modal';
+import CategoryItem from './CategoryItem';
 
 export {
     Button,
@@ -17,5 +18,6 @@ export {
     ProjectLogoGroup,
     Notification,
     Loader,
-    Modal
+    Modal,
+    CategoryItem
 }

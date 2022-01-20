@@ -12,3 +12,16 @@ export const setAdminHeaders = () => {
     },
   };
 }
+
+export const setHeaders = () => {
+  let token;
+  const state = store.getState().user;
+  state.admin_token ? token = state.admin_token : token=state.user_token;
+
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};

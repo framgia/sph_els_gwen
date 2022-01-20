@@ -20,6 +20,8 @@ module.exports = {
         primary: '#C6B1F7',
         secondary: '#581C87',
         lightgray: '#c0c6d1',
+        success: '#7dce82',
+        failed: '#f25b5bff',
       },
     },
   },

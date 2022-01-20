@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Container, Notification, Loader } from '@components/';
+import { Container, Notification, Loader, CategoryItem } from '@components/';
 import { getAllCategories } from '@api/CategoryApi';
 import { getAll, setIsLoading, setIsError } from '@store/category';
 import { RootState } from '@store/store';
-import CategoryItem from './CategoryItem';
 import { Category } from '@store/category';
 
 export default function CategoriesList() {
@@ -61,6 +60,7 @@ export default function CategoriesList() {
                       name={category.name}
                       description={category.description}
                       key={`category${category.id}`}
+                      link={`/admin/categories/${category.id}`}
                     />
                   );
                 })}

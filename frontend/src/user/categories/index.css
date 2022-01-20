@@ -1,0 +1,79 @@
+/*********** FOR ANSWERING CATEGORY ************/
+.answering-category-page {
+  @apply flex flex-col justify-evenly px-8 
+  lg:w-4/5 xs:w-full 
+  md:mx-auto;
+}
+
+.content-group {
+  @apply flex flex-col 
+  md:my-10 xs:my-5
+  md:w-9/12 xs:w-11/12;
+}
+
+.category-word-card {
+  @apply flex flex-col items-center justify-center
+  w-full rounded-xl border-secondary
+  md:p-20 xs:p-10;
+}
+
+.category-word-header {
+  @apply text-center 
+  md:text-2xl md:font-semibold
+  xs:text-lg;
+}
+
+.category-word-button {
+  @apply rounded-full text-center w-56 self-end 
+  mt-8 px-10 py-3;
+}
+
+/*********** FOR CATEGORY WORD ITEM ************/
+.category-word-group {
+  @apply flex flex-col items-center justify-center w-full mt-10;
+}
+
+.category-word {
+  @apply md:text-5xl xs:text-4xl text-purple-400 font-bold;
+}
+
+.word-choices-group {
+  @apply flex flex-col w-full items-center justify-center mt-10;
+}
+
+.choices-grid-group {
+  @apply grid lg:grid-cols-4 md:grid-cols-2 gap-4 w-full mt-5;
+}
+
+.choice-item {
+  @apply text-center border-2 border-primary
+  rounded-lg p-1 py-2
+  md:text-2xl xs:text-xl;
+}
+
+/*********** FOR CATEGORY RESULTS ************/
+.category-results-group {
+  @apply flex flex-col lg:w-4/5 xs:w-full xs:px-8 my-8 md:mx-auto
+}
+
+.category-results-header {
+  @apply md:text-3xl md:font-semibold xs:text-2xl
+}
+
+/*********** FOR WORD ITEM RESULTS ************/
+.word-result-group {
+  @apply flex w-full justify-start items-center my-5
+}
+
+.word-column {
+  @apply flex flex-col items-end justify-center w-1/5 pr-5
+}
+
+.choices-row {
+  @apply flex w-4/5 justify-between items-center
+}
+
+.choice-item-result {
+  @apply text-center border w-full border-lightgray p-2
+  md:text-2xl xs:text-xl rounded-xl 
+}

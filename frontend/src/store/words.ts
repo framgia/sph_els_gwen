@@ -17,12 +17,14 @@ export interface Choice {
 
 interface WordState {
   words: Word[],
+  answers: Choice[],
   isLoading: boolean,
   isAddingWord: boolean
 }
 
 const initialState: WordState = {
   words: [],
+  answers: [],
   isLoading: false,
   isAddingWord: false
 };
@@ -40,11 +42,15 @@ export const wordSlice = createSlice({
     setIsAddingWord: (state, action) => {
       state.isAddingWord = action.payload;
     },
+    setAnswers: (state, action) => {
+      state.answers = [...state.answers, action.payload];
+    }
   },
 });
 
 export const { getWords,
   setIsLoading,
   setIsAddingWord,
+  setAnswers
 } = wordSlice.actions;
 export default wordSlice.reducer;

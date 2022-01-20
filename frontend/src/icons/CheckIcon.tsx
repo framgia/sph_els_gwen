@@ -1,15 +1,43 @@
-import React from 'react'
+import React from 'react';
 
-export default function Check() {
-    return (
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        width='128'
-        height='128'
-        viewBox='0 0 24 24'
-        fill='#16a34a'
-      >
-        <path d='M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z' />
-      </svg>
-    );
+export default function Check(props: {className?:string}) {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      version='1.1'
+      xmlnsXlink='http://www.w3.org/1999/xlink'
+      x='0'
+      y='0'
+      viewBox='0 0 512 512'
+      xmlSpace='preserve'
+      className={props.className}
+    >
+      <g>
+        <g xmlns='http://www.w3.org/2000/svg'>
+          <g>
+            <path
+              d='M256,0C115.39,0,0,115.39,0,256s115.39,256,256,256s256-115.39,256-256S396.61,0,256,0z M225.019,372.44L112.914,260.336    l42.422-42.422l71.646,71.646l143.833-130.752l40.371,44.385L225.019,372.44z'
+              fill='#7dce82'
+              data-original='#000000'
+            ></path>
+          </g>
+        </g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+        <g xmlns='http://www.w3.org/2000/svg'></g>
+      </g>
+    </svg>
+  );
 }

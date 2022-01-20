@@ -16,7 +16,7 @@ export default function Notification(props: ModalProps) {
 
   return (
     <div className='w-full flex flex-col items-center justify-center h-full py-36'>
-      {props.isSuccess ? <CheckIcon /> : <ErrorIcon />}
+      {props.isSuccess ? <CheckIcon className='w-40'/> : <ErrorIcon className='w-40'/>}
       <span className='md:text-4xl xs:text-xl mt-8'>{props.title}</span>
       {props.isSuccess && props.children}
       {!props.isSuccess && props.errorAction === 'back' && (

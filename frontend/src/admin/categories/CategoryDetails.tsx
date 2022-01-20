@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Nav, Container, Loader, Modal, Notification } from '@components/';
-import { WarningIcon, BackIcon } from '@icons/';
+import { WarningIcon, ArrowLeftIcon } from '@icons/';
 import WordsList from '@admin/words/WordsList';
 
 import { deleteCategory, getSpecificCategory } from '@api/CategoryApi';
@@ -85,7 +85,7 @@ export default function CategoryDetails() {
                   to='/admin/dashboard'
                   className='button flex bg-purple-200 items-center justify-around md:w-40 xs:w-32 self-start'
                 >
-                  <BackIcon className='w-7' />
+                  <ArrowLeftIcon className='w-7' />
                   Go back
                 </Link>
                 <div className='flex md:flex-row xs:flex-col mt-10'>
