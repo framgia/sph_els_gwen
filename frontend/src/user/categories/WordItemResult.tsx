@@ -29,9 +29,8 @@ export default function WordItemResult({ word }: { word: Word }) {
           {word.choices.map((choice, index) => {
             return (
               <>
-                <div className='flex flex-col w-1/5 items-center'>
+                <div className='flex flex-col w-1/5 items-center' key={choice.id}>
                   <span
-                    key={choice.id}
                     className={`choice-item-result
                       ${choice.is_correct && 'bg-success'}
                       ${

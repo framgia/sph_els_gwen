@@ -11,18 +11,21 @@ export default function CategoryResults() {
   const { category_id } = useParams();
   const navigate = useNavigate();
   const state = useSelector((state: RootState) => state);
+
   const score = state.words.answers.filter((answer) => {
     return answer.is_correct
   });
 
   useEffect(() => {
-    if (!category_id && state.words.answers.length === 0) {
+    if (state.words.answers.length === 0) {
       navigate('/');
-    }
+    }    
+    console.log(state.words);
+
   }, []);
 
   return (
-    <>
+    <> 
       <Nav className='bg-primary' />
       <Container className='category-results-group'>
         <>
@@ -44,7 +47,7 @@ export default function CategoryResults() {
               out of {state.words.words.length}
             </span>
             {state.words.words.map((word) => {
-              return <WordItemResult word={word} />;
+              return <WordItemResult word={word} key={word.id} />;
             })}
           </div>
         </>
