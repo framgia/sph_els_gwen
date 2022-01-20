@@ -48,7 +48,7 @@ class UserController extends Controller
     public function allCategoryLogs($id)
     {
       $user = User::where('id', $id)->get();
-      if(count($user)===0) {
+      if (count($user) === 0) {
         throw new HttpException(404, 'Resource not found');
       }
 

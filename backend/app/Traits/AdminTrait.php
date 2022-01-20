@@ -17,13 +17,13 @@ trait AdminTrait {
     }
     
     protected function checkWord(Category $category, Word $word) {
-        if($word->category_id != $category->id) {
+        if ($word->category_id != $category->id) {
             throw new HttpException(422, 'Word does not belong to this category');
         }
     }
 
     protected function checkChoice(Word $word, Choice $choice) {
-        if($choice->word_id != $word->id) {
+        if ($choice->word_id != $word->id) {
             throw new HttpException(422, 'Choice does not belong to this word');
         }
     }

@@ -49,7 +49,7 @@ class UserCategoryLogController extends Controller
       // check if user already has record of word
       $logExists = $user->category_logs->where('word_id', $word->id);
 
-      if(count($logExists)!==0) {
+      if (count($logExists) !== 0) {
         // user already has record of that word
         throw new HttpException(409, 'There is already a category log for this word');
       }
