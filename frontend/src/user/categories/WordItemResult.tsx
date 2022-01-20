@@ -46,7 +46,7 @@ export default function WordItemResult({ word }: { word: Word }) {
                   {choice.is_correct && answer?.id !== choice.id ? (
                     <span className='italic'>correct answer</span>
                   ) : (
-                    answer?.id === choice?.id && (<span>your answer</span>)
+                    answer?.id === choice?.id && <span>your answer</span>
                   )}
                 </div>
               </>
