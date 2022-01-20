@@ -43,7 +43,7 @@ export default function WordItemResult({ word }: { word: Word }) {
                   >
                     {choice.name}
                   </span>
-                  {answer?.id === choice.id && (
+                  {!choice.is_correct && answer?.id === choice.id && (
                     <span className='italic'>your answer</span>
                   )}
                   {choice.is_correct && answer?.id !== choice.id && (

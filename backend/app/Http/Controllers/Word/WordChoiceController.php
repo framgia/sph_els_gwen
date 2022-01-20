@@ -66,7 +66,7 @@ class WordChoiceController extends Controller
         } else {
             //check if specified choice is the correct answer
             $isCorrectAnswer = $choice->is_correct;
-            if($isCorrectAnswer) {
+            if ($isCorrectAnswer) {
                 throw new HttpException(422, 'The question must have a correct answer.');
             }
         }
@@ -90,7 +90,7 @@ class WordChoiceController extends Controller
     }
 
     protected function checkChoice(Word $word, Choice $choice) {
-        if($choice->word_id != $word->id) {
+        if ($choice->word_id != $word->id) {
             throw new HttpException(422, 'Choice does not belong to this word');
         }
     }

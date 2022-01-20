@@ -100,9 +100,11 @@ export default function AnsweringCategory() {
                 onClick={() => handleNextWord()}
               >
                 <span className='text-center'>
-                  {index + 1 < state.words.words.length
+                  {
+                    index + 1 < state.words.words.length
                     ? 'Next word'
-                    : 'Finish category'}
+                    : 'Finish category'
+                  }
                 </span>
               </button>
             </div>

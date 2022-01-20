@@ -4,7 +4,6 @@ export default function ErrorIcon(props: { className?: string }) {
   return (
     <svg
       height='128'
-      // style='overflow:visible;enable-background:new 0 0 32 32'
       viewBox='0 0 32 32'
       xmlSpace='preserve'
       xmlns='http://www.w3.org/2000/svg'
