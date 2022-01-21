@@ -23,6 +23,7 @@ export default function UserCategoriesList() {
     getAllCategories()
       .then((response) => {
         dispatch(getAll(response.data.data));
+        dispatch(setIsLoading(false));
       })
       .catch(() => {
         dispatch(setIsError(true));
