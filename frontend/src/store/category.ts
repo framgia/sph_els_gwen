@@ -4,8 +4,31 @@ export interface Category {
   name: string;
   description: string;
 }
+
+export interface CategoryLog {
+  id: number;
+  word: string;
+  choices: ChoiceResults[];
+  is_correct: boolean;
+}
+
+export interface UserCategoryLog {
+  user_id: number,
+  category_id: number,
+  created_at: Date,
+  score: number
+}
+
+export interface ChoiceResults {
+  name: string;
+  user_answer: boolean;
+  is_correct: boolean;
+}
+
+
 interface CategoryState {
   categories: Category[],
+  categoryLogs: CategoryLog[],
   isLoading: boolean,
   isError: boolean,
   isInvalid: boolean,
@@ -14,6 +37,7 @@ interface CategoryState {
 
 const initialState: CategoryState = {
   categories: [],
+  categoryLogs: [],
   isLoading: false,
   isError: false,
   isInvalid: false,
@@ -26,6 +50,9 @@ export const categorySlice = createSlice({
   reducers: {
     getAll: (state, action) => {
       state.categories = action.payload;
+    },
+    setCategoryLogs: (state, action) => {
+      state.categoryLogs = action.payload;
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
@@ -45,5 +72,5 @@ export const categorySlice = createSlice({
   },
 });
 
-export const { getAll, setIsLoading, setIsError, setIsInvalid } = categorySlice.actions;
+export const { getAll, setCategoryLogs, setIsLoading, setIsError, setIsInvalid } = categorySlice.actions;
 export default categorySlice.reducer;

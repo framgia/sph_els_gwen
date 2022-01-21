@@ -1,12 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Loader, CategoryItem } from '@components/';
+import { Container, Loader, CategoryItem, Notification } from '@components/';
 import { RootState } from '@store/store';
-import { getAll, setIsLoading, setIsError, Category } from '@store/category';
+import {
+  getAll,
+  setIsLoading,
+  setIsError,
+  Category,
+} from '@store/category';
 import { getAllCategories } from '@api/CategoryApi';
 
 export default function UserCategoriesList() {
-  const state = useSelector((state: RootState) => state.category);
+  const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +23,6 @@ export default function UserCategoriesList() {
     getAllCategories()
       .then((response) => {
         dispatch(getAll(response.data.data));
-        dispatch(setIsLoading(false));
       })
       .catch(() => {
         dispatch(setIsError(true));
@@ -28,16 +32,21 @@ export default function UserCategoriesList() {
   return (
     <Container className='m-10 flex-col z-10'>
       <>
-        {state.isLoading && !state.isError && <Loader />}
-        {!state.isLoading && !state.isError && (
+        {state.category.isLoading && !state.category.isError && <Loader />}
+        {state.category.isError && !state.category.isLoading && (
+          <Notification
+            isSuccess={false}
+            title='An error has occurred. Please try again later.'
+            errorAction='refresh'
+          />
+        )}
+        {!state.category.isLoading && !state.category.isError && (
           <>
             <div className='flex flex-row w-full items-center justify-between mb-5'>
-              <h1 className='page-label'>
-                Categories list
-              </h1>
+              <h1 className='page-label'>Categories list</h1>
             </div>
             <div className='category-list-group'>
-              {state.categories.map((category: Category) => {
+              {state.category.categories.map((category: Category) => {
                 return (
                   <CategoryItem
                     id={category.id}
@@ -57,3 +66,4 @@ export default function UserCategoriesList() {
     </Container>
   );
 }
+ 

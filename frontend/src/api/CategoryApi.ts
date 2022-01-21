@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { API_URL, setAdminHeaders, setHeaders } from '.';
 import { Choice } from '@store/words';
-import { store } from '@store/store';
 
 export const getAllCategories = () => {
   return axios.get(`${API_URL}/categories`, setHeaders());
@@ -23,10 +22,10 @@ export const editCategory = (id: number, body: { name: string, description?: str
   return axios.put(`${API_URL}/categories/${id}`, body, setAdminHeaders());
 }
 
-export const addCategoryLog = (user_id: number, category_id: number, body: { choices: Choice[] }) => {
+export const addCategoryLog = (user_id: number, category_id: number, body: { answers: Choice[] }) => {
   return axios.post(`${API_URL}/users/${user_id}/categories/${category_id}/category_logs`, body, setHeaders());
 }
 
-export const getSpecificCategoryLog = (user_id: number, category_id: number) => {
+export const getCategoryLog = (user_id: number, category_id: number) => {
   return axios.get(`${API_URL}/users/${user_id}/categories/${category_id}/category_logs`, setHeaders());
 }

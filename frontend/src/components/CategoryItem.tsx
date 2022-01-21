@@ -9,9 +9,14 @@ export default function CategoryItem(props: {
   link: string;
   buttonColor?: string;
   buttonText?: string;
+  disabled?:boolean
 }) {
   return (
-    <Card className='category-item-card border-gray-400 mx-auto'>
+    <Card
+      className={`category-item-card border-gray-400 mx-auto ${
+        props.disabled && 'bg-gray-300'
+      }`}
+    >
       <div className='w-full'>
         <p className='md:text-2xl xs:text-xl font-medium'>{props.name}</p>
         <>
@@ -33,9 +38,13 @@ export default function CategoryItem(props: {
       </div>
       <Link
         to={props.link}
-        className={`button w-3/4 text-center mt-8 ${
-          props.buttonColor ?? 'bg-purple-200'
-        }`}
+        className={`rounded-full py-2 px-4 w-3/4 text-center mt-8
+          ${
+            (!props.disabled && props.buttonColor) ??
+            'bg-purple-200 hover:bg-secondary hover:text-white'
+          }
+          ${props.disabled && 'bg-gray-500 text-white hover:bg-gray-700'}
+        `}
       >
         <span className='flex xs:flex-col'>
           {props.buttonText ?? 'View more details'}
