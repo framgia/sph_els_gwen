@@ -9,6 +9,7 @@ use App\Http\Controllers\Word\WordController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Category\CategoryWordController;
 use App\Http\Controllers\Choice\ChoiceController;
+use App\Http\Controllers\User\UserFollowerController;
 use App\Models\CategoryLog;
 
 /*
@@ -38,6 +39,9 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::get('users/{id}/category_logs', [UserController::class, 'allCategoryLogs']);
     Route::resource('users.categories.category_logs', UserCategoryLogController::class)
         ->only(['index', 'store']);
+    Route::resource('users.user_followers', UserFollowerController::class)
+        ->only(['index', 'store']);
+    Route::delete('users/{user_id}/following/{following_id}', [UserFollowerController::class, 'destroy']);    
 
     //--------------------CATEGORIES----------------------//
     Route::resource('categories', CategoryController::class)
