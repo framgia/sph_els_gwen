@@ -44,13 +44,17 @@ export const wordSlice = createSlice({
     },
     setAnswers: (state, action) => {
       state.answers = [...state.answers, action.payload];
-    }
+    },
+    clearAnswers: (state, action) => {
+      state.answers = [];
+    },
   },
 });
 
 export const { getWords,
   setIsLoading,
   setIsAddingWord,
-  setAnswers
+  setAnswers,
+  clearAnswers
 } = wordSlice.actions;
 export default wordSlice.reducer;

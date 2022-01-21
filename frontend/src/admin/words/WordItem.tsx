@@ -48,7 +48,7 @@ export default function WordItem(props: {
             <div className='word-group md:mt-0 xs:mt-4'>
               <span className='italic'>answer</span>
               <span
-                className='text-2xl text-purple-400 font-semibold'
+                className='md:text-2xl text-purple-400 font-semibold'
                 key={answer?.id}
               >
                 {answer?.name}

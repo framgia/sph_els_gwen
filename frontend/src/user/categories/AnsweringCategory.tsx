@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import { Nav, Container, Loader, Card, Notification } from '@components/';
 import { RootState } from '@store/store';
-import { Category, setIsError, setIsLoading } from '@store/category';
-import { Choice, getWords, setAnswers, Word } from '@store/words';
+import { setIsError, setIsLoading } from '@store/category';
+import { Choice, clearAnswers, getWords, setAnswers, Word } from '@store/words';
 import { getAllWords } from '@api/WordApi';
 import CategoryWordItem from './CategoryWordItem';
-import './index.css'
+import { addCategoryLog } from '@api/CategoryApi';
+import './index.css';
 
 export default function AnsweringCategory() {
   const { category_id } = useParams();
@@ -16,7 +18,7 @@ export default function AnsweringCategory() {
   const state = useSelector((state: RootState) => state);
   const [currentWord, setCurrentWord] = useState<Word>();
   const [currentAnswer, setCurrentAnswer] = useState<Choice>();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [cookies, _] = useCookies();
   const [index, setIndex] = useState(0);
 
   const _getWords = (id: number) => {
@@ -31,20 +33,31 @@ export default function AnsweringCategory() {
       });
   };
 
-  const handleNextWord = () => {
+  const handleNextWord = async () => {
     dispatch(setAnswers(currentAnswer));
-    setCurrentAnswer({
-      id: 0,
-      name: '',
-      word_id: 0,
-      is_correct: false,
-    });
     if (index + 1 < state.words.words.length) {
       setIndex(index + 1);
       setCurrentWord(state.words.words[index + 1]);
     } else {
-      navigate(`/categories/${category_id}/results`);
+      if (category_id && currentAnswer) {
+        _addCategoryLog(parseInt(category_id), currentAnswer);
+      }
     }
+  };
+
+  const _addCategoryLog = (category_id: number, answer: Choice) => {
+    addCategoryLog(cookies.user['id'], category_id, {
+      answers: [...state.words.answers, answer],
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          navigate(`/categories/${category_id}/results`);
+          dispatch(clearAnswers);
+        }
+      })
+      .catch((error) => {
+        dispatch(setIsError(true));
+      });
   };
 
   useEffect(() => {
@@ -100,11 +113,9 @@ export default function AnsweringCategory() {
                 onClick={() => handleNextWord()}
               >
                 <span className='text-center'>
-                  {
-                    index + 1 < state.words.words.length
+                  {index + 1 < state.words.words.length
                     ? 'Next word'
-                    : 'Finish category'
-                  }
+                    : 'Finish category'}
                 </span>
               </button>
             </div>

@@ -12,7 +12,7 @@ import {
   Loader,
 } from '@components/';
 import { login } from '@api/UserApi';
-import { setUserToken } from '@store/user';
+import { setUser, setUserToken } from '@store/user';
 import './index.css';
 import { useCookies } from 'react-cookie';
 
@@ -75,7 +75,9 @@ export default function UserLogin() {
       .then((response: Response) => {
         if (response.status === 200) {
           setCookie('token', response.data?.token, { path: '/' });
+          setCookie('user', response.data?.data, { path: '/' });
           dispatch(setUserToken(response.data?.token));
+          dispatch(setUser(response.data?.data));
           setFormState({ ...formState, isLoading: false });
           navigate('/');
         }
