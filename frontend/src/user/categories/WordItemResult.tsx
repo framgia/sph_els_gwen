@@ -11,12 +11,6 @@ export default function WordItemResult(props: {
   is_correct: boolean;
 }) {
   const state = useSelector((state: RootState) => state);
-  // const answer = state.words.answers.find((choiceAnswer) => {
-  //   return choiceAnswer.word_id === word.id;
-  // });
-  // const correctAnswer = word.choices.find((choice) => {
-  //   return choice.is_correct;
-  // });
 
   return (
     <div className='word-result-group'>

@@ -47,18 +47,12 @@ export default function WordItem(props: {
             </div>
             <div className='word-group md:mt-0 xs:mt-4'>
               <span className='italic'>answer</span>
-              {props.word.choices.map((choice: Choice) => {
-                if (choice.is_correct) {
-                  return (
-                    <span
-                      className='md:text-2xl text-purple-400 font-semibold'
-                      key={choice.id}
-                    >
-                      {choice.name}
-                    </span>
-                  );
-                }
-              })}
+              <span
+                className='md:text-2xl text-purple-400 font-semibold'
+                key={answer?.id}
+              >
+                {answer?.name}
+              </span>
             </div>
           </div>
           <div
