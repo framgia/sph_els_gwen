@@ -84,7 +84,7 @@ export default function AnsweringCategory() {
           )}
           {!state.category.isLoading && !state.category.isError && (
             <div className='content-group'>
-              <Link to='/' className='button bg-primary w-56 mb-10 text-center'>
+              <Link to='/categories' className='button bg-primary w-56 mb-10 text-center'>
                 Back to categories list
               </Link>
               <Card className='category-word-card'>

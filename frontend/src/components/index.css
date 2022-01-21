@@ -87,5 +87,5 @@
 }
 
 .page-label {
-    @apply md:text-3xl xs:text-xl font-bold
+    @apply md:text-4xl xs:text-2xl font-bold
 }

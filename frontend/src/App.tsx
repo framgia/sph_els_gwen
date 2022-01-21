@@ -17,6 +17,8 @@ import EditCategory from '@admin/categories/EditCategory';
 import EditWord from '@admin/words/EditWord';
 import AnsweringCategory from '@user/categories/AnsweringCategory';
 import CategoryResults from '@user/categories/CategoryResults';
+import UserCategoriesList from '@user/categories/UserCategoriesList';
+import UsersList from '@user/profiles/UsersList';
 
 
 export default function App() {
@@ -54,6 +56,22 @@ export default function App() {
           element={
             <UserRoute>
               <CategoryResults />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/categories'
+          element={
+            <UserRoute>
+              <UserCategoriesList />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/users/all'
+          element={
+            <UserRoute>
+              <UsersList />
             </UserRoute>
           }
         />
