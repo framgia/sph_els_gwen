@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all()->except('is_admin');
+        $users = User::where('is_admin', false)->get();
         return response()->json([
             'data'=>$users
         ], 200);
