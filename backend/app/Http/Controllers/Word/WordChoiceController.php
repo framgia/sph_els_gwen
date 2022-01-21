@@ -66,11 +66,7 @@ class WordChoiceController extends Controller
         } else {
             //check if specified choice is the correct answer
             $isCorrectAnswer = $choice->is_correct;
-<<<<<<< HEAD
             if ($isCorrectAnswer) {
-=======
-            if($isCorrectAnswer) {
->>>>>>> 6b56ad2 (changed filenames, table names and fields from lessons to words in backend side)
                 throw new HttpException(422, 'The question must have a correct answer.');
             }
         }
