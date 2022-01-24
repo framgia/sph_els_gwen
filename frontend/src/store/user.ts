@@ -7,6 +7,12 @@ export interface User {
   user_image: string;
 }
 
+interface FollowRecord {
+  id: number,
+  user_id: number,
+  follower_id: number
+}
+
 interface UserState {
   user_token: string;
   admin_token: string;
@@ -36,6 +42,9 @@ export const userSlice = createSlice({
     },
     getUsers: (state, action) => {
       state.users = action.payload;
+    },
+    getFollowing: (state, action) => {
+      state.following = action.payload
     },
     setAdminToken: (state, action) => {
       state.admin_token = action.payload;

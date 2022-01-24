@@ -20,18 +20,8 @@ class UserFollowerController extends Controller
      */
     public function index(User $user)
     {
-      $response = new Collection();
       $followers = UserFollower::where('user_id', $user->id)->get();
-
-      // to add follower information in the response
-      foreach ($followers as $follower) {
-        $follower_response = new stdClass();
-        $follower_response->id = $follower['id'];
-        $follower_response->user_id = $follower['user_id'];
-        $follower_response->follower = User::where('id', $follower['follower_id'])->get();
-        $response->push($follower_response);
-      }
-      return $this->returnAll($response);
+      return $this->returnAll($followers);
     }
 
     /**
@@ -43,21 +33,21 @@ class UserFollowerController extends Controller
     public function store(Request $request, User $user)
     {
       $request->validate([
-        'user_id' => ['required', 'integer', Rule::exists('users', 'id')]
+        'following_id' => ['required', 'integer', Rule::exists('users', 'id')]
       ]);
 
       // user id must not be the user's id or the admin's id
-      if ($request['user_id'] == $user->id || $request['user_id'] == 1) {
+      if ($request['following_id'] == $user->id || $request['following_id'] == 1) {
         throw new HttpException(400, 'Invalid user id provided');
       }
 
-      $alreadyFollowing = UserFollower::where('follower_id', $user->id)->first();
+      $alreadyFollowing = UserFollower::where('follower_id', $user->id)->where('user_id', $request['following_id'])->first();
       if ($alreadyFollowing) {
         throw new HttpException(409, 'You are already following this user');
       }
 
       $following = UserFollower::create([
-        'user_id' => $request['user_id'],
+        'user_id' => $request['following_id'],
         'follower_id' => $user->id
       ]);
 
@@ -81,13 +71,28 @@ class UserFollowerController extends Controller
         throw new HttpException(400, 'Invalid user id provided');
       }
 
-      $not_following = UserFollower::where('follower_id', $user_id)->get()->count() === 0;
+      $not_following = UserFollower::where('follower_id', $user_id)
+        ->where('user_id', $following_id)->get()->count() === 0;
       if ($not_following) {
         throw new HttpException(400, 'You are not following this user');
       }
 
-      $following_record = UserFollower::where('follower_id', $user_id)->where('user_id', $following_id)->first();
+      $following_record = UserFollower::where('follower_id', $user_id)
+        ->where('user_id', $following_id)
+        ->first();
       $following_record->delete();
       return $this->returnOne($following_record);
+    }
+
+    public function getUserFollowing($user_id)
+    {
+      $user_not_existing = User::where('id', $user_id)->get()->count() === 0;
+      if($user_not_existing)
+      {
+        throw new HttpException(400, 'Invalid user id provided');
+      }
+     
+      $following = UserFollower::where('follower_id', $user_id)->get();
+      return $this->returnAll($following);
     }
 }

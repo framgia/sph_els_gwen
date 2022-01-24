@@ -42,6 +42,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::resource('users.user_followers', UserFollowerController::class)
         ->only(['index', 'store']);
     Route::delete('users/{user_id}/following/{following_id}', [UserFollowerController::class, 'destroy']);    
+    Route::get('users/{user_id}/following', [UserFollowerController::class, 'getUserFollowing']);    
 
     //--------------------CATEGORIES----------------------//
     Route::resource('categories', CategoryController::class)
