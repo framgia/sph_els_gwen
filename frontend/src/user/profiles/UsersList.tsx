@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
-import { Nav, Container, Modal, Loader } from '@components/';
+import { Nav, Container, Modal, Loader, Notification } from '@components/';
 import { RootState } from '@store/store';
 import { getAllUsers, getUserFollowing, unfollowUser } from '@api/UserApi';
 import { getFollowing, getUsers, User } from '@store/user';
@@ -60,7 +60,7 @@ export default function UsersList() {
       _getAllUsers();
       _getAllUserFollowing();
     }
-  }, [isModalOpen]);
+  }, [isModalOpen===false]);
 
   return (
     <>
@@ -68,7 +68,14 @@ export default function UsersList() {
       <Container className='flex flex-col m-10'>
         <>
           {state.category.isLoading && <Loader />}
-          {!state.category.isLoading && (
+          {state.category.isError && !state.category.isLoading && (
+            <Notification
+              isSuccess={false}
+              title='An error has occurred. Please try again later.'
+              errorAction='refresh'
+            />
+          )}
+          {!state.category.isLoading && !state.category.isError && (
             <>
               <Modal
                 isOpen={isModalOpen}
