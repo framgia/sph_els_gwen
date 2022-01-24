@@ -29,3 +29,7 @@ export const addCategoryLog = (user_id: number, category_id: number, body: { ans
 export const getCategoryLog = (user_id: number, category_id: number) => {
   return axios.get(`${API_URL}/users/${user_id}/categories/${category_id}/category_logs`, setHeaders());
 }
+
+export const getUserCategoryLogs = (user_id: number) => {
+  return axios.get(`${API_URL}/users/${user_id}/category_logs`, setHeaders());
+};

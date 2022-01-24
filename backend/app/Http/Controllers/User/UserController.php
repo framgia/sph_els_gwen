@@ -51,7 +51,20 @@ class UserController extends Controller
         throw new HttpException(404, 'Resource not found');
       }
 
-      $category_logs = CategoryLog::where('user_id', $id)->get();      
+      $category_logs = CategoryLog::select('user_id', 'category_id', 'created_at')
+        ->where('user_id', $id)
+        ->distinct('category_id')
+        ->get();
+
+      foreach($category_logs as $category_log) {
+        $score = CategoryLog::where([
+          'user_id' => $id,
+          'category_id' => $category_log->category_id,
+          'is_correct' => true]
+        )->count();
+        $category_log['score'] = $score;
+      }
+           
       return $this->returnAll($category_logs);
     }
 }
