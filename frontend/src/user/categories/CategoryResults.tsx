@@ -40,6 +40,8 @@ export default function CategoryResults() {
     if (category_id) {
       _getCategoryLog(parseInt(category_id));
     }
+    
+    console.log(state.category.userCategoryLogs);
   }, []);
 
   return (
@@ -63,7 +65,7 @@ export default function CategoryResults() {
               >
                 Back to categories list
               </Link>
-              {!state.category.categoryLogs ? (
+              {state.category.categoryLogs.length < 1 ? (
                 <>
                   <span className='md:text-4xl xs:text-2xl font-bold text-gray-500 italic mt-20'>
                     No results for this category yet.

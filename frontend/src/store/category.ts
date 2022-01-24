@@ -28,6 +28,7 @@ export interface ChoiceResults {
 
 interface CategoryState {
   categories: Category[],
+  userCategoryLogs: UserCategoryLog[],
   categoryLogs: CategoryLog[],
   isLoading: boolean,
   isError: boolean,
@@ -37,6 +38,7 @@ interface CategoryState {
 
 const initialState: CategoryState = {
   categories: [],
+  userCategoryLogs: [],
   categoryLogs: [],
   isLoading: false,
   isError: false,
@@ -50,6 +52,9 @@ export const categorySlice = createSlice({
   reducers: {
     getAll: (state, action) => {
       state.categories = action.payload;
+    },
+    setUserCategoryLogs: (state, action) => {
+      state.userCategoryLogs = action.payload;
     },
     setCategoryLogs: (state, action) => {
       state.categoryLogs = action.payload;
@@ -72,5 +77,5 @@ export const categorySlice = createSlice({
   },
 });
 
-export const { getAll, setCategoryLogs, setIsLoading, setIsError, setIsInvalid } = categorySlice.actions;
+export const { getAll, setUserCategoryLogs, setCategoryLogs, setIsLoading, setIsError, setIsInvalid } = categorySlice.actions;
 export default categorySlice.reducer;
