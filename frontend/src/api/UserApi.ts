@@ -1,21 +1,14 @@
 import axios from 'axios';
-import { API_URL } from '.';
+import { API_URL, setHeaders } from '.';
 
 export const login = (body: {}) => {
-    return axios
-        .post(`${API_URL}/users/login`, body, {
-            headers: { 'Content-Type': 'application/json' },
-        });
+  return axios.post(`${API_URL}/users/login`, body, setHeaders());
 }
 
 export const registerUser = (body: {}) => {
-    return axios
-        .post(`${API_URL}/users/register`, body, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers':
-                  'Origin, X-Requested-With, Content-Type, Accept',
-            },
-        })
+  return axios.post(`${API_URL}/users/register`, body, setHeaders());
+}
+
+export const getAllUsers = () => {
+  return axios.get(`${API_URL}/users`, setHeaders());
 }

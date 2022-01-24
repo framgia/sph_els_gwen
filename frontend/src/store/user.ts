@@ -34,6 +34,9 @@ export const userSlice = createSlice({
     setUserToken: (state, action) => {
       state.user_token = action.payload;
     },
+    getUsers: (state, action) => {
+      state.users = action.payload;
+    },
     setAdminToken: (state, action) => {
       state.admin_token = action.payload;
     },

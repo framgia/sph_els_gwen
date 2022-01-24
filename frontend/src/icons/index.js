@@ -5,6 +5,7 @@ import ErrorIcon from './ErrorIcon';
 import CheckIcon from './CheckIcon';
 import ArrowLeftIcon from './ArrowLeftIcon';
 import CrossIcon from './CrossIcon';
+import UserIcon from './UserIcon';
 
 export {
   WarningIcon,
@@ -13,5 +14,6 @@ export {
   ErrorIcon,
   CheckIcon,
   ArrowLeftIcon,
-  CrossIcon
+  CrossIcon,
+  UserIcon,
 };
