@@ -21,7 +21,16 @@ class UserFollowerController extends Controller
     public function index(User $user)
     {
       $followers = UserFollower::where('user_id', $user->id)->get();
-      return $this->returnAll($followers);
+      $response = new Collection();
+      // to add follower information in the response
+      foreach ($followers as $follower) {
+        $follower_response = new stdClass();
+        $follower_response->id = $follower['id'];
+        $follower_response->user_id = $follower['user_id'];
+        $follower_response->follower = User::where('id', $follower['follower_id'])->get();
+        $response->push($follower_response);
+      }
+      return $this->returnAll($response);
     }
 
     /**
@@ -71,15 +80,13 @@ class UserFollowerController extends Controller
         throw new HttpException(400, 'Invalid user id provided');
       }
 
-      $not_following = UserFollower::where('follower_id', $user_id)
-        ->where('user_id', $following_id)->get()->count() === 0;
-      if ($not_following) {
-        throw new HttpException(400, 'You are not following this user');
-      }
-
       $following_record = UserFollower::where('follower_id', $user_id)
         ->where('user_id', $following_id)
         ->first();
+      if (!$following_record) {
+        throw new HttpException(400, 'You are not following this user');
+      }
+
       $following_record->delete();
       return $this->returnOne($following_record);
     }
@@ -92,7 +99,16 @@ class UserFollowerController extends Controller
         throw new HttpException(400, 'Invalid user id provided');
       }
      
-      $following = UserFollower::where('follower_id', $user_id)->get();
-      return $this->returnAll($following);
+      $user_following = UserFollower::where('follower_id', $user_id)->get();
+      $response = new Collection();
+      // to add follower information in the response
+      foreach ($user_following as $following) {
+        $following_response = new stdClass();
+        $following_response->id = $following['id'];
+        $following_response->user_id = $following['follower_id'];
+        $following_response->following = User::where('id', $following['user_id'])->get();
+        $response->push($following_response);
+      }
+      return $this->returnAll($response);
     }
 }
