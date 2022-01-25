@@ -7,10 +7,18 @@ export interface User {
   user_image: string;
 }
 
+interface FollowingRecord {
+  id: number,
+  user_id: number,
+  following: User
+}
+
 interface UserState {
   user_token: string;
   admin_token: string;
-  user: User
+  user: User,
+  users: [],
+  following: FollowingRecord[]
 }
 
 const initialState: UserState = {
@@ -21,7 +29,9 @@ const initialState: UserState = {
     name: '',
     email: '',
     user_image: '',
-  }
+  },
+  users: [],
+  following: []
 };
 
 export const userSlice = createSlice({
@@ -37,6 +47,9 @@ export const userSlice = createSlice({
     getUsers: (state, action) => {
       state.users = action.payload;
     },
+    getFollowing: (state, action) => {
+      state.following = action.payload
+    },
     setAdminToken: (state, action) => {
       state.admin_token = action.payload;
     },
@@ -47,5 +60,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setUserToken, setAdminToken, removeToken } = userSlice.actions;
+export const { setUser, setUserToken, getUsers, getFollowing, setAdminToken, removeToken } = userSlice.actions;
 export default userSlice.reducer;

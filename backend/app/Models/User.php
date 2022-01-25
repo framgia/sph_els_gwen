@@ -32,7 +32,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'is_admin'
+        'is_admin',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -46,5 +48,9 @@ class User extends Authenticatable
 
     public function category_logs() {
       return $this->hasMany(CategoryLog::class);
+    }
+
+    public function user_followers() {
+      return $this->hasMany(UserFollower::class);
     }
 }
