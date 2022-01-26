@@ -13,6 +13,10 @@ export const getAllUsers = () => {
   return axios.get(`${API_URL}/users`, setHeaders());
 }
 
+export const getUser = (user_id: number) => {
+  return axios.get(`${API_URL}/users/${user_id}`, setHeaders());
+}
+
 export const followUser = (user_id: number, body: { following_id: number }) => {
   return axios.post(`${API_URL}/users/${user_id}/user_followers`, body, setHeaders());
 }
@@ -23,4 +27,8 @@ export const getUserFollowing = (user_id: number) => {
 
 export const unfollowUser = (user_id: number, following_id: number) => {
   return axios.delete(`${API_URL}/users/${user_id}/following/${following_id}`, setHeaders())
+}
+
+export const getUserFollowers = (user_id: number) => {
+  return axios.get(`${API_URL}/users/${user_id}/user_followers`, setHeaders());
 }
