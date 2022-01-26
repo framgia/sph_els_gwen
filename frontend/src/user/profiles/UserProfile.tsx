@@ -81,13 +81,20 @@ export default function UserProfile() {
 
   const handleFollowUser = (user_id: number) => {
     dispatch(setIsLoading(true));
-    const request = isFollowing
-      ? unfollowUser(cookies.user['id'], user_id)
-      : followUser(cookies.user['id'], { following_id: user_id });
-
-    request
+    followUser(cookies.user['id'], { following_id: user_id })
       .then((response) => {
-        if (response.status === 200 || response.status === 201) {
+        if (response.status === 201) {
+          dispatch(setIsLoading(false));
+        }
+      })
+      .catch(() => dispatch(setIsError(true)));
+  };
+
+  const handleUnfollowUser = (user_id: number) => {
+    dispatch(setIsLoading(true));
+    unfollowUser(cookies.user['id'], user_id)
+      .then((response) => {
+        if (response.status === 200) {
           dispatch(setIsLoading(false));
         }
       })
@@ -107,15 +114,18 @@ export default function UserProfile() {
       <Nav className='bg-primary' />
       <Container className='flex flex-col m-10'>
         <>
-          {state.category.isLoading && !state.category.isLoading && <Loader />}
-          {state.category.isError && (
+          {/* show loading component if state is currently loading */}
+          {state.category.isLoading && !state.category.isError && <Loader />}
+          {/* display error notification with refresh button (only if not loading) */}
+          {state.category.isError && !state.category.isLoading && (
             <Notification
               isSuccess={false}
               title='An error has occurred. Please try again later.'
               errorAction='refresh'
             />
           )}
-          {!state.category.isLoading && !state.category.isLoading && (
+          {/* only show content if not currently loading or no errors encountered */}
+          {!state.category.isLoading && !state.category.isError && (
             <>
               <Link
                 to='/users/all'
@@ -131,18 +141,35 @@ export default function UserProfile() {
                   </span>
                   <span className='text-2xl'>{user?.email}</span>
                 </div>
-                <button
-                  className={`button  w-60 ${
-                    isFollowing ? 'bg-secondary text-white' : 'bg-primary'
-                  }`}
-                  onClick={() => {
-                    user?.id && handleFollowUser(user.id);
-                  }}
-                >
-                  {isFollowing ? 'Following' : 'Follow this user'}
-                </button>
+                {/* show "following" button if current user is following specific user*/}
+                {isFollowing && (
+                  <button
+                    className={`button  w-60 ${
+                      isFollowing ? 'bg-secondary text-white' : 'bg-primary'
+                    }`}
+                    onClick={() => {
+                      user?.id && handleUnfollowUser(user.id);
+                    }}
+                  >
+                    Following
+                  </button>
+                )}
+                {/* show "follow this user" button if current user is not following specific user*/}
+                {!isFollowing && (
+                  <button
+                    className={`button  w-60 ${
+                      isFollowing ? 'bg-secondary text-white' : 'bg-primary'
+                    }`}
+                    onClick={() => {
+                      user?.id && handleFollowUser(user.id);
+                    }}
+                  >
+                    Follow this user
+                  </button>
+                )}
               </div>
               <div className='flex self-start w-1/5 my-5'>
+                {/* change button color if viewing followers to indicate button is "active" */}
                 <button
                   className={`py-4 px-6 flex-grow ${
                     isViewingFollowers
@@ -168,6 +195,7 @@ export default function UserProfile() {
                 </button>
               </div>
               <div className='grid lg:grid-cols-4 md:grid-cols-2 gap-4 w-full'>
+                {/* if viewing followers, display followers. otherwise, display following */}
                 {isViewingFollowers
                   ? user?.followers?.map((follower) => {
                       return (

@@ -23,7 +23,7 @@ export default function UserProfileItem(props: {
     return following.following[0].id === props.user.id;
   });
 
-  const handleFollowUser = () => {    
+  const handleFollowUser = () => {
     if (!isFollowing) {
       dispatch(setIsLoading(true));
       followUser(cookies.user['id'], { following_id: props.user.id })

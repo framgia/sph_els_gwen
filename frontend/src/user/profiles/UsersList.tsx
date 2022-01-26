@@ -25,6 +25,7 @@ export default function UsersList() {
     getAllUsers()
       .then((response) => {
         if (response.status === 200) {
+          // store all users except current user
           const users = response.data.data.filter(
             (user: User) => user.id !== cookies.user['id']
           );
