@@ -8,7 +8,6 @@ import Notification from './Notification';
 import Loader from './Loader';
 import Modal from './Modal';
 import CategoryItem from './CategoryItem';
-import GridContent from './GridContent';
 
 export {
     Button,
@@ -20,6 +19,5 @@ export {
     Notification,
     Loader,
     Modal,
-    CategoryItem,
-    GridContent
+    CategoryItem
 }

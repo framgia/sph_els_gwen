@@ -1,22 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Nav, Container, Loader, Notification } from '@components/';
+import { UserIcon } from '@icons/';
 import { RootState } from '@store/store';
 import { FollowerRecord, FollowingRecord } from '@store/user';
-import { getUserFollowers, getUserFollowing } from '@api/UserApi';
+import {
+  followUser,
+  getUser,
+  getUserFollowers,
+  getUserFollowing,
+  unfollowUser,
+} from '@api/UserApi';
+import UserProfileItem from './UserProfileItem';
 import { setIsError, setIsLoading } from '@store/category';
-import UserDetails, { UserDetailsProps } from './UserDetails';
-import './index.css';
+
+interface SpecificUser {
+  id?: number;
+  name?: string;
+  user_image?: string;
+  email?: string;
+  followers?: FollowerRecord[];
+  following?: FollowingRecord[];
+}
 
 export default function UserProfile() {
+  const { user_id } = useParams();
   const [cookies, _] = useCookies();
   const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state);
-  const [user, setUser] = useState<UserDetailsProps>();
+  const [user, setUser] = useState<SpecificUser>();
+  const [isViewingFollowers, setIsViewingFollowers] = useState(true);
+  const isFollowing = JSON.parse(
+    localStorage.getItem('user_following') || '{}'
+  ).find((following: FollowingRecord) => {
+    return following.following[0].id === parseInt(user_id ?? '');
+  });
 
-  const _getFollowersOfUser = () => {
-    getUserFollowers(cookies.user['id'])
+  const _getUser = (user_id: number) => {
+    getUser(user_id)
+      .then((response) => {
+        const { id, name, email, user_image } = response.data.data;
+        setUser({
+          id: id,
+          name: name,
+          email: email,
+          user_image: user_image,
+        });
+      })
+      .catch(() => dispatch(setIsError(true)));
+  };
+
+  const _getFollowersOfUser = (user_id: number) => {
+    getUserFollowers(user_id)
       .then((response) => {
         const user_followers = response.data.data.filter(
           (follower: FollowerRecord) => {
@@ -24,12 +61,13 @@ export default function UserProfile() {
           }
         );
         setUser((value) => ({ ...value, followers: user_followers }));
+        dispatch(setIsLoading(false));
       })
-      .catch(() => dispatch(setIsError(true)));
+      .catch();
   };
 
-  const _getFollowingOfUser = () => {
-    getUserFollowing(cookies.user['id'])
+  const _getFollowingOfUser = (user_id: number) => {
+    getUserFollowing(user_id)
       .then((response) => {
         const user_following = response.data.data.filter(
           (following: FollowingRecord) => {
@@ -64,18 +102,17 @@ export default function UserProfile() {
   };
 
   useEffect(() => {
-    console.log(cookies.user);
-    const { id, name, email, user_image } = cookies.user;
-    setUser({ id: id, name: name, email: email, user_image: user_image });
-    dispatch(setIsLoading(true));
-    _getFollowersOfUser();
-    _getFollowingOfUser();
-  }, []);
+    if (user_id) {
+      dispatch(setIsLoading(true));
+      _getUser(parseInt(user_id));
+      _getFollowersOfUser(parseInt(user_id));
+    }
+  }, [user_id]);
 
   return (
     <>
       <Nav className='bg-primary' />
-      <Container className='flex md:flex-row xs:flex-col w-full border md:fixed'>
+      <Container className='flex flex-col m-10'>
         <>
           {/* show loading component if state is currently loading */}
           {state.category.isLoading && !state.category.isError && <Loader />}
