@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Nav, Container, Modal, Loader, Notification } from '@components/';
 import { RootState } from '@store/store';
 import { getAllUsers, getUserFollowing, unfollowUser } from '@api/UserApi';
-import { getFollowing, getUsers, User } from '@store/user';
+import { getUsers, User } from '@store/user';
 import { setIsError, setIsLoading } from '@store/category';
 import { CheckIcon, WarningIcon } from '@icons/';
 import UserProfileItem from './UserProfileItem';
@@ -25,6 +25,7 @@ export default function UsersList() {
     getAllUsers()
       .then((response) => {
         if (response.status === 200) {
+          // store all users except current user
           const users = response.data.data.filter(
             (user: User) => user.id !== cookies.user['id']
           );
@@ -38,7 +39,10 @@ export default function UsersList() {
     getUserFollowing(cookies.user['id'])
       .then((response) => {
         if (response.status === 200) {
-          dispatch(getFollowing(response.data.data));
+          localStorage.setItem(
+            'user_following',
+            JSON.stringify(response.data.data)
+          );          
           dispatch(setIsLoading(false));
         }
       })

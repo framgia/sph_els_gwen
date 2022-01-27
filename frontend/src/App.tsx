@@ -19,6 +19,7 @@ import AnsweringCategory from '@user/categories/AnsweringCategory';
 import CategoryResults from '@user/categories/CategoryResults';
 import UserCategoriesList from '@user/categories/UserCategoriesList';
 import UsersList from '@user/profiles/UsersList';
+import UserProfile from '@user/profiles/UserProfile';
 
 
 export default function App() {
@@ -72,6 +73,14 @@ export default function App() {
           element={
             <UserRoute>
               <UsersList />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/users/:user_id'
+          element={
+            <UserRoute>
+              <UserProfile />
             </UserRoute>
           }
         />
