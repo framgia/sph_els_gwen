@@ -20,6 +20,7 @@ import CategoryResults from '@user/categories/CategoryResults';
 import UserCategoriesList from '@user/categories/UserCategoriesList';
 import UsersList from '@user/profiles/UsersList';
 import UserProfile from '@user/profiles/UserProfile';
+import OtherUserProfile from '@user/profiles/OtherUserProfile';
 
 
 export default function App() {
@@ -77,10 +78,18 @@ export default function App() {
           }
         />
         <Route
-          path='/users/:user_id'
+          path='/user/profile'
           element={
             <UserRoute>
               <UserProfile />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/users/:user_id'
+          element={
+            <UserRoute>
+              <OtherUserProfile />
             </UserRoute>
           }
         />
