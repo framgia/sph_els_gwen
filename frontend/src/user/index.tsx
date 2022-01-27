@@ -8,6 +8,12 @@ const UserDashboard = () => {
   const [cookies, _] = useCookies();
   const cardContent = [
     {
+      title: 'View your profile',
+      description: `View your profile details and activity log. See your followers and who you're following`,
+      link: '/user/profile',
+      linkText: 'Go to your profile',
+    },
+    {
       title: 'Discover other users',
       description:
         "Check out other user's profile, see their followers and activity logs",
@@ -26,12 +32,17 @@ const UserDashboard = () => {
     <>
       <Nav className='bg-primary' />
       <Container className='flex flex-col justify-evenly m-10'>
-        <span className='text-3xl self-end'>Welcome back, {cookies.user['name'] }!</span>
+        <span className='text-3xl self-end'>
+          Welcome back, {cookies.user['name']}!
+        </span>
         <h1 className='text-4xl font-bold self-start'>User Dashboard</h1>
         <div className='grid md:grid-cols-3 gap-10 w-full my-10'>
           {cardContent.map((card) => {
             return (
-              <Card className='flex flex-col justify-evenly p-8 border-gray-400 rounded-xl' key={card.title}>
+              <Card
+                className='flex flex-col justify-evenly p-8 border-gray-400 rounded-xl'
+                key={card.title}
+              >
                 <span className='text-2xl font-semibold'>{card?.title}</span>
                 <span className='italic text-gray-500 mt-4'>
                   {card?.description}
