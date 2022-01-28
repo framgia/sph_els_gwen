@@ -53,4 +53,8 @@ class User extends Authenticatable
     public function user_followers() {
       return $this->hasMany(UserFollower::class);
     }
+
+    public function activity_logs() {
+      return $this->hasMany(ActivityLog::class);
+    }
 }

@@ -32,4 +32,8 @@ class CategoryLog extends Model
     public function word() {
       return $this->belongsTo(Word::class);
     }
+
+    public function activity_logs() {
+      return $this->morphMany('App\Models\ActivityLog', 'loggable');
+    }
 }

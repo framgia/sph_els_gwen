@@ -24,9 +24,12 @@ class UserFollowerSeeder extends Seeder
           ->limit(5)
           ->get();
         foreach($randomFollowers as $randomFollower) {
-          UserFollower::create([
+          $user_follower = UserFollower::create([
             'user_id' => $user->id,
             'follower_id' => $randomFollower->id
+          ]);
+          $user_follower->activity_logs()->create([
+            'user_id' => $user->id
           ]);
         }
       }

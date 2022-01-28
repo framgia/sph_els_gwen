@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export interface User {
   id: number;
   name: string;
-  email: string;
+  email?: string;
   user_image: string;
 }
 
@@ -16,6 +16,18 @@ export interface FollowerRecord {
   id: number,
   user_id: number,
   follower: [User]
+}
+export interface ActivityLogResponse {
+  log_id: number;
+  user?: User;
+  category?: {
+    id: number,
+    name: string
+  };
+  words_learned?: number;
+  words_count?: number;
+  follower?: User;
+  date: Date | string;
 }
 
 interface UserState {

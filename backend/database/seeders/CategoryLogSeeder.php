@@ -23,12 +23,15 @@ class CategoryLogSeeder extends Seeder
       foreach($categories as $category) {
         foreach($category->words as $word) {
           $randomChoice = Choice::where('word_id', $word->id)->inRandomOrder()->first();        
-          CategoryLog::create([
+          $category_log = CategoryLog::create([
             'user_id' => $user->id,
             'category_id' => $category->id,
             'word_id' => $word->id,
             'choice_id' => $randomChoice->id,
             'is_correct' => $randomChoice->is_correct
+          ]);
+          $category_log->activity_logs()->create([
+            'user_id' => $user->id
           ]);
         }
       }

@@ -15,6 +15,7 @@ const Nav = (props: { className?: string }) => {
       ? removeCookie('admin_token', { path: '/' })
       : removeCookie('token', { path: '/' });
     removeCookie('user', { path: '/' });
+    localStorage.clear();
     navigate('/');
   };
 

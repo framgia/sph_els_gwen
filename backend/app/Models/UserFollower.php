@@ -18,4 +18,8 @@ class UserFollower extends Model
       return $this->belongsTo(User::class);
     }
 
+    public function activity_logs() {
+      return $this->morphMany('App\Models\ActivityLog', 'loggable');
+    }
+
 }

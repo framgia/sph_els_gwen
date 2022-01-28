@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { GridContent } from '@components/';
-import { FollowerRecord, FollowingRecord } from '@store/user';
+import {
+  FollowerRecord,
+  FollowingRecord,
+  ActivityLogResponse,
+} from '@store/user';
 import { followUser, unfollowUser } from '@api/UserApi';
 import UserProfileItem from './UserProfileItem';
 import { setIsError, setIsLoading } from '@store/category';
@@ -21,7 +25,12 @@ export interface UserDetailsProps {
 
 export default function UserDetails(props: {
   user: UserDetailsProps;
+  activity_logs?: ActivityLogResponse[];
   isCurrentUser?: boolean;
+  categories_info?: {
+    words_count: number;
+    categories_count?: number;
+  };
 }) {
   const { user_id } = useParams();
   const [cookies, _] = useCookies();
@@ -64,6 +73,7 @@ export default function UserDetails(props: {
         setIsViewing={(view) => {
           setIsViewing(view);
         }}
+        categories_info={props.categories_info}
       >
         <>
           {!props.isCurrentUser && (
@@ -110,7 +120,10 @@ export default function UserDetails(props: {
           </GridContent>
         )}
         {isViewing.includes('log') && (
-          <ActivityLog isCurrentUser={props.isCurrentUser} />
+          <ActivityLog
+            activity_logs={props.activity_logs}
+            isCurrentUser={props.isCurrentUser}
+          />
         )}
       </div>
     </>

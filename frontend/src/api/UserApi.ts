@@ -32,3 +32,7 @@ export const unfollowUser = (user_id: number, following_id: number) => {
 export const getUserFollowers = (user_id: number) => {
   return axios.get(`${API_URL}/users/${user_id}/user_followers`, setHeaders());
 }
+
+export const getActivityLogs = (user_id: number) => {
+  return axios.get(`${API_URL}/users/${user_id}/activity_logs`, setHeaders());
+}
