@@ -4,39 +4,33 @@ import { useCookies } from 'react-cookie';
 import { Nav, Container, Loader, Notification } from '@components/';
 import { UserIcon } from '@icons/';
 import { RootState } from '@store/store';
-import { FollowerRecord, FollowingRecord } from '@store/user';
 import {
-  followUser,
-  getUser,
+  ActivityLogResponse,
+  FollowerRecord,
+  FollowingRecord,
+  User,
+} from '@store/user';
+import {
   getUserFollowers,
   getUserFollowing,
-  unfollowUser,
+  getActivityLogs,
+  getUser,
 } from '@api/UserApi';
 import { setIsError, setIsLoading } from '@store/category';
 import UserDetails, { UserDetailsProps } from './UserDetails';
 import './index.css';
-import { Link, useParams } from 'react-router-dom';
-import UserProfileItem from './UserProfileItem';
+import { count } from 'console';
 
 export default function UserProfile() {
   const [cookies, _] = useCookies();
   const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state);
   const [user, setUser] = useState<UserDetailsProps>();
-
-  const _getUser = (user_id: number) => {
-    getUser(user_id)
-      .then((response) => {
-        const { id, name, email, user_image } = response.data.data;
-        setUser({
-          id: id,
-          name: name,
-          email: email,
-          user_image: user_image,
-        });
-      })
-      .catch(() => dispatch(setIsError(true)));
-  };
+  const [activityLogs, setActivityLogs] = useState<ActivityLogResponse[]>();
+  const [categoriesInfo, setCategoriesInfo] = useState({
+    words_count: 0,
+    categories_count: 0,
+  });
 
   const _getFollowersOfUser = () => {
     getUserFollowers(cookies.user['id'])
@@ -65,12 +59,35 @@ export default function UserProfile() {
       .catch();
   };
 
+  const _getActivityLogs = () => {
+    getActivityLogs(cookies.user['id'])
+      .then((response) => {
+        if (response.status === 200) {
+          setActivityLogs(response.data.data);
+          let words_count = 0;
+          let categories_count = 0;
+          response.data.data.map((log: ActivityLogResponse) => {
+            if (log.user?.id === cookies.user['id']) {
+              log.words_count && (words_count += log.words_count);
+              log.category && categories_count++;
+            }
+          });
+          setCategoriesInfo({
+            words_count,
+            categories_count,
+          });
+        }
+      })
+      .catch(() => dispatch(setIsError(true)));
+  };
+
   useEffect(() => {
     const { id, name, email, user_image } = cookies.user;
     setUser({ id: id, name: name, email: email, user_image: user_image });
     dispatch(setIsLoading(true));
     _getFollowersOfUser();
     _getFollowingOfUser();
+    _getActivityLogs();
   }, []);
 
   return (
@@ -88,9 +105,17 @@ export default function UserProfile() {
               errorAction='refresh'
             />
           )}
-          {/* only show content if not currently loading or no errors encountered */}
-          {!state.category.isLoading && !state.category.isLoading && (
-            <>{user && <UserDetails user={user} isCurrentUser={true} />}</>
+          {!state.category.isLoading && !state.category.isError && (
+            <>
+              {user && activityLogs && (
+                <UserDetails
+                  user={user}
+                  isCurrentUser={true}
+                  activity_logs={activityLogs}
+                  categories_info={categoriesInfo}
+                />
+              )}
+            </>
           )}
         </>
       </Container>

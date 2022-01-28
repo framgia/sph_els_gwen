@@ -60,6 +60,10 @@ class UserFollowerController extends Controller
         'follower_id' => $user->id
       ]);
 
+      $following->activity_logs()->create([
+        'user_id' => $request['following_id']
+      ]);
+
       return $this->returnOne($following, 201);
     }
 
@@ -88,6 +92,9 @@ class UserFollowerController extends Controller
       }
 
       $following_record->delete();
+      $following_record->activity_logs()->delete([
+        'user_id' => $following_id
+      ]);
       return $this->returnOne($following_record);
     }
 

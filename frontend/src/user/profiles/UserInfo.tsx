@@ -7,6 +7,10 @@ export default function UserInfo(props: {
   user?: User;
   followers?: number;
   following?: number;
+  categories_info?: {
+    words_count: number;
+    categories_count?: number;
+  };
   setIsViewing: (view: string) => void;
   children?: JSX.Element;
 }) {
@@ -33,11 +37,11 @@ export default function UserInfo(props: {
         {props.children}
         <div className='buttons-grid'>
           <button className='following-button'>
-            <span className='following-button-text'>150</span>
+            <span className='following-button-text'>{props.categories_info?.words_count}</span>
             words learned
           </button>
           <button className='following-button'>
-            <span className='following-button-text'>20</span>
+            <span className='following-button-text'>{props.categories_info?.categories_count}</span>
             lessons taken
           </button>
           <button

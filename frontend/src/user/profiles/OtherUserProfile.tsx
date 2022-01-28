@@ -3,10 +3,19 @@ import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Nav, Container, Loader, Notification } from '@components/';
-import { getUser, getUserFollowers, getUserFollowing } from '@api/UserApi';
+import {
+  getActivityLogs,
+  getUser,
+  getUserFollowers,
+  getUserFollowing,
+} from '@api/UserApi';
 import { setIsError, setIsLoading } from '@store/category';
 import { RootState } from '@store/store';
-import { FollowerRecord, FollowingRecord } from '@store/user';
+import {
+  ActivityLogResponse,
+  FollowerRecord,
+  FollowingRecord,
+} from '@store/user';
 import UserDetails, { UserDetailsProps } from './UserDetails';
 import './index.css';
 
@@ -15,8 +24,12 @@ export default function OtherUserProfile() {
   const dispatch = useDispatch();
   const [cookies, _] = useCookies();
   const state = useSelector((state: RootState) => state);
-
+  const [activityLogs, setActivityLogs] = useState<ActivityLogResponse[]>();
   const [user, setUser] = useState<UserDetailsProps>();
+  const [categoriesInfo, setCategoriesInfo] = useState({
+    words_count: 0,
+    categories_count: 0,
+  });
 
   const _getUser = (user_id: number) => {
     getUser(user_id)
@@ -37,7 +50,7 @@ export default function OtherUserProfile() {
       .then((response) => {
         const user_followers = response.data.data.filter(
           (follower: FollowerRecord) => {
-            return follower.follower[0].id !== cookies.user['id'];
+            return follower.follower[0].id !== user_id;
           }
         );
         setUser((previous) => ({ ...previous, followers: user_followers }));
@@ -59,12 +72,35 @@ export default function OtherUserProfile() {
       .catch(() => dispatch(setIsError(true)));
   };
 
+  const _getActivityLogs = (user_id: number) => {
+    getActivityLogs(user_id)
+      .then((response) => {
+        if (response.status === 200) {
+          setActivityLogs(response.data.data);
+          let words_count = 0;
+          let categories_count = 0;
+          response.data.data.map((log: ActivityLogResponse) => {
+            if (log.user?.id === cookies.user['id']) {
+              log.words_count && (words_count += log.words_count);
+              log.category && categories_count++;
+            }
+          });
+          setCategoriesInfo({
+            words_count,
+            categories_count,
+          });
+        }
+      })
+      .catch();
+  };
+
   useEffect(() => {
     dispatch(setIsLoading(true));
     if (user_id) {
       _getUser(parseInt(user_id));
       _getFollowersOfUser(parseInt(user_id));
       _getFollowingOfUser(parseInt(user_id));
+      _getActivityLogs(parseInt(user_id));
     }
   }, [user_id]);
 
@@ -82,7 +118,16 @@ export default function OtherUserProfile() {
             />
           )}
           {!state.category.isLoading && !state.category.isLoading && (
-            <>{user && <UserDetails user={user} isCurrentUser={false} />}</>
+            <>
+              {user && activityLogs && (
+                <UserDetails
+                  user={user}
+                  isCurrentUser={false}
+                  activity_logs={activityLogs}
+                  categories_info={categoriesInfo}
+                />
+              )}
+            </>
           )}
         </>
       </Container>

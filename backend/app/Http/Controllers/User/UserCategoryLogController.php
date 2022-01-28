@@ -70,6 +70,10 @@ class UserCategoryLogController extends Controller
           'is_correct'=> $answer['is_correct'],
         ]);
 
+        $newCategoryLog->activity_logs()->create([
+          'user_id' => $user->id
+        ]);
+
         $category_log = $this->makeCategoryLogResponse($newCategoryLog, $word, $answer);
         $category_logs_response->push($category_log);
       }

@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from '@components/';
 import { UserIcon } from '@icons/';
+import { ActivityLogResponse } from '@store/user';
+import { useCookies } from 'react-cookie';
+import ActivityLogItem from './ActivityLogItem';
 
-export default function ActivityLog(props: { isCurrentUser?: boolean }) {
+export default function ActivityLog(props: {
+  activity_logs?: ActivityLogResponse[];
+  isCurrentUser?: boolean;
+}) {
   const [isViewing, setIsViewing] = useState('All');
+  const [cookies, _] = useCookies();
+  const user_logs = props.activity_logs?.filter((log) => {
+    return log.user?.id === cookies.user['id'];
+  });
+  const following_logs = props.activity_logs?.filter((log) => {
+    return log.user?.id !== cookies.user['id'];
+  });
 
   return (
     <>
@@ -36,20 +49,21 @@ export default function ActivityLog(props: { isCurrentUser?: boolean }) {
               `Activity logs of users I'm following`}
           </span>
           <div className='md:m-8 xs:m-5'>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((index) => {
-              return (
-                <Card key={index} className='flex justify-evenly mb-5 p-3 items-center border-gray-400 rounded-xl'>
-                  <UserIcon className='md:w-20 xs:w-12' />
-                  <div className='flex flex-col md:w-9/12 xs:w-7/12'>
-                    <span className='md:text-xl font-semibold'>John Smith</span>
-                    <span className='md:text-lg xs:text-sm'>
-                      Learned 20 words
-                    </span>
-                  </div>
-                  <span className='md:text-lg xs:text-sm'>25 Jan 2022</span>
-                </Card>
-              );
-            })}
+            {/* show all activity logs if currently viewing all */}
+            {isViewing === 'All' &&
+              props.activity_logs?.map((log) => {
+                return <ActivityLogItem log={log} />;
+              })}
+            {/* show only user activity logs if currently viewing mine */}
+            {isViewing === 'Mine' &&
+              user_logs?.map((log) => {
+                return <ActivityLogItem log={log} />;
+              })}
+            {/* show only activity logs of users that current user is following if currently viewing following */}
+            {isViewing === 'Following' &&
+              following_logs?.map((log) => {
+                return <ActivityLogItem log={log} />;
+              })}
           </div>
         </>
       </Card>
